@@ -33,17 +33,35 @@ function NYTLogo({ className }: { className?: string }) {
 function CategoryPill({
   category,
   onClick,
+  accentColor,
+  useGradient,
+  gradientStart,
+  gradientEnd,
 }: {
   category: string;
   onClick: () => void;
+  accentColor: string;
+  useGradient: boolean;
+  gradientStart: string;
+  gradientEnd: string;
 }) {
+  const pillStyle = useGradient
+    ? {
+        backgroundImage: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+      }
+    : { color: accentColor };
+
   return (
     <Button
       variant="ghost"
       onClick={onClick}
       className="nyt-pill flex items-center gap-1.5 h-auto whitespace-nowrap"
+      style={pillStyle}
     >
-      <Sparkles className="w-3.5 h-3.5" />
+      <Sparkles className="w-3.5 h-3.5" style={{ color: accentColor }} />
       {category}
     </Button>
   );
@@ -55,17 +73,20 @@ function CategoryPill({
 function CitationPill({
   citation,
   onClick,
+  accentColor,
 }: {
   citation: string;
   onClick: () => void;
+  accentColor: string;
 }) {
   return (
     <Button
       variant="ghost"
       onClick={onClick}
       className="nyt-pill flex items-center gap-1.5 h-auto whitespace-nowrap text-xs"
+      style={{ color: accentColor }}
     >
-      <Sparkles className="w-3 h-3" />
+      <Sparkles className="w-3 h-3" style={{ color: accentColor }} />
       {citation}
     </Button>
   );
@@ -78,7 +99,16 @@ function SuggestionCategories({
   categories,
   visibleCount = 3,
   onCategoryClick,
-}: SuggestionCategoriesProps) {
+  accentColor,
+  useGradient,
+  gradientStart,
+  gradientEnd,
+}: SuggestionCategoriesProps & {
+  accentColor: string;
+  useGradient: boolean;
+  gradientStart: string;
+  gradientEnd: string;
+}) {
   const [showAll, setShowAll] = useState(false);
   const displayedCategories = showAll ? categories : categories.slice(0, visibleCount);
   const hasMore = categories.length > visibleCount;
@@ -90,6 +120,10 @@ function SuggestionCategories({
           key={index}
           category={category}
           onClick={() => onCategoryClick(category)}
+          accentColor={accentColor}
+          useGradient={useGradient}
+          gradientStart={gradientStart}
+          gradientEnd={gradientEnd}
         />
       ))}
       {hasMore && (
@@ -97,6 +131,7 @@ function SuggestionCategories({
           variant="ghost"
           onClick={() => setShowAll(!showAll)}
           className="nyt-pill h-auto"
+          style={{ color: accentColor }}
         >
           {showAll ? "Less" : "More"}
         </Button>
@@ -118,10 +153,10 @@ function AutocompleteSuggestion({
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-800 transition-colors rounded-lg"
+      className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-lg"
     >
       <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
-      <span className="text-sm text-white">{suggestion}</span>
+      <span className="text-sm text-gray-900 dark:text-white">{suggestion}</span>
     </button>
   );
 }
@@ -148,7 +183,7 @@ function AutocompleteList({ query, suggestions, onSelect }: AutocompleteListProp
 /**
  * Loading Indicator Component
  */
-function LoadingIndicator() {
+function LoadingIndicator({ accentColor }: { accentColor: string }) {
   const [stage, setStage] = useState(0);
   const stages = ["articles", "books", "videos", "podcasts"];
 
@@ -163,14 +198,14 @@ function LoadingIndicator() {
   return (
     <div className="flex items-center gap-2 text-gray-400 text-sm">
       <div className="flex gap-1">
-        <span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-bounce" />
+        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: accentColor }} />
         <span
-          className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-bounce"
-          style={{ animationDelay: "0.1s" }}
+          className="w-1.5 h-1.5 rounded-full animate-bounce"
+          style={{ backgroundColor: accentColor, animationDelay: "0.1s" }}
         />
         <span
-          className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-bounce"
-          style={{ animationDelay: "0.2s" }}
+          className="w-1.5 h-1.5 rounded-full animate-bounce"
+          style={{ backgroundColor: accentColor, animationDelay: "0.2s" }}
         />
       </div>
       <span>Searching through {stages[stage]}...</span>
@@ -188,7 +223,8 @@ function StreamingAnswer({
   onToggleExpand,
   maxLinesCollapsed = 3,
   maxLinesExpanded = 10,
-}: StreamingAnswerProps) {
+  accentColor,
+}: StreamingAnswerProps & { accentColor: string }) {
   const [displayedText, setDisplayedText] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
 
@@ -220,14 +256,14 @@ function StreamingAnswer({
     <div className="space-y-2">
       {needsScroll && isExpanded ? (
         <ScrollArea className="h-64">
-          <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">
+          <p className="text-gray-900 dark:text-white text-sm leading-relaxed whitespace-pre-wrap">
             {displayedText}
           </p>
         </ScrollArea>
       ) : (
         <p
           className={cn(
-            "text-white text-sm leading-relaxed whitespace-pre-wrap",
+            "text-gray-900 dark:text-white text-sm leading-relaxed whitespace-pre-wrap",
             !isExpanded && needsExpansion && "line-clamp-3"
           )}
         >
@@ -237,7 +273,8 @@ function StreamingAnswer({
       {needsExpansion && !needsScroll && (
         <button
           onClick={onToggleExpand}
-          className="text-purple-400 text-xs hover:text-purple-300 transition-colors flex items-center gap-1"
+          className="text-xs transition-colors flex items-center gap-1"
+          style={{ color: accentColor }}
         >
           {isExpanded ? "Show less" : "Show more"}
           <ChevronDown
@@ -259,7 +296,8 @@ function CitationPills({
   citations,
   visibleCount = 3,
   onCitationClick,
-}: CitationPillsProps) {
+  accentColor,
+}: CitationPillsProps & { accentColor: string }) {
   const [showAll, setShowAll] = useState(false);
   const displayedCitations = showAll ? citations : citations.slice(0, visibleCount);
   const hasMore = citations.length > visibleCount;
@@ -273,6 +311,7 @@ function CitationPills({
           key={index}
           citation={citation}
           onClick={() => onCitationClick(citation)}
+          accentColor={accentColor}
         />
       ))}
       {hasMore && (
@@ -280,6 +319,7 @@ function CitationPills({
           variant="ghost"
           onClick={() => setShowAll(!showAll)}
           className="nyt-pill h-auto text-xs"
+          style={{ color: accentColor }}
         >
           {showAll ? "Less" : "More"}
         </Button>
@@ -299,13 +339,14 @@ function AnswerDisplay({
   isExpanded,
   onToggleExpand,
   onCitationClick,
-}: AnswerDisplayProps) {
+  accentColor,
+}: AnswerDisplayProps & { accentColor: string }) {
   return (
     <div className="space-y-4">
-      <h3 className="text-white font-semibold text-base">{query}</h3>
+      <h3 className="text-gray-900 dark:text-white font-semibold text-base">{query}</h3>
 
       {isLoading ? (
-        <LoadingIndicator />
+        <LoadingIndicator accentColor={accentColor} />
       ) : (
         <>
           <StreamingAnswer
@@ -313,8 +354,9 @@ function AnswerDisplay({
             isLoading={isLoading}
             isExpanded={isExpanded}
             onToggleExpand={onToggleExpand}
+            accentColor={accentColor}
           />
-          <CitationPills citations={citations} onCitationClick={onCitationClick} />
+          <CitationPills citations={citations} onCitationClick={onCitationClick} accentColor={accentColor} />
         </>
       )}
     </div>
@@ -334,7 +376,7 @@ function NYTWidgetCollapsed({
   return (
     <Button
       onClick={onExpand}
-      className="flex items-center gap-3 bg-[rgb(var(--nyt-dark-bg))] text-white hover:bg-[rgb(var(--nyt-gray-900))] border border-gray-700 px-4 py-3 rounded-lg shadow-lg transition-all"
+      className="flex items-center gap-3 bg-white dark:bg-[rgb(var(--nyt-dark-bg))] text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-[rgb(var(--nyt-gray-900))] border border-gray-200 dark:border-gray-700 px-4 py-3 rounded-lg shadow-lg transition-all"
     >
       <Sparkles className="w-4 h-4" />
       <span className="font-medium">{collapsedText}</span>
@@ -361,6 +403,10 @@ function NYTWidgetExpanded({
   onSubmit,
   onCategoryClick,
   onCitationClick,
+  accentColor,
+  useGradient,
+  gradientStart,
+  gradientEnd,
 }: {
   title: string;
   suggestionCategories: string[];
@@ -376,6 +422,10 @@ function NYTWidgetExpanded({
   onSubmit: (query: string) => void;
   onCategoryClick: (category: string) => void;
   onCitationClick: (citation: string) => void;
+  accentColor: string;
+  useGradient: boolean;
+  gradientStart: string;
+  gradientEnd: string;
 }) {
   const [inputValue, setInputValue] = useState("");
   const [autocompleteResults, setAutocompleteResults] = useState<string[]>([]);
@@ -415,18 +465,18 @@ function NYTWidgetExpanded({
   const showAnswer = currentState === "answer" && answer;
 
   return (
-    <div className="w-[400px] bg-[rgb(var(--nyt-dark-bg))] rounded-xl shadow-2xl border border-gray-800 overflow-hidden">
+    <div className="w-[400px] bg-white dark:bg-[rgb(var(--nyt-dark-bg))] rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-800">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-400" />
-          <h2 className="text-white font-semibold text-lg">{title}</h2>
+          <Sparkles className="w-5 h-5" style={{ color: accentColor }} />
+          <h2 className="text-gray-900 dark:text-white font-semibold text-lg">{title}</h2>
         </div>
         <Button
           variant="ghost"
           size="icon"
           onClick={onClose}
-          className="text-gray-400 hover:text-white h-8 w-8"
+          className="text-gray-400 hover:text-gray-900 dark:hover:text-white h-8 w-8"
         >
           <X className="w-4 h-4" />
         </Button>
@@ -443,6 +493,10 @@ function NYTWidgetExpanded({
                 setInputValue(category);
                 onCategoryClick(category);
               }}
+              accentColor={accentColor}
+              useGradient={useGradient}
+              gradientStart={gradientStart}
+              gradientEnd={gradientEnd}
             />
           )}
 
@@ -465,21 +519,22 @@ function NYTWidgetExpanded({
               isExpanded={isAnswerExpanded}
               onToggleExpand={() => setIsAnswerExpanded(!isAnswerExpanded)}
               onCitationClick={onCitationClick}
+              accentColor={accentColor}
             />
           )}
 
           {/* Loading State */}
           {currentState === "loading" && (
             <div className="space-y-4">
-              <h3 className="text-white font-semibold text-base">{query}</h3>
-              <LoadingIndicator />
+              <h3 className="text-gray-900 dark:text-white font-semibold text-base">{query}</h3>
+              <LoadingIndicator accentColor={accentColor} />
             </div>
           )}
         </div>
       </ScrollArea>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-800 space-y-3">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
         {/* Search Input or Follow-up Input */}
         <div className="flex gap-2">
           <Input
@@ -492,14 +547,15 @@ function NYTWidgetExpanded({
           <Button
             onClick={handleSubmit}
             disabled={!inputValue.trim()}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4"
+            className="text-white px-4"
+            style={{ backgroundColor: accentColor }}
           >
             <Search className="w-4 h-4" />
           </Button>
         </div>
 
         {/* Branding */}
-        <div className="text-center text-gray-500 text-xs">{brandingText}</div>
+        <div className="text-center text-gray-600 dark:text-gray-500 text-xs">{brandingText}</div>
       </div>
     </div>
   );
@@ -527,6 +583,10 @@ export function NYTChatWidget({
   onSubmit,
   onCategoryClick,
   onCitationClick,
+  primaryColor = "#9333ea",
+  useGradient = false,
+  gradientStart = "#3b82f6",
+  gradientEnd = "#8b5cf6",
   className,
 }: NYTChatWidgetProps) {
   // Controlled vs Uncontrolled pattern
@@ -539,6 +599,23 @@ export function NYTChatWidget({
   const [currentQuery, setCurrentQuery] = useState<string | null>(null);
   const [answer, setAnswer] = useState<string | null>(null);
   const [citations, setCitations] = useState<string[]>([]);
+
+  // Color styling helpers
+  const accentColor = primaryColor;
+  const gradientStyle = useGradient
+    ? { backgroundImage: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})` }
+    : { backgroundColor: accentColor };
+
+  const getBorderStyle = () => {
+    if (useGradient) {
+      return {
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        borderImage: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd}) 1`,
+      };
+    }
+    return { borderColor: accentColor };
+  };
 
   const handleExpandChange = useCallback(
     (expanded: boolean) => {
@@ -625,6 +702,10 @@ export function NYTChatWidget({
           onSubmit={handleSubmit}
           onCategoryClick={handleCategoryClick}
           onCitationClick={handleCitationClick}
+          accentColor={accentColor}
+          useGradient={useGradient}
+          gradientStart={gradientStart}
+          gradientEnd={gradientEnd}
         />
       )}
     </div>

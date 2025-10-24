@@ -156,6 +156,63 @@ export default defineSchema(
     updatedAt: v.number(),
   }).index("by_user_id", ["userId"]),
 
+  // Widget Configurations
+  // Purpose: Widget appearance and behavior settings
+  // Separation: Widget display (widgetConfigurations) vs. Content ingestion (gistConfigurations)
+  widgetConfigurations: defineTable({
+    userId: v.string(), // Reference to user's Clerk ID
+    gistConfigurationId: v.id("gistConfigurations"), // Link to content configuration
+
+    // Widget Type
+    widgetType: v.union(
+      v.literal("floating"),
+      v.literal("rufus"),
+      v.literal("womensWorld")
+    ),
+
+    // Colors
+    primaryColor: v.optional(v.string()),
+    secondaryColor: v.optional(v.string()),
+    backgroundColor: v.optional(v.string()),
+    textColor: v.optional(v.string()),
+    useGradient: v.optional(v.boolean()),
+    gradientStart: v.optional(v.string()),
+    gradientEnd: v.optional(v.string()),
+
+    // Dimensions
+    width: v.optional(v.number()),
+    height: v.optional(v.number()),
+
+    // Behavior
+    placement: v.optional(
+      v.union(
+        v.literal("bottom-right"),
+        v.literal("bottom-left"),
+        v.literal("top-right"),
+        v.literal("top-left")
+      )
+    ),
+    openByDefault: v.optional(v.boolean()),
+
+    // Icons
+    iconUrl: v.optional(v.string()),
+    iconStorageId: v.optional(v.id("_storage")),
+
+    // NYT Chat Widget Configuration
+    collapsedText: v.optional(v.string()),
+    title: v.optional(v.string()),
+    placeholder: v.optional(v.string()),
+    followUpPlaceholder: v.optional(v.string()),
+    suggestionCategories: v.optional(v.array(v.string())),
+    brandingText: v.optional(v.string()),
+
+    // Timestamps
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_gist_config_id", ["gistConfigurationId"]),
+
   // Preview Configurations (ephemeral, for unauthenticated users)
   // Purpose: Allow widget preview before sign-up
   // TTL: 24 hours (cleaned up by scheduled job)
@@ -202,6 +259,18 @@ export default defineSchema(
         // Icons
         iconUrl: v.optional(v.string()),
         iconStorageId: v.optional(v.id("_storage")),
+
+        // NYT Chat Widget Configuration
+        collapsedText: v.optional(v.string()),
+        title: v.optional(v.string()),
+        placeholder: v.optional(v.string()),
+        followUpPlaceholder: v.optional(v.string()),
+        suggestionCategories: v.optional(v.array(v.string())),
+        brandingText: v.optional(v.string()),
+
+        // Women's World Widget Configuration
+        seedQuestions: v.optional(v.array(v.string())),
+        autoScrollInterval: v.optional(v.number()),
       })
     ),
 

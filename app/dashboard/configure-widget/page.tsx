@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,195 +27,281 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Plus, X } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { Loader2, Trash2, Save } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Form schema
 const formSchema = z.object({
-  name: z.string().min(1, "Widget name is required").max(100, "Name must be less than 100 characters"),
-  type: z.enum(["floating", "rufus", "womensWorld"], {
+  widgetType: z.enum(["floating", "rufus", "womensWorld"], {
     message: "Please select a widget type",
   }),
   placement: z.enum(["bottom-right", "bottom-left", "top-right", "top-left"]),
-  openStateMode: z.enum(["toggle", "alwaysOpen", "teaser"]),
-  primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Invalid hex color"),
+  useGradient: z.boolean(),
+  primaryColor: z.string().optional(),
+  gradientStart: z.string().optional(),
+  gradientEnd: z.string().optional(),
   width: z.number().min(300).max(800),
   height: z.number().min(400).max(800),
-  seedQuestions: z.array(z.string().max(60, "Question must be 60 characters or less")).max(5),
+  openByDefault: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 const defaultValues: FormValues = {
-  name: "My Widget",
-  type: "floating",
+  widgetType: "floating",
   placement: "bottom-right",
-  openStateMode: "toggle",
-  primaryColor: "#8B5CF6",
+  useGradient: true,
+  gradientStart: "#3B82F6",
+  gradientEnd: "#8B5CF6",
   width: 400,
   height: 600,
-  seedQuestions: ["What is this?", "How does it work?", "Tell me more"],
+  openByDefault: false,
 };
 
 export default function ConfigureWidgetPage() {
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const { toast } = useToast();
+  const [selectedGistConfigId, setSelectedGistConfigId] = useState<
+    Id<"gistConfigurations"> | null
+  >(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [widgetConfigToDelete, setWidgetConfigToDelete] = useState<
+    Id<"widgetConfigurations"> | null
+  >(null);
+
+  // Queries
+  const gistConfigs = useQuery(api.gistConfigurations.getUserConfigs);
+  const widgetConfig = useQuery(
+    api.widgetConfigurations.getWidgetConfig,
+    selectedGistConfigId ? { gistConfigurationId: selectedGistConfigId } : "skip"
+  );
+  const userWidgetConfigs = useQuery(api.widgetConfigurations.getUserWidgetConfigs);
+
+  // Mutations
+  const createWidgetConfig = useMutation(api.widgetConfigurations.createWidgetConfig);
+  const updateWidgetConfig = useMutation(api.widgetConfigurations.updateWidgetConfig);
+  const deleteWidgetConfig = useMutation(api.widgetConfigurations.deleteWidgetConfig);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  // Watch form values for live preview
+  // Auto-select first gist config
+  useEffect(() => {
+    if (gistConfigs && gistConfigs.length > 0 && !selectedGistConfigId) {
+      setSelectedGistConfigId(gistConfigs[0]._id);
+    }
+  }, [gistConfigs, selectedGistConfigId]);
+
+  // Update form when widget config loads
+  useEffect(() => {
+    if (widgetConfig) {
+      form.reset({
+        widgetType: widgetConfig.widgetType,
+        placement: widgetConfig.placement || "bottom-right",
+        useGradient: widgetConfig.useGradient || false,
+        primaryColor: widgetConfig.primaryColor,
+        gradientStart: widgetConfig.gradientStart,
+        gradientEnd: widgetConfig.gradientEnd,
+        width: widgetConfig.width || 400,
+        height: widgetConfig.height || 600,
+        openByDefault: widgetConfig.openByDefault || false,
+      });
+    } else {
+      form.reset(defaultValues);
+    }
+  }, [widgetConfig, form]);
+
   const watchedValues = form.watch();
 
   const onSubmit = async (values: FormValues) => {
-    setIsSaving(true);
-    // Simulate save delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSaving(false);
-    setShowSuccessToast(true);
-    setTimeout(() => setShowSuccessToast(false), 3000);
-    console.log("Widget configuration:", values);
-  };
+    if (!selectedGistConfigId) {
+      toast({
+        title: "Error",
+        description: "Please select a gist configuration",
+        variant: "destructive",
+      });
+      return;
+    }
 
-  const handleReset = () => {
-    if (confirm("Reset form to default values?")) {
-      form.reset(defaultValues);
+    try {
+      if (widgetConfig) {
+        // Update existing
+        await updateWidgetConfig({
+          widgetConfigId: widgetConfig._id,
+          configuration: {
+            primaryColor: values.primaryColor,
+            gradientStart: values.gradientStart,
+            gradientEnd: values.gradientEnd,
+            useGradient: values.useGradient,
+            width: values.width,
+            height: values.height,
+            placement: values.placement,
+            openByDefault: values.openByDefault,
+          },
+        });
+        toast({
+          title: "Success",
+          description: "Widget configuration updated successfully",
+        });
+      } else {
+        // Create new
+        await createWidgetConfig({
+          gistConfigurationId: selectedGistConfigId,
+          widgetType: values.widgetType,
+          configuration: {
+            primaryColor: values.primaryColor,
+            gradientStart: values.gradientStart,
+            gradientEnd: values.gradientEnd,
+            useGradient: values.useGradient,
+            width: values.width,
+            height: values.height,
+            placement: values.placement,
+            openByDefault: values.openByDefault,
+          },
+        });
+        toast({
+          title: "Success",
+          description: "Widget configuration created successfully",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to save configuration",
+        variant: "destructive",
+      });
     }
   };
 
-  const addSeedQuestion = () => {
-    const current = form.getValues("seedQuestions");
-    if (current.length < 5) {
-      form.setValue("seedQuestions", [...current, ""]);
+  const handleDelete = async () => {
+    if (!widgetConfigToDelete) return;
+
+    try {
+      await deleteWidgetConfig({ widgetConfigId: widgetConfigToDelete });
+      toast({
+        title: "Success",
+        description: "Widget configuration deleted successfully",
+      });
+      setDeleteDialogOpen(false);
+      setWidgetConfigToDelete(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete configuration",
+        variant: "destructive",
+      });
     }
   };
 
-  const removeSeedQuestion = (index: number) => {
-    const current = form.getValues("seedQuestions");
-    form.setValue("seedQuestions", current.filter((_, i) => i !== index));
-  };
+  if (!gistConfigs) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (gistConfigs.length === 0) {
+    return (
+      <div className="container mx-auto p-8">
+        <Alert>
+          <AlertDescription>
+            You need to create a gist configuration first before configuring a widget.
+            Please go to the dashboard and create a configuration.
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-8">
+      <Toaster />
+
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Configure Your Widget</h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Design and customize your on-site search widget
+        <p className="text-sm text-muted-foreground mt-1">
+          Design and customize your widget appearance
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Form Section (2/3 width on large screens) */}
-        <div className="lg:col-span-2">
+        {/* Form Section */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Gist Configuration Selector */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Select Configuration</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Select
+                value={selectedGistConfigId || ""}
+                onValueChange={(value) => setSelectedGistConfigId(value as Id<"gistConfigurations">)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a gist configuration" />
+                </SelectTrigger>
+                <SelectContent>
+                  {gistConfigs.map((config) => (
+                    <SelectItem key={config._id} value={config._id}>
+                      {config.publicationName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
+
+          {/* Widget Configuration Form */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <Tabs defaultValue="basics" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="basics">Basics</TabsTrigger>
+              <Tabs defaultValue="appearance" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="appearance">Appearance</TabsTrigger>
                   <TabsTrigger value="behavior">Behavior</TabsTrigger>
                 </TabsList>
-
-                {/* Basics Tab */}
-                <TabsContent value="basics" className="space-y-6 mt-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Widget Name</FormLabel>
-                        <FormDescription>
-                          Choose a name for your widget (displayed in the widget header)
-                        </FormDescription>
-                        <FormControl>
-                          <Input placeholder="e.g., Help Widget" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="type"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Widget Type</FormLabel>
-                        <FormDescription>
-                          Select the widget family that best fits your needs
-                        </FormDescription>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select widget type" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="floating">
-                              <div>
-                                <div className="font-medium">Floating Widget</div>
-                                <div className="text-xs text-gray-500">
-                                  Small button that expands into a panel
-                                </div>
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="rufus">
-                              <div>
-                                <div className="font-medium">Rufus Widget</div>
-                                <div className="text-xs text-gray-500">
-                                  Centered modal with prominent seed questions
-                                </div>
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="womensWorld">
-                              <div>
-                                <div className="font-medium">Womens World Widget</div>
-                                <div className="text-xs text-gray-500">
-                                  Always-open sidebar for deep engagement
-                                </div>
-                              </div>
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TabsContent>
 
                 {/* Appearance Tab */}
                 <TabsContent value="appearance" className="space-y-6 mt-6">
                   <FormField
                     control={form.control}
-                    name="primaryColor"
+                    name="widgetType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Primary Color</FormLabel>
-                        <FormDescription>
-                          Choose the main color for your widget
-                        </FormDescription>
-                        <div className="flex items-center gap-4">
+                        <FormLabel>Widget Type</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value} disabled={!!widgetConfig}>
                           <FormControl>
-                            <input
-                              type="color"
-                              {...field}
-                              className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
-                            />
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
                           </FormControl>
-                          <Input
-                            value={field.value}
-                            onChange={(e) => field.onChange(e.target.value)}
-                            className="w-32"
-                            placeholder="#8B5CF6"
-                          />
-                        </div>
+                          <SelectContent>
+                            <SelectItem value="floating">Floating Widget</SelectItem>
+                            <SelectItem value="rufus">Rufus Widget</SelectItem>
+                            <SelectItem value="womensWorld">Women's World Widget</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {widgetConfig && (
+                          <FormDescription className="text-xs">
+                            Widget type cannot be changed after creation
+                          </FormDescription>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -222,13 +311,115 @@ export default function ConfigureWidgetPage() {
 
                   <FormField
                     control={form.control}
+                    name="useGradient"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-base">Use Gradient</FormLabel>
+                          <FormDescription>
+                            Enable gradient colors instead of solid color
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  {watchedValues.useGradient ? (
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="gradientStart"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Gradient Start Color</FormLabel>
+                            <div className="flex items-center gap-4">
+                              <FormControl>
+                                <input
+                                  type="color"
+                                  {...field}
+                                  className="h-10 w-20 rounded border cursor-pointer"
+                                />
+                              </FormControl>
+                              <Input
+                                value={field.value || ""}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                className="w-32"
+                                placeholder="#3B82F6"
+                              />
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="gradientEnd"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Gradient End Color</FormLabel>
+                            <div className="flex items-center gap-4">
+                              <FormControl>
+                                <input
+                                  type="color"
+                                  {...field}
+                                  className="h-10 w-20 rounded border cursor-pointer"
+                                />
+                              </FormControl>
+                              <Input
+                                value={field.value || ""}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                className="w-32"
+                                placeholder="#8B5CF6"
+                              />
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  ) : (
+                    <FormField
+                      control={form.control}
+                      name="primaryColor"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Primary Color</FormLabel>
+                          <div className="flex items-center gap-4">
+                            <FormControl>
+                              <input
+                                type="color"
+                                {...field}
+                                className="h-10 w-20 rounded border cursor-pointer"
+                              />
+                            </FormControl>
+                            <Input
+                              value={field.value || ""}
+                              onChange={(e) => field.onChange(e.target.value)}
+                              className="w-32"
+                              placeholder="#8B5CF6"
+                            />
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+
+                  <Separator />
+
+                  <FormField
+                    control={form.control}
                     name="width"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Width: {field.value}px</FormLabel>
-                        <FormDescription>
-                          Set the width of your widget panel
-                        </FormDescription>
                         <FormControl>
                           <Slider
                             min={300}
@@ -249,9 +440,6 @@ export default function ConfigureWidgetPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Height: {field.value}px</FormLabel>
-                        <FormDescription>
-                          Set the height of your widget panel
-                        </FormDescription>
                         <FormControl>
                           <Slider
                             min={400}
@@ -274,80 +462,36 @@ export default function ConfigureWidgetPage() {
                     name="placement"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Placement</FormLabel>
-                        <FormDescription>
-                          Choose where the widget appears on the page
-                        </FormDescription>
+                        <FormLabel>Widget Placement</FormLabel>
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
                             value={field.value}
                             className="grid grid-cols-2 gap-4"
                           >
-                            <FormItem>
-                              <div
-                                className={`flex items-center space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "bottom-right"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="bottom-right" />
-                                </FormControl>
-                                <FormLabel className="cursor-pointer font-normal">
-                                  Bottom Right
-                                </FormLabel>
-                              </div>
-                            </FormItem>
-                            <FormItem>
-                              <div
-                                className={`flex items-center space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "bottom-left"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="bottom-left" />
-                                </FormControl>
-                                <FormLabel className="cursor-pointer font-normal">
-                                  Bottom Left
-                                </FormLabel>
-                              </div>
-                            </FormItem>
-                            <FormItem>
-                              <div
-                                className={`flex items-center space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "top-right"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="top-right" />
-                                </FormControl>
-                                <FormLabel className="cursor-pointer font-normal">
-                                  Top Right
-                                </FormLabel>
-                              </div>
-                            </FormItem>
-                            <FormItem>
-                              <div
-                                className={`flex items-center space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "top-left"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="top-left" />
-                                </FormControl>
-                                <FormLabel className="cursor-pointer font-normal">
-                                  Top Left
-                                </FormLabel>
-                              </div>
-                            </FormItem>
+                            {[
+                              { value: "bottom-right", label: "Bottom Right" },
+                              { value: "bottom-left", label: "Bottom Left" },
+                              { value: "top-right", label: "Top Right" },
+                              { value: "top-left", label: "Top Left" },
+                            ].map((option) => (
+                              <FormItem key={option.value}>
+                                <div
+                                  className={`flex items-center space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
+                                    field.value === option.value
+                                      ? "border-primary bg-primary/5"
+                                      : "border-muted"
+                                  }`}
+                                >
+                                  <FormControl>
+                                    <RadioGroupItem value={option.value} />
+                                  </FormControl>
+                                  <FormLabel className="cursor-pointer font-normal">
+                                    {option.label}
+                                  </FormLabel>
+                                </div>
+                              </FormItem>
+                            ))}
                           </RadioGroup>
                         </FormControl>
                         <FormMessage />
@@ -359,317 +503,119 @@ export default function ConfigureWidgetPage() {
 
                   <FormField
                     control={form.control}
-                    name="openStateMode"
+                    name="openByDefault"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Open State Behavior</FormLabel>
-                        <FormDescription>
-                          How the widget opens and closes
-                        </FormDescription>
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-base">Open by Default</FormLabel>
+                          <FormDescription>
+                            Widget opens automatically when page loads
+                          </FormDescription>
+                        </div>
                         <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            value={field.value}
-                            className="space-y-3"
-                          >
-                            <FormItem>
-                              <div
-                                className={`flex items-start space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "toggle"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="toggle" />
-                                </FormControl>
-                                <div className="flex-1">
-                                  <FormLabel className="cursor-pointer font-medium">
-                                    Toggle
-                                  </FormLabel>
-                                  <p className="text-xs text-gray-600 mt-1">
-                                    Standard open/close button. Closed by default.
-                                  </p>
-                                </div>
-                              </div>
-                            </FormItem>
-                            <FormItem>
-                              <div
-                                className={`flex items-start space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "alwaysOpen"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="alwaysOpen" />
-                                </FormControl>
-                                <div className="flex-1">
-                                  <FormLabel className="cursor-pointer font-medium">
-                                    Always Open
-                                  </FormLabel>
-                                  <p className="text-xs text-gray-600 mt-1">
-                                    Panel expanded by default. Can be minimized by user.
-                                  </p>
-                                </div>
-                              </div>
-                            </FormItem>
-                            <FormItem>
-                              <div
-                                className={`flex items-start space-x-3 rounded-lg border-2 p-4 cursor-pointer ${
-                                  field.value === "teaser"
-                                    ? "border-violet-600 bg-violet-50"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value="teaser" />
-                                </FormControl>
-                                <div className="flex-1">
-                                  <FormLabel className="cursor-pointer font-medium">
-                                    Teaser
-                                  </FormLabel>
-                                  <p className="text-xs text-gray-600 mt-1">
-                                    Auto-opens after delay, then closes unless engaged.
-                                  </p>
-                                </div>
-                              </div>
-                            </FormItem>
-                          </RadioGroup>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
                         </FormControl>
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Seed Questions</Label>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Pre-written questions to help users get started (max 5)
-                        </p>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={addSeedQuestion}
-                        disabled={form.getValues("seedQuestions").length >= 5}
-                      >
-                        <Plus className="h-4 w-4 mr-1" />
-                        Add Question
-                      </Button>
-                    </div>
-
-                    {form.watch("seedQuestions").map((_, index) => (
-                      <FormField
-                        key={index}
-                        control={form.control}
-                        name={`seedQuestions.${index}`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <div className="flex gap-2">
-                              <FormControl>
-                                <Textarea
-                                  {...field}
-                                  placeholder="e.g., How does this work?"
-                                  className="resize-none"
-                                  rows={2}
-                                />
-                              </FormControl>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeSeedQuestion(index)}
-                                className="shrink-0"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                              <FormMessage />
-                              <span className="text-gray-500">
-                                {field.value?.length || 0}/60
-                              </span>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                    ))}
-                  </div>
                 </TabsContent>
               </Tabs>
 
               {/* Form Actions */}
-              <div className="flex justify-between items-center pt-6 border-t">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleReset}
-                >
-                  Reset to Defaults
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isSaving}
-                  className="bg-violet-600 hover:bg-violet-700"
-                >
-                  {isSaving ? "Saving..." : "Save Draft"}
+              <div className="flex justify-end gap-4 pt-6 border-t">
+                <Button type="submit" className="gap-2">
+                  <Save className="h-4 w-4" />
+                  {widgetConfig ? "Update Configuration" : "Create Configuration"}
                 </Button>
               </div>
-
-              {/* Success Toast */}
-              {showSuccessToast && (
-                <div className="fixed bottom-4 right-4 rounded-lg bg-green-50 p-4 text-green-800 shadow-lg">
-                  Widget configuration saved successfully!
-                </div>
-              )}
             </form>
           </Form>
+
+          {/* Existing Configurations */}
+          {userWidgetConfigs && userWidgetConfigs.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Your Widget Configurations</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {userWidgetConfigs.map((config) => (
+                    <div
+                      key={config._id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div>
+                        <div className="font-medium">
+                          {config.gistConfiguration?.publicationName || "Unknown"}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          <Badge variant="secondary" className="mr-2">
+                            {config.widgetType}
+                          </Badge>
+                          {config.placement} · {config.width}x{config.height}px
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setWidgetConfigToDelete(config._id);
+                          setDeleteDialogOpen(true);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
-        {/* Preview Section (1/3 width on large screens) */}
+        {/* Preview Section */}
         <div className="lg:col-span-1">
           <Card className="sticky top-8">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Preview</span>
-                <Badge variant="secondary">{watchedValues.type}</Badge>
+                <Badge variant="secondary">{watchedValues.widgetType}</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <WidgetPreview config={watchedValues} />
+              <div className="relative bg-muted rounded-lg h-96">
+                {/* Simple preview placeholder */}
+                <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+                  Widget Preview
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
-  );
-}
 
-// Widget Preview Component
-function WidgetPreview({ config }: { config: FormValues }) {
-  const getPlacementStyle = () => {
-    const base = "absolute";
-    switch (config.placement) {
-      case "bottom-right":
-        return `${base} bottom-4 right-4`;
-      case "bottom-left":
-        return `${base} bottom-4 left-4`;
-      case "top-right":
-        return `${base} top-4 right-4`;
-      case "top-left":
-        return `${base} top-4 left-4`;
-    }
-  };
-
-  if (config.type === "floating") {
-    return (
-      <div className="relative bg-gray-100 rounded-lg h-96 overflow-hidden">
-        <div className={getPlacementStyle()}>
-          {/* Floating button */}
-          <div
-            className="rounded-full h-14 w-14 flex items-center justify-center shadow-lg cursor-pointer mb-2"
-            style={{ backgroundColor: config.primaryColor }}
-          >
-            <span className="text-white text-2xl">?</span>
-          </div>
-          {/* Expanded panel */}
-          <div
-            className="rounded-lg shadow-xl bg-white overflow-hidden"
-            style={{
-              width: `${Math.min(config.width, 300)}px`,
-              height: `${Math.min(config.height, 400)}px`,
-            }}
-          >
-            <div
-              className="p-4 text-white font-medium"
-              style={{ backgroundColor: config.primaryColor }}
-            >
-              {config.name}
-            </div>
-            <div className="p-4 space-y-2">
-              {config.seedQuestions.slice(0, 3).map((q, i) => (
-                <div
-                  key={i}
-                  className="text-xs p-2 bg-gray-50 rounded border border-gray-200 hover:border-violet-300"
-                >
-                  {q || "Empty question"}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (config.type === "rufus") {
-    return (
-      <div className="relative bg-gray-100 rounded-lg h-96 flex items-center justify-center overflow-hidden">
-        <div
-          className="rounded-lg shadow-2xl bg-white"
-          style={{
-            width: `${Math.min(config.width, 350)}px`,
-            height: `${Math.min(config.height, 300)}px`,
-          }}
-        >
-          <div
-            className="p-4 text-white font-medium text-center"
-            style={{ backgroundColor: config.primaryColor }}
-          >
-            {config.name}
-          </div>
-          <div className="p-4 space-y-2">
-            <p className="text-xs text-gray-600 mb-3">How can we help you today?</p>
-            {config.seedQuestions.slice(0, 3).map((q, i) => (
-              <div
-                key={i}
-                className="text-xs p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-violet-300 cursor-pointer text-center"
-              >
-                {q || "Empty question"}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Womens World - sidebar
-  return (
-    <div className="relative bg-gray-100 rounded-lg h-96 overflow-hidden flex">
-      <div
-        className="bg-white border-r shadow-lg overflow-y-auto"
-        style={{
-          width: `${Math.min(config.width, 240)}px`,
-          height: "100%",
-        }}
-      >
-        <div
-          className="p-4 text-white font-medium sticky top-0"
-          style={{ backgroundColor: config.primaryColor }}
-        >
-          {config.name}
-        </div>
-        <div className="p-3 space-y-2">
-          {config.seedQuestions.map((q, i) => (
-            <div
-              key={i}
-              className="text-xs p-2 bg-gray-50 rounded border border-gray-200 hover:border-violet-300"
-            >
-              {q || "Empty question"}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="flex-1 p-4">
-        <div className="text-xs text-gray-400">Main content area</div>
-      </div>
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Widget Configuration</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this widget configuration? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

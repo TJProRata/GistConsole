@@ -18,6 +18,23 @@ export const getUserConfiguration = query({
   },
 });
 
+// Get all user's configurations
+export const getUserConfigs = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+
+    const configs = await ctx.db
+      .query("gistConfigurations")
+      .withIndex("by_user_id", (q) => q.eq("userId", identity.subject))
+      .collect();
+
+    return configs;
+  },
+});
+
 // Save or update configuration
 export const saveConfiguration = mutation({
   args: {

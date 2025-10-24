@@ -353,6 +353,24 @@ export interface RufusWidgetExpandedProps {
 
   /** Handler when question submitted */
   onSubmit: (question: string) => void;
+
+  /** Custom styles for container */
+  containerStyles?: React.CSSProperties;
+
+  /** Custom styles for header */
+  headerStyles?: React.CSSProperties;
+
+  /** Custom styles for submit button */
+  buttonStyles?: React.CSSProperties;
+
+  /** Custom styles for input */
+  inputStyles?: React.CSSProperties;
+
+  /** Custom styles for welcome card */
+  welcomeCardStyles?: React.CSSProperties;
+
+  /** Custom styles for scroll area */
+  scrollAreaStyles?: React.CSSProperties;
 }
 
 /**
@@ -407,6 +425,9 @@ export interface WelcomeCardProps {
 
   /** Learn more link URL */
   learnMoreUrl?: string;
+
+  /** Custom styles for card */
+  customStyles?: React.CSSProperties;
 }
 
 /**
@@ -479,6 +500,24 @@ export interface NYTChatWidgetProps {
 
   /** Callback when citation clicked */
   onCitationClick?: (citation: string) => void;
+
+  /** Theme variant for color mode (default: "auto" - respects system/parent theme) */
+  theme?: "light" | "dark" | "auto";
+
+  /** Enable color mode responsiveness (default: true) */
+  colorModeResponsive?: boolean;
+
+  /** Primary accent color (default: "#9333ea" purple) */
+  primaryColor?: string;
+
+  /** Use gradient for borders and styling (default: false) */
+  useGradient?: boolean;
+
+  /** Gradient start color (used when useGradient=true) */
+  gradientStart?: string;
+
+  /** Gradient end color (used when useGradient=true) */
+  gradientEnd?: string;
 
   /** Additional CSS classes */
   className?: string;

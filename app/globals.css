@@ -227,7 +227,7 @@
   box-shadow: 0 0 0 3px rgb(var(--color-rufus-blue) / 0.1);
 }
 
-/* NYT Chat Widget Styles */
+/* NYT Chat Widget Styles - Light Mode */
 .nyt-pill {
   background-color: rgba(147, 51, 234, 0.1);
   color: rgb(147, 51, 234);
@@ -243,10 +243,21 @@
   background-color: rgba(147, 51, 234, 0.2);
 }
 
+/* NYT Chat Widget Styles - Dark Mode */
+.dark .nyt-pill {
+  background-color: rgba(167, 139, 250, 0.15);
+  color: rgb(167, 139, 250);
+}
+
+.dark .nyt-pill:hover {
+  background-color: rgba(167, 139, 250, 0.25);
+}
+
+/* NYT Input Styles - Light Mode */
 .nyt-input {
-  background-color: rgb(31, 41, 55);
-  border: 1px solid rgb(75, 85, 99);
-  color: white;
+  background-color: white;
+  border: 1px solid rgb(229, 231, 235); /* gray-200 */
+  color: rgb(17, 24, 39); /* gray-900 */
   border-radius: 12px;
   padding: 12px 16px;
   font-size: 14px;
@@ -254,10 +265,27 @@
 }
 
 .nyt-input::placeholder {
-  color: rgb(156, 163, 175);
+  color: rgb(156, 163, 175); /* gray-400 */
 }
 
 .nyt-input:focus {
+  border-color: rgb(147, 51, 234);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+/* NYT Input Styles - Dark Mode */
+.dark .nyt-input {
+  background-color: rgb(31, 41, 55); /* gray-800 */
+  border: 1px solid rgb(75, 85, 99); /* gray-600 */
+  color: white;
+}
+
+.dark .nyt-input::placeholder {
+  color: rgb(156, 163, 175); /* gray-400 */
+}
+
+.dark .nyt-input:focus {
   border-color: rgb(147, 51, 234);
   outline: none;
   box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);

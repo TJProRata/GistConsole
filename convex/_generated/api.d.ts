@@ -17,6 +17,7 @@ import type * as migrations from "../migrations.js";
 import type * as previewConfigurations from "../previewConfigurations.js";
 import type * as userProfiles from "../userProfiles.js";
 import type * as users from "../users.js";
+import type * as widgetConfigurations from "../widgetConfigurations.js";
 
 import type {
   ApiFromModules,
@@ -42,6 +43,7 @@ declare const fullApi: ApiFromModules<{
   previewConfigurations: typeof previewConfigurations;
   userProfiles: typeof userProfiles;
   users: typeof users;
+  widgetConfigurations: typeof widgetConfigurations;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

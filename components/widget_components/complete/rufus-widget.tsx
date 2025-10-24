@@ -68,9 +68,10 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({
   heading,
   message,
   learnMoreUrl,
+  customStyles,
 }) => {
   return (
-    <Card className="border-none shadow-none bg-[rgb(var(--color-rufus-blue-light))]">
+    <Card className="border-none shadow-none bg-[rgb(var(--color-rufus-blue-light))]" style={customStyles}>
       <CardContent className="p-4">
         <h3 className="text-lg font-semibold mb-2">{heading}</h3>
         <p className="text-sm text-gray-700 mb-2">{message}</p>
@@ -199,6 +200,12 @@ const RufusWidgetExpanded: React.FC<RufusWidgetExpandedProps> = ({
   onMenuClick,
   onQuestionClick,
   onSubmit,
+  containerStyles,
+  headerStyles,
+  buttonStyles,
+  inputStyles,
+  welcomeCardStyles,
+  scrollAreaStyles,
 }) => {
   const [selectedQuestion, setSelectedQuestion] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
@@ -225,9 +232,9 @@ const RufusWidgetExpanded: React.FC<RufusWidgetExpandedProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg w-full max-w-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg w-full max-w-md overflow-hidden" style={containerStyles}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center justify-between p-4 border-b" style={headerStyles}>
         {showMenu && (
           <Button
             variant="ghost"
@@ -254,9 +261,9 @@ const RufusWidgetExpanded: React.FC<RufusWidgetExpandedProps> = ({
       </div>
 
       {/* Content */}
-      <ScrollArea className="h-[400px]">
+      <ScrollArea className="h-[400px]" style={scrollAreaStyles}>
         <div className="p-4 space-y-4">
-          <WelcomeCard heading={welcomeHeading} message={welcomeMessage} />
+          <WelcomeCard heading={welcomeHeading} message={welcomeMessage} customStyles={welcomeCardStyles} />
           <h3 className="text-base font-medium text-gray-800">
             {questionPrompt}
           </h3>
@@ -279,12 +286,14 @@ const RufusWidgetExpanded: React.FC<RufusWidgetExpandedProps> = ({
             value={inputValue}
             onChange={handleInputChange}
             className="rufus-input flex-1"
+            style={inputStyles}
           />
           <Button
             type="submit"
             size="icon"
             disabled={!inputValue.trim()}
             className="bg-[rgb(var(--color-rufus-blue))] hover:bg-[rgb(var(--color-rufus-blue-dark))] text-white"
+            style={buttonStyles}
           >
             <Send className="w-4 h-4" />
           </Button>
@@ -316,12 +325,91 @@ export const RufusWidget: React.FC<RufusWidgetProps> = ({
   showMenu = true,
   onSubmit = () => {},
   onMenuClick = () => {},
+  customColors,
+  customGradient,
+  customDimensions,
   className,
 }) => {
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
 
   // Controlled/uncontrolled pattern
   const isExpanded = controlledIsExpanded ?? internalExpanded;
+
+  // Helper function to generate custom styles
+  const getCustomStyles = () => {
+    const styles: React.CSSProperties = {};
+
+    if (customDimensions?.width) {
+      styles.width = `${customDimensions.width}px`;
+      styles.maxWidth = `${customDimensions.width}px`;
+    }
+
+    if (customDimensions?.height) {
+      styles.maxHeight = `${customDimensions.height}px`;
+    }
+
+    return styles;
+  };
+
+  const getScrollAreaStyles = () => {
+    const styles: React.CSSProperties = {};
+
+    if (customDimensions?.height) {
+      // Calculate ScrollArea height: total height - header (~68px) - footer (~68px)
+      const contentHeight = customDimensions.height - 136;
+      styles.height = `${Math.max(200, contentHeight)}px`; // Minimum 200px
+    }
+
+    return styles;
+  };
+
+  const getHeaderStyles = () => {
+    const styles: React.CSSProperties = {};
+
+    if (customGradient?.use && customGradient.start && customGradient.end) {
+      styles.background = `linear-gradient(135deg, ${customGradient.start}, ${customGradient.end})`;
+      styles.color = customColors?.text || 'white';
+    } else if (customColors?.primary) {
+      styles.backgroundColor = customColors.primary;
+      styles.color = customColors?.text || 'white';
+    }
+
+    return styles;
+  };
+
+  const getButtonStyles = () => {
+    const styles: React.CSSProperties = {};
+
+    if (customColors?.primary) {
+      styles.backgroundColor = customColors.primary;
+      styles.color = customColors?.text || 'white';
+      styles.borderColor = customColors.primary;
+    }
+
+    return styles;
+  };
+
+  const getInputStyles = () => {
+    const styles: React.CSSProperties = {};
+
+    if (customColors?.secondary) {
+      styles.borderColor = customColors.secondary;
+    }
+
+    return styles;
+  };
+
+  const getWelcomeCardStyles = () => {
+    const styles: React.CSSProperties = {};
+
+    if (customColors?.background) {
+      // Use a lighter variant of the background color
+      styles.backgroundColor = customColors.background;
+      styles.opacity = 0.1;
+    }
+
+    return styles;
+  };
 
   const handleExpand = () => {
     setInternalExpanded(true);
@@ -352,6 +440,12 @@ export const RufusWidget: React.FC<RufusWidgetProps> = ({
           onMenuClick={onMenuClick}
           onQuestionClick={handleQuestionClick}
           onSubmit={onSubmit}
+          containerStyles={getCustomStyles()}
+          headerStyles={getHeaderStyles()}
+          buttonStyles={getButtonStyles()}
+          inputStyles={getInputStyles()}
+          welcomeCardStyles={getWelcomeCardStyles()}
+          scrollAreaStyles={getScrollAreaStyles()}
         />
       ) : (
         <RufusWidgetCollapsed

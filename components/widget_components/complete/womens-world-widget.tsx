@@ -324,13 +324,13 @@ export function WomensWorldWidget({
             }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 flex-shrink-0">
+            <div className="relative flex items-center justify-center px-6 py-4 flex-shrink-0">
               <h2 className="womens-world-title text-white">{title}</h2>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => handleExpandChange(false)}
-                className="hover:bg-white/20 rounded-full"
+                className="absolute right-6 top-4 hover:bg-white/20 rounded-full"
                 aria-label="Close widget"
               >
                 <X className="w-5 h-5 text-white" />

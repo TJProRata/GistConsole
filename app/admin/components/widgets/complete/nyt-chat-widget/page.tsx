@@ -12,10 +12,12 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { NYTChatWidget } from "@/components/widget_components";
 import { CodeBlock } from "@/components/CodeBlock";
+import { cn } from "@/lib/utils";
 
 export default function NYTChatWidgetPreview() {
   // Demo state
   const [isExpanded, setIsExpanded] = useState(false);
+  const [previewTheme, setPreviewTheme] = useState<"light" | "dark">("light");
   const [collapsedText, setCollapsedText] = useState("Ask");
   const [title, setTitle] = useState("Ask New York Times Anything!");
   const [placeholder, setPlaceholder] = useState("Ask anything");
@@ -88,6 +90,7 @@ function App() {
               <Badge variant="secondary">Complete Widget</Badge>
               <Badge variant="outline">4 States</Badge>
               <Badge variant="outline">11 Components</Badge>
+              <Badge variant="outline">{previewTheme === "dark" ? "🌙 Dark" : "☀️ Light"}</Badge>
             </div>
           </div>
         </div>
@@ -130,6 +133,29 @@ function App() {
                       >
                         {isExpanded ? "Collapse" : "Expand"} Widget
                       </Button>
+                    </div>
+
+                    {/* Theme Control */}
+                    <div className="space-y-2">
+                      <Label>Preview Theme</Label>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => setPreviewTheme("light")}
+                          variant={previewTheme === "light" ? "default" : "outline"}
+                          size="sm"
+                          className="flex-1"
+                        >
+                          ☀️ Light
+                        </Button>
+                        <Button
+                          onClick={() => setPreviewTheme("dark")}
+                          variant={previewTheme === "dark" ? "default" : "outline"}
+                          size="sm"
+                          className="flex-1"
+                        >
+                          🌙 Dark
+                        </Button>
+                      </div>
                     </div>
 
                     <Separator />
@@ -205,7 +231,12 @@ function App() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center justify-center min-h-[600px] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg p-8">
+                    <div className={cn(
+                      "flex items-center justify-center min-h-[600px] bg-gradient-to-br rounded-lg p-8",
+                      previewTheme === "dark"
+                        ? "dark from-gray-800 to-gray-900"
+                        : "from-gray-100 to-gray-200"
+                    )}>
                       <NYTChatWidget
                         isExpanded={isExpanded}
                         onExpandChange={setIsExpanded}

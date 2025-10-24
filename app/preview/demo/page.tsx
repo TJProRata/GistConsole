@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PreviewWidgetRenderer } from "@/components/PreviewWidgetRenderer";
 import { usePreviewSession } from "@/lib/hooks/usePreviewSession";
 import { Loader2, Sparkles } from "lucide-react";
+import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -78,12 +79,12 @@ export default function DemoPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/sign-up" className="flex-1">
-                  <Button size="lg" className="w-full">
+                <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
+                  <Button size="lg" className="w-full flex-1">
                     <Sparkles className="mr-2 h-5 w-5" />
                     Create Account & Save
                   </Button>
-                </Link>
+                </SignUpButton>
 
                 <Link href="/preview/configure" className="flex-1">
                   <Button size="lg" variant="outline" className="w-full">
@@ -128,6 +129,7 @@ export default function DemoPage() {
         <PreviewWidgetRenderer
           widgetType={previewConfig.widgetType}
           configuration={previewConfig.configuration}
+          isDemo={true}
         />
       )}
     </div>

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { RufusWidget, NYTChatWidget, WomensWorldWidget } from "@/components/widget_components";
 
 interface WidgetConfiguration {
   primaryColor?: string;
@@ -23,18 +24,32 @@ interface WidgetConfiguration {
     | "top-left";
   openByDefault?: boolean;
   iconUrl?: string;
+  // NYT Chat Widget Configuration
+  collapsedText?: string;
+  title?: string;
+  placeholder?: string;
+  followUpPlaceholder?: string;
+  suggestionCategories?: string[];
+  brandingText?: string;
+
+  // Women's World Widget Configuration
+  seedQuestions?: string[];
+  autoScrollInterval?: number;
 }
 
 interface PreviewWidgetRendererProps {
   widgetType: "floating" | "rufus" | "womensWorld";
   configuration: WidgetConfiguration;
   className?: string;
+  /** Use fixed positioning for demo page, absolute for preview card */
+  isDemo?: boolean;
 }
 
 export function PreviewWidgetRenderer({
   widgetType,
   configuration,
   className,
+  isDemo = false,
 }: PreviewWidgetRendererProps) {
   const [isOpen, setIsOpen] = React.useState(
     configuration.openByDefault ?? false
@@ -71,150 +86,112 @@ export function PreviewWidgetRenderer({
     }
   };
 
-  // Floating Widget (button + expandable panel)
+  // Floating Widget (NYT Chat Widget - bottom-center position)
   if (widgetType === "floating") {
-    return (
-      <div className={cn(getPlacementClasses(), className)}>
-        {isOpen && (
-          <Card
-            className="mb-4 w-80 animate-in slide-in-from-bottom-2"
-            style={{
-              width: configuration.width ? `${configuration.width}px` : "320px",
-              height: configuration.height
-                ? `${configuration.height}px`
-                : "400px",
-            }}
-          >
-            <div
-              className="flex items-center justify-between p-4"
-              style={getBackgroundStyle()}
-            >
-              <h3
-                className="font-semibold"
-                style={{ color: configuration.textColor || "#ffffff" }}
-              >
-                Chat with us
-              </h3>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                style={{ color: configuration.textColor || "#ffffff" }}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="p-4">
-              <p className="text-sm text-muted-foreground">
-                This is a preview of your floating widget. In production, this
-                would display the chat interface.
-              </p>
-            </div>
-          </Card>
-        )}
+    const positionClasses = isDemo
+      ? "fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
+      : "absolute bottom-4 left-1/2 -translate-x-1/2";
 
-        <Button
-          size="lg"
-          className="h-14 w-14 rounded-full shadow-lg"
-          style={getBackgroundStyle()}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {configuration.iconUrl ? (
-            <img
-              src={configuration.iconUrl}
-              alt="Widget icon"
-              className="h-6 w-6"
-            />
-          ) : (
-            <MessageCircle
-              className="h-6 w-6"
-              style={{ color: configuration.textColor || "#ffffff" }}
-            />
-          )}
-        </Button>
+    return (
+      <div className={cn(positionClasses, className)}>
+        <NYTChatWidget
+          collapsedText={configuration.collapsedText || "Ask"}
+          title={configuration.title || "Ask Anything!"}
+          placeholder={configuration.placeholder || "Ask anything"}
+          followUpPlaceholder={
+            configuration.followUpPlaceholder || "Ask a follow up..."
+          }
+          suggestionCategories={
+            configuration.suggestionCategories || [
+              "Top Stories",
+              "Breaking News",
+              "Sports",
+              "Technology",
+            ]
+          }
+          brandingText={
+            configuration.brandingText || "Powered by Gist Answers"
+          }
+          primaryColor={configuration.primaryColor}
+          useGradient={configuration.useGradient}
+          gradientStart={configuration.gradientStart}
+          gradientEnd={configuration.gradientEnd}
+          onSubmit={(query) => console.log("Preview: Question submitted:", query)}
+          onCategoryClick={(category) =>
+            console.log("Preview: Category clicked:", category)
+          }
+          onCitationClick={(citation) =>
+            console.log("Preview: Citation clicked:", citation)
+          }
+        />
       </div>
     );
   }
 
-  // Rufus Widget (centered modal)
+  // Rufus Widget (bottom-center, responsive to container)
   if (widgetType === "rufus") {
+    const positionClasses = isDemo
+      ? "fixed bottom-4 left-0 right-0 z-40"
+      : "absolute bottom-4 left-0 right-0";
+
     return (
-      <div className={cn("fixed inset-0 z-50 flex items-center justify-center bg-black/50", className)}>
-        <Card
-          className="w-full max-w-2xl animate-in zoom-in-95"
-          style={{
-            width: configuration.width ? `${configuration.width}px` : "640px",
-            height: configuration.height ? `${configuration.height}px` : "480px",
+      <div className={cn(positionClasses, "flex items-end justify-center", className)}>
+        <RufusWidget
+          defaultExpanded={configuration.openByDefault ?? false}
+          customColors={{
+            primary: configuration.primaryColor,
+            secondary: configuration.secondaryColor,
+            background: configuration.backgroundColor,
+            text: configuration.textColor,
           }}
-        >
-          <div
-            className="flex items-center justify-between p-6"
-            style={getBackgroundStyle()}
-          >
-            <h2
-              className="text-xl font-semibold"
-              style={{ color: configuration.textColor || "#ffffff" }}
-            >
-              Rufus Assistant
-            </h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              style={{ color: configuration.textColor || "#ffffff" }}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-          <div className="p-6">
-            <p className="text-muted-foreground">
-              This is a preview of your Rufus widget. In production, this would
-              display the centered modal chat interface.
-            </p>
-          </div>
-        </Card>
+          customGradient={{
+            use: configuration.useGradient,
+            start: configuration.gradientStart,
+            end: configuration.gradientEnd,
+          }}
+          customDimensions={{
+            width: configuration.width,
+            height: configuration.height,
+          }}
+        />
       </div>
     );
   }
 
-  // Women's World Widget (sidebar)
+  // Women's World Widget (bottom-right position)
   if (widgetType === "womensWorld") {
+    const positionClasses = isDemo
+      ? "fixed bottom-4 right-4 z-50"
+      : "absolute bottom-4 right-4";
+
+    // Inject CSS variable override for gradient colors
+    const gradientOverride = configuration.useGradient && configuration.gradientStart && configuration.gradientEnd
+      ? `--gradient-womens-world: linear-gradient(180deg, ${configuration.gradientStart}, ${configuration.gradientEnd});`
+      : '';
+
     return (
-      <div
-        className={cn(
-          "fixed right-0 top-0 z-50 h-full animate-in slide-in-from-right",
-          className
+      <>
+        {gradientOverride && (
+          <style>{`
+            :root {
+              ${gradientOverride}
+            }
+          `}</style>
         )}
-        style={{
-          width: configuration.width ? `${configuration.width}px` : "400px",
-        }}
-      >
-        <Card className="h-full rounded-none">
-          <div
-            className="flex items-center justify-between p-6"
-            style={getBackgroundStyle()}
-          >
-            <h2
-              className="text-lg font-semibold"
-              style={{ color: configuration.textColor || "#ffffff" }}
-            >
-              Women's World Assistant
-            </h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              style={{ color: configuration.textColor || "#ffffff" }}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-          <div className="p-6">
-            <p className="text-sm text-muted-foreground">
-              This is a preview of your Women's World sidebar widget. In
-              production, this would display the sidebar chat interface.
-            </p>
-          </div>
-        </Card>
-      </div>
+        <div className={cn(positionClasses, className)}>
+          <WomensWorldWidget
+            collapsedText={configuration.collapsedText || "Ask AI"}
+            title={configuration.title || "✨ Woman's World Answers"}
+            placeholder={configuration.placeholder || "Ask us your health questions"}
+            seedQuestions={configuration.seedQuestions}
+            autoScrollInterval={configuration.autoScrollInterval || 3000}
+            brandingText={configuration.brandingText || "Powered by Gist.ai"}
+            width={configuration.width || 392}
+            height={configuration.height}
+            onSubmit={(question) => console.log("Preview: Question submitted:", question)}
+          />
+        </div>
+      </>
     );
   }
 

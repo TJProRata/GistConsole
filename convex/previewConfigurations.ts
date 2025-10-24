@@ -23,6 +23,17 @@ const configurationSchema = v.object({
   openByDefault: v.optional(v.boolean()),
   iconUrl: v.optional(v.string()),
   iconStorageId: v.optional(v.id("_storage")),
+  // NYT Chat Widget Configuration
+  collapsedText: v.optional(v.string()),
+  title: v.optional(v.string()),
+  placeholder: v.optional(v.string()),
+  followUpPlaceholder: v.optional(v.string()),
+  suggestionCategories: v.optional(v.array(v.string())),
+  brandingText: v.optional(v.string()),
+
+  // Women's World Widget Configuration
+  seedQuestions: v.optional(v.array(v.string())),
+  autoScrollInterval: v.optional(v.number()),
 });
 
 // Create new preview configuration
@@ -190,6 +201,24 @@ export const convertPreviewToUserConfig = mutation({
       updatedAt: now,
     });
 
+    // Create widget configuration if preview has widget data
+    let widgetConfigId = null;
+    if (preview.widgetType && preview.configuration) {
+      try {
+        widgetConfigId = await ctx.db.insert("widgetConfigurations", {
+          userId: identity.subject,
+          gistConfigurationId: configId,
+          widgetType: preview.widgetType,
+          ...preview.configuration,
+          createdAt: now,
+          updatedAt: now,
+        });
+      } catch (err) {
+        // Log error but don't fail the conversion
+        console.error("Failed to create widget configuration:", err);
+      }
+    }
+
     // Record conversion
     if (mapping) {
       await ctx.db.patch(mapping._id, {
@@ -209,7 +238,7 @@ export const convertPreviewToUserConfig = mutation({
     // Delete preview configuration
     await ctx.db.delete(preview._id);
 
-    return { success: true, configId };
+    return { success: true, configId, widgetConfigId };
   },
 });
 
