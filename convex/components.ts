@@ -21,7 +21,7 @@ export const getComponentStats = query({
     const widgetComponentsCount = 12; // 3 icons + 1 animation + 7 ai-elements + 1 ask-anything
 
     // Complete widgets count
-    const completeWidgetsCount = 3; // onboarding-widget, womens-world-widget, rufus-widget
+    const completeWidgetsCount = 4; // onboarding-widget, womens-world-widget, rufus-widget, nyt-chat-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
@@ -136,6 +136,13 @@ export const getCompleteWidgetsList = query({
         description: "Amazon Rufus AI shopping assistant with collapsed/expanded states and seed questions",
         phases: 2,
         componentCount: 5,
+      },
+      {
+        name: "nyt-chat-widget",
+        path: "components/widget_components/complete/nyt-chat-widget.tsx",
+        description: "New York Times news Q&A assistant with dark theme, autocomplete, streaming answers, and citation pills",
+        phases: 4,
+        componentCount: 11,
       },
     ];
 

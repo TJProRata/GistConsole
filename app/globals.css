@@ -100,6 +100,18 @@
     --color-rufus-blue: 95 153 207; /* #5F99CF */
     --color-rufus-blue-light: 232 244 253; /* #E8F4FD */
     --color-rufus-blue-dark: 67 110 156; /* #436E9C */
+
+    /* NYT Chat Widget Design Tokens */
+    /* NYT Brand Colors */
+    --nyt-dark-bg: 26 26 26; /* #1a1a1a */
+    --nyt-dark-text: 255 255 255; /* white */
+    --nyt-purple: 147 51 234; /* #9333ea */
+    --nyt-purple-light: 167 139 250; /* #a78bfa */
+    --nyt-gray-600: 75 85 99; /* #4b5563 */
+    --nyt-gray-700: 55 65 81; /* #374151 */
+    --nyt-gray-800: 31 41 55; /* #1f2937 */
+    --nyt-gray-900: 17 24 39; /* #111827 */
+    --nyt-gray-400: 156 163 175; /* #9ca3af */
   }
 
   .dark {
@@ -141,11 +153,12 @@
 
 /* Woman's World Widget Styles */
 .womens-world-title {
-  font-family: 'Playfair Display', 'Georgia', serif;
+  font-family: var(--font-dm-serif), 'Georgia', serif;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.2;
   color: var(--color-text-primary);
+  text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -212,4 +225,40 @@
   border-color: rgb(var(--color-rufus-blue-dark));
   outline: none;
   box-shadow: 0 0 0 3px rgb(var(--color-rufus-blue) / 0.1);
+}
+
+/* NYT Chat Widget Styles */
+.nyt-pill {
+  background-color: rgba(147, 51, 234, 0.1);
+  color: rgb(147, 51, 234);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.nyt-pill:hover {
+  background-color: rgba(147, 51, 234, 0.2);
+}
+
+.nyt-input {
+  background-color: rgb(31, 41, 55);
+  border: 1px solid rgb(75, 85, 99);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.nyt-input::placeholder {
+  color: rgb(156, 163, 175);
+}
+
+.nyt-input:focus {
+  border-color: rgb(147, 51, 234);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
 }

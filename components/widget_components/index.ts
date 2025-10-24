@@ -34,6 +34,7 @@ export { PricingCard } from "./ask-anything/pricing-card";
 export { OnboardingWidget } from "./complete/onboarding-widget";
 export { WomensWorldWidget } from "./complete/womens-world-widget";
 export { RufusWidget } from "./complete/rufus-widget";
+export { NYTChatWidget } from "./complete/nyt-chat-widget";
 
 // Types
 export type {
@@ -60,5 +61,14 @@ export type {
   SeedQuestionPillProps,
   WelcomeCardProps,
   RufusWidgetState,
-  SeedQuestionsListState
+  SeedQuestionsListState,
+  NYTChatWidgetProps,
+  NYTWidgetExpandedProps,
+  AutocompleteListProps,
+  AnswerDisplayProps,
+  StreamingAnswerProps,
+  CitationPillsProps,
+  SuggestionCategoriesProps,
+  NYTChatWidgetState,
+  NYTWidgetState
 } from "./types";
