@@ -1,0 +1,106 @@
+import { query } from "./_generated/server";
+import { requireAdmin } from "./admin";
+
+/**
+ * Component Management Queries (Admin-Only)
+ *
+ * Provides visibility into the component library for administrative purposes.
+ * Note: Component lists are manually maintained for initial implementation.
+ * Future enhancement: Automate with file system scanning via Convex actions.
+ */
+
+// Query: Get component statistics
+export const getComponentStats = query({
+  handler: async (ctx) => {
+    await requireAdmin(ctx);
+
+    // Manually counted components from components/ui/ directory
+    const uiComponentsCount = 20; // accordion, alert, badge, button, card, dropdown-menu, form, input, label, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, etc.
+
+    // Manually counted widget components
+    const widgetComponentsCount = 13;
+
+    // Category breakdown for widget components
+    const categoryBreakdown = {
+      icons: 3, // blue-star, profile-blank, wand
+      animations: 1, // searching-animation
+      "ai-elements": 8, // dual-phase-progress, gif-housing, glass_widget_container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase
+      "ask-anything": 1, // pricing-card
+    };
+
+    return {
+      totalUIComponents: uiComponentsCount,
+      totalWidgetComponents: widgetComponentsCount,
+      totalComponents: uiComponentsCount + widgetComponentsCount,
+      categoryBreakdown,
+    };
+  },
+});
+
+// Query: Get UI components list (shadcn/ui)
+export const getUIComponentsList = query({
+  handler: async (ctx) => {
+    await requireAdmin(ctx);
+
+    // Manually maintained list of shadcn/ui components
+    // Future: Automate with file system scanning
+    const uiComponents = [
+      { name: "accordion", path: "components/ui/accordion.tsx", category: "shadcn/ui" },
+      { name: "alert", path: "components/ui/alert.tsx", category: "shadcn/ui" },
+      { name: "badge", path: "components/ui/badge.tsx", category: "shadcn/ui" },
+      { name: "button", path: "components/ui/button.tsx", category: "shadcn/ui" },
+      { name: "card", path: "components/ui/card.tsx", category: "shadcn/ui" },
+      { name: "carousel", path: "components/ui/carousel.tsx", category: "shadcn/ui" },
+      { name: "dropdown-menu", path: "components/ui/dropdown-menu.tsx", category: "shadcn/ui" },
+      { name: "form", path: "components/ui/form.tsx", category: "shadcn/ui" },
+      { name: "input", path: "components/ui/input.tsx", category: "shadcn/ui" },
+      { name: "label", path: "components/ui/label.tsx", category: "shadcn/ui" },
+      { name: "phase-navigation", path: "components/ui/phase-navigation.tsx", category: "shadcn/ui" },
+      { name: "powered-by-button", path: "components/ui/powered-by-button.tsx", category: "shadcn/ui" },
+      { name: "scroll-area", path: "components/ui/scroll-area.tsx", category: "shadcn/ui" },
+      { name: "select", path: "components/ui/select.tsx", category: "shadcn/ui" },
+      { name: "separator", path: "components/ui/separator.tsx", category: "shadcn/ui" },
+      { name: "skeleton", path: "components/ui/skeleton.tsx", category: "shadcn/ui" },
+      { name: "slider", path: "components/ui/slider.tsx", category: "shadcn/ui" },
+      { name: "table", path: "components/ui/table.tsx", category: "shadcn/ui" },
+      { name: "tabs", path: "components/ui/tabs.tsx", category: "shadcn/ui" },
+      { name: "textarea", path: "components/ui/textarea.tsx", category: "shadcn/ui" },
+    ];
+
+    return uiComponents;
+  },
+});
+
+// Query: Get widget components list (organized by category)
+export const getWidgetComponentsList = query({
+  handler: async (ctx) => {
+    await requireAdmin(ctx);
+
+    // Manually maintained list of widget components organized by subdirectory
+    // Future: Automate with file system scanning
+    const widgetComponents = {
+      icons: [
+        { name: "blue-star", path: "components/widget_components/icons/blue-star.tsx", category: "icons", description: "Blue star icon component" },
+        { name: "profile-blank", path: "components/widget_components/icons/profile-blank.tsx", category: "icons", description: "Blank profile icon component" },
+        { name: "wand", path: "components/widget_components/icons/wand.tsx", category: "icons", description: "Magic wand icon component" },
+      ],
+      animations: [
+        { name: "searching-animation", path: "components/widget_components/animations/searching-animation.tsx", category: "animations", description: "Loading animation for search" },
+      ],
+      "ai-elements": [
+        { name: "dual-phase-progress", path: "components/widget_components/ai-elements/dual-phase-progress.tsx", category: "ai-elements", description: "Two-phase progress indicator" },
+        { name: "gif-housing", path: "components/widget_components/ai-elements/gif-housing.tsx", category: "ai-elements", description: "Container for animated GIF content" },
+        { name: "glass-widget-container", path: "components/widget_components/ai-elements/glass_widget_container.tsx", category: "ai-elements", description: "Glassmorphism styled container" },
+        { name: "prompt-input", path: "components/widget_components/ai-elements/prompt-input.tsx", category: "ai-elements", description: "AI prompt input field with suggestions" },
+        { name: "readiness-score-gauge", path: "components/widget_components/ai-elements/readiness-score-gauge.tsx", category: "ai-elements", description: "Visual gauge for readiness score" },
+        { name: "simple-progress-bar", path: "components/widget_components/ai-elements/simple-progress-bar.tsx", category: "ai-elements", description: "Basic progress bar component" },
+        { name: "success-phase", path: "components/widget_components/ai-elements/success-phase.tsx", category: "ai-elements", description: "Success state display component" },
+      ],
+      "ask-anything": [
+        { name: "pricing-card", path: "components/widget_components/ask-anything/pricing-card.tsx", category: "ask-anything", description: "Pricing plan card component" },
+      ],
+    };
+
+    return widgetComponents;
+  },
+});

@@ -38,6 +38,12 @@ export const getOrCreateUser = mutation({
     imageUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    // Validate required fields
+    if (!args.clerkId || !args.email) {
+      console.error("Missing required fields:", { clerkId: args.clerkId, email: args.email });
+      throw new Error("clerkId and email are required");
+    }
+
     // Check if user already exists
     const existingUser = await ctx.db
       .query("users")
@@ -45,7 +51,8 @@ export const getOrCreateUser = mutation({
       .unique();
 
     if (existingUser) {
-      // Update user data if needed
+      // Update user data if needed (preserve role)
+      console.log(`Updating existing user: ${args.clerkId}`);
       await ctx.db.patch(existingUser._id, {
         email: args.email,
         name: args.name,
@@ -54,15 +61,18 @@ export const getOrCreateUser = mutation({
       return existingUser._id;
     }
 
-    // Create new user
+    // Create new user with default role "user"
+    console.log(`Creating new user: ${args.clerkId} (${args.email})`);
     const userId = await ctx.db.insert("users", {
       clerkId: args.clerkId,
       email: args.email,
       name: args.name,
       imageUrl: args.imageUrl,
+      role: "user",
       createdAt: Date.now(),
     });
 
+    console.log(`Successfully created user with ID: ${userId}`);
     return userId;
   },
 });
@@ -101,12 +111,13 @@ export const syncUser = mutation({
       return existingUser._id;
     }
 
-    // Create new user
+    // Create new user with default role "user"
     const userId = await ctx.db.insert("users", {
       clerkId: identity.subject,
       email: identity.email ?? "",
       name: identity.name,
       imageUrl: identity.pictureUrl,
+      role: "user",
       createdAt: Date.now(),
     });
 

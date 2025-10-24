@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useUserSync } from "@/lib/hooks/useUserSync";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -30,7 +29,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TermsAndConditionsDialog } from "@/components/TermsAndConditionsDialog";
 import { RssFeedsModal, type RssFeed } from "@/components/RssFeedsModal";
-import { Plus } from "lucide-react";
+import { Plus, X, Upload } from "lucide-react";
+import type { Id } from "@/convex/_generated/dataModel";
 
 const CATEGORIES = [
   "Academic",
@@ -74,7 +74,15 @@ export default function DashboardPage() {
   const [showRssModal, setShowRssModal] = useState(false);
   const [rssFeeds, setRssFeeds] = useState<RssFeed[]>([]);
 
+  // Favicon upload states
+  const [faviconFile, setFaviconFile] = useState<File | null>(null);
+  const [faviconPreview, setFaviconPreview] = useState<string | null>(null);
+  const [isUploadingFavicon, setIsUploadingFavicon] = useState(false);
+  const [faviconError, setFaviconError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const saveConfiguration = useMutation(api.gistConfigurations.saveConfiguration);
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -90,22 +98,132 @@ export default function DashboardPage() {
 
   const watchIngestionMethod = form.watch("ingestionMethod");
 
+  // Handle favicon file selection
+  const handleFaviconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setFaviconError(null);
+
+    if (!file) return;
+
+    // Validate file type
+    const validTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"];
+    if (!validTypes.includes(file.type)) {
+      setFaviconError("Please upload a PNG, JPG, or SVG file");
+      return;
+    }
+
+    // Validate file size (max 100KB = 102400 bytes)
+    const maxSize = 102400;
+    if (file.size > maxSize) {
+      setFaviconError("File size must be less than 100KB");
+      return;
+    }
+
+    // Set file and generate preview
+    setFaviconFile(file);
+    const previewUrl = URL.createObjectURL(file);
+
+    // Revoke previous preview URL to prevent memory leaks
+    if (faviconPreview) {
+      URL.revokeObjectURL(faviconPreview);
+    }
+
+    setFaviconPreview(previewUrl);
+  };
+
+  // Clear favicon selection
+  const clearFavicon = () => {
+    if (faviconPreview) {
+      URL.revokeObjectURL(faviconPreview);
+    }
+    setFaviconFile(null);
+    setFaviconPreview(null);
+    setFaviconError(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  // Upload favicon to Convex storage
+  const uploadFavicon = async (): Promise<Id<"_storage"> | undefined> => {
+    if (!faviconFile) return undefined;
+
+    setIsUploadingFavicon(true);
+    try {
+      // Step 1: Generate upload URL
+      const uploadUrl = await generateUploadUrl();
+
+      // Step 2: Upload file
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": faviconFile.type },
+        body: faviconFile,
+      });
+
+      if (!result.ok) {
+        throw new Error("Failed to upload favicon");
+      }
+
+      const { storageId } = await result.json();
+      return storageId as Id<"_storage">;
+    } catch (error) {
+      setFaviconError("Failed to upload favicon. Please try again.");
+      throw error;
+    } finally {
+      setIsUploadingFavicon(false);
+    }
+  };
+
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);
 
     try {
+      // Upload favicon if selected
+      let faviconStorageId: Id<"_storage"> | undefined = undefined;
+      if (faviconFile) {
+        try {
+          faviconStorageId = await uploadFavicon();
+        } catch (uploadError) {
+          setIsSubmitting(false);
+          return; // Don't submit form if favicon upload fails
+        }
+      }
+
+      // RSS URL Handling: Merge primary RSS URL into rssFeeds array
+      // Strategy: Primary RSS URL (from form field) becomes rssFeeds[0]
+      // Additional feeds (from modal) are appended after
+      let finalRssFeeds: RssFeed[] | undefined = undefined;
+      if (values.ingestionMethod === "rss") {
+        if (values.rssUrl) {
+          // Create primary feed object from form field
+          const primaryFeed: RssFeed = {
+            url: values.rssUrl,
+            // No username/password/headers for primary feed (simplest case)
+            // User can add these via the "Manage RSS Feeds" modal if needed
+          };
+          // Merge: [primary, ...additional feeds from modal]
+          finalRssFeeds = [primaryFeed, ...rssFeeds];
+        } else {
+          // No primary URL, just use feeds from modal
+          finalRssFeeds = rssFeeds.length > 0 ? rssFeeds : undefined;
+        }
+      }
+
       await saveConfiguration({
         publicationName: values.publicationName,
         category: values.category,
         ingestionMethod: values.ingestionMethod,
         wordpressUrl: values.wordpressUrl || undefined,
-        rssFeeds: values.ingestionMethod === "rss" ? rssFeeds : undefined,
+        rssFeeds: finalRssFeeds,
+        faviconStorageId: faviconStorageId,
         termsAccepted: values.termsAccepted,
       });
 
       setSubmitSuccess(true);
+      // Clear favicon states after successful submission
+      clearFavicon();
       setIsSubmitting(false);
     } catch (error) {
       setSubmitError(
@@ -116,9 +234,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <>
-      <Header />
-      <div className="container mx-auto max-w-3xl p-8">
+    <div className="container mx-auto max-w-3xl p-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold">
             How should we ingest your website content?
@@ -307,19 +423,69 @@ export default function DashboardPage() {
                 Add your logo to the search and filters on the homepage. Recommended
                 dimensions are 160 × 160 pixels.
               </p>
-              <div className="mt-2 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 transition-colors hover:border-gray-400">
-                <Plus className="mb-2 h-8 w-8 text-gray-400" />
-                <p className="text-sm text-gray-600">
-                  Drop your image here or{" "}
-                  <button
+
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/svg+xml"
+                onChange={handleFaviconChange}
+                className="hidden"
+              />
+
+              {/* Upload area */}
+              {!faviconPreview ? (
+                <div
+                  className="mt-2 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 transition-colors hover:border-gray-400 cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {isUploadingFavicon ? (
+                    <>
+                      <Upload className="mb-2 h-8 w-8 text-gray-400 animate-pulse" />
+                      <p className="text-sm text-gray-600">Uploading...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="mb-2 h-8 w-8 text-gray-400" />
+                      <p className="text-sm text-gray-600">
+                        Drop your image here or{" "}
+                        <span className="text-blue-600 underline hover:text-blue-800">
+                          browse
+                        </span>
+                      </p>
+                      <p className="mt-1 text-xs text-gray-500">(PNG, JPG, or SVG, max 100KB)</p>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-2 flex items-center gap-4 rounded-lg border-2 border-gray-300 p-4">
+                  <img
+                    src={faviconPreview}
+                    alt="Favicon preview"
+                    className="h-16 w-16 rounded object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-900">{faviconFile?.name}</p>
+                    <p className="text-xs text-gray-500">
+                      {faviconFile && (faviconFile.size / 1024).toFixed(1)} KB
+                    </p>
+                  </div>
+                  <Button
                     type="button"
-                    className="text-blue-600 underline hover:text-blue-800"
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFavicon}
+                    className="text-gray-500 hover:text-gray-700"
                   >
-                    browse
-                  </button>
-                </p>
-                <p className="mt-1 text-xs text-gray-500">(PNG or JPG, max 100KB)</p>
-              </div>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+
+              {/* Error message */}
+              {faviconError && (
+                <p className="text-sm text-red-600">{faviconError}</p>
+              )}
             </div>
 
             {/* Terms and Conditions */}
@@ -381,7 +547,6 @@ export default function DashboardPage() {
             setShowRssModal(false);
           }}
         />
-      </div>
-    </>
+    </div>
   );
 }

@@ -86,5 +86,101 @@
     "permission_mode": "default",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
+  },
+  {
+    "session_id": "feec90b1-5c76-4a11-932e-86ab84b2335d",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/feec90b1-5c76-4a11-932e-86ab84b2335d.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "2591e31c-27c2-4a68-b6f8-f6796be475c8",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/2591e31c-27c2-4a68-b6f8-f6796be475c8.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "1a62b5f9-3264-4b84-9b71-d285fdcb26b6",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/1a62b5f9-3264-4b84-9b71-d285fdcb26b6.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "0122a1fd-ff4a-4ac7-a3f5-4717235f1c3f",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0122a1fd-ff4a-4ac7-a3f5-4717235f1c3f.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "e84c35d5-dec9-4b4d-a8f0-19029aec5146",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e84c35d5-dec9-4b4d-a8f0-19029aec5146.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "068d18af-b83d-4f8b-9520-000792fc8b10",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/068d18af-b83d-4f8b-9520-000792fc8b10.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "e7bc61d8-909b-4258-a37f-f9e070ce1e22",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e7bc61d8-909b-4258-a37f-f9e070ce1e22.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "1c066541-29c3-455b-b9c8-2c2d9d7f4a42",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/1c066541-29c3-455b-b9c8-2c2d9d7f4a42.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "487c6862-f3f2-4db3-a3c7-40e9cd0a6ffe",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/487c6862-f3f2-4db3-a3c7-40e9cd0a6ffe.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "56dbb5d9-eed1-4c17-a99f-a97b12f3df1e",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/56dbb5d9-eed1-4c17-a99f-a97b12f3df1e.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "7f7d6019-9f5a-413a-8099-d792360a2535",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/7f7d6019-9f5a-413a-8099-d792360a2535.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "d4be3872-c240-4fef-aa29-edd45fe230e7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d4be3872-c240-4fef-aa29-edd45fe230e7.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
   }
 ]

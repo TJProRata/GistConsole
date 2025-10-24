@@ -22,9 +22,28 @@ export const getUserConfiguration = query({
 export const saveConfiguration = mutation({
   args: {
     publicationName: v.string(),
-    category: v.string(),
-    ingestionMethod: v.string(),
+    // Strong enum validation for category (12 valid categories)
+    category: v.union(
+      v.literal("Academic"),
+      v.literal("Books"),
+      v.literal("Business"),
+      v.literal("gpa_publisher"),
+      v.literal("Health"),
+      v.literal("Lifestyle"),
+      v.literal("News"),
+      v.literal("Other"),
+      v.literal("ProRata Internal"),
+      v.literal("Reference"),
+      v.literal("Sports"),
+      v.literal("Uncategorized")
+    ),
+    // Strong enum validation for ingestion method
+    ingestionMethod: v.union(
+      v.literal("wordpress"),
+      v.literal("rss")
+    ),
     wordpressUrl: v.optional(v.string()),
+    // RSS feeds array (includes primary RSS URL as first element)
     rssFeeds: v.optional(
       v.array(
         v.object({
@@ -33,11 +52,12 @@ export const saveConfiguration = mutation({
           password: v.optional(v.string()),
           countStart: v.optional(v.number()),
           countIncrement: v.optional(v.number()),
-          customHeaders: v.optional(v.object({})),
+          // Fixed: Proper record type for custom headers
+          customHeaders: v.optional(v.record(v.string(), v.string())),
         })
       )
     ),
-    faviconUrl: v.optional(v.string()),
+    faviconStorageId: v.optional(v.id("_storage")),
     termsAccepted: v.boolean(),
   },
   handler: async (ctx, args) => {
@@ -54,6 +74,12 @@ export const saveConfiguration = mutation({
 
     const now = Date.now();
 
+    // Generate favicon URL from storage ID if provided
+    let faviconUrl: string | undefined = undefined;
+    if (args.faviconStorageId) {
+      faviconUrl = (await ctx.storage.getUrl(args.faviconStorageId)) ?? undefined;
+    }
+
     if (existing) {
       // Update existing configuration
       await ctx.db.patch(existing._id, {
@@ -62,7 +88,8 @@ export const saveConfiguration = mutation({
         ingestionMethod: args.ingestionMethod,
         wordpressUrl: args.wordpressUrl,
         rssFeeds: args.rssFeeds,
-        faviconUrl: args.faviconUrl,
+        faviconStorageId: args.faviconStorageId,
+        faviconUrl: faviconUrl,
         termsAccepted: args.termsAccepted,
         termsAcceptedAt: args.termsAccepted ? now : existing.termsAcceptedAt,
         updatedAt: now,
@@ -78,7 +105,8 @@ export const saveConfiguration = mutation({
         ingestionMethod: args.ingestionMethod,
         wordpressUrl: args.wordpressUrl,
         rssFeeds: args.rssFeeds,
-        faviconUrl: args.faviconUrl,
+        faviconStorageId: args.faviconStorageId,
+        faviconUrl: faviconUrl,
         termsAccepted: args.termsAccepted,
         termsAcceptedAt: args.termsAccepted ? now : undefined,
         createdAt: now,

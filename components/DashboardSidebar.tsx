@@ -23,6 +23,7 @@ const navigation: NavigationSection[] = [
     items: [
       { name: "Provide your content", href: "/dashboard" },
       { name: "Install your widget", href: "/dashboard/install-widget" },
+      { name: "Configure widgets", href: "/dashboard/configure-widget" },
     ],
   },
 ];

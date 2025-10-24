@@ -15,10 +15,12 @@ export function useUserSync() {
   const syncUser = useMutation(api.users.syncUser);
   const hasSynced = useRef(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [useExtendedPolling, setUseExtendedPolling] = useState(false);
   const retryTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const MAX_RETRIES = 5;
+  const MAX_RETRIES = 10;
   const BASE_DELAY = 100; // Start with 100ms
+  const EXTENDED_POLL_INTERVAL = 2000; // 2 seconds for extended polling
 
   useEffect(() => {
     // Only attempt sync when user is loaded and signed in
@@ -31,25 +33,37 @@ export function useUserSync() {
         const userId = await syncUser();
 
         if (userId === null) {
-          // Auth context not ready yet - retry with exponential backoff
+          // Auth context not ready yet - retry with exponential backoff or extended polling
           if (retryCount < MAX_RETRIES) {
             const delay = BASE_DELAY * Math.pow(2, retryCount);
             console.log(
-              `Auth context not ready, retrying in ${delay}ms (attempt ${retryCount + 1}/${MAX_RETRIES})`
+              `Waiting for auth context (attempt ${retryCount + 1}/${MAX_RETRIES})`
             );
 
             retryTimerRef.current = setTimeout(() => {
               setRetryCount((prev) => prev + 1);
             }, delay);
-          } else {
-            console.error(
-              "Failed to sync user after maximum retries. Auth context may not be initialized."
+          } else if (!useExtendedPolling) {
+            // Switch to extended polling after fast retries exhausted
+            console.warn(
+              "Max fast retries exceeded, switching to extended polling every 2s. This is normal for slow connections."
             );
+            setUseExtendedPolling(true);
+
+            retryTimerRef.current = setTimeout(() => {
+              setRetryCount((prev) => prev + 1);
+            }, EXTENDED_POLL_INTERVAL);
+          } else {
+            // Continue extended polling
+            retryTimerRef.current = setTimeout(() => {
+              setRetryCount((prev) => prev + 1);
+            }, EXTENDED_POLL_INTERVAL);
           }
         } else {
           // Success - user synced
           hasSynced.current = true;
-          console.log("User synced to Convex database");
+          const syncTime = retryCount * BASE_DELAY;
+          console.log(`User synced to Convex database${retryCount > 0 ? ` (took ${retryCount} attempts)` : ""}`);
         }
       } catch (error) {
         // Actual error (not auth timing issue)
@@ -61,6 +75,11 @@ export function useUserSync() {
           retryTimerRef.current = setTimeout(() => {
             setRetryCount((prev) => prev + 1);
           }, delay);
+        } else {
+          // Switch to extended polling on persistent errors
+          retryTimerRef.current = setTimeout(() => {
+            setRetryCount((prev) => prev + 1);
+          }, EXTENDED_POLL_INTERVAL);
         }
       }
     };
@@ -73,5 +92,5 @@ export function useUserSync() {
         clearTimeout(retryTimerRef.current);
       }
     };
-  }, [isLoaded, isSignedIn, user, syncUser, retryCount]);
+  }, [isLoaded, isSignedIn, user, syncUser, retryCount, useExtendedPolling]);
 }

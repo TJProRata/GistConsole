@@ -8,7 +8,13 @@
  * @module
  */
 
+import type * as admin from "../admin.js";
+import type * as componentPreviews from "../componentPreviews.js";
+import type * as components_ from "../components.js";
+import type * as files from "../files.js";
 import type * as gistConfigurations from "../gistConfigurations.js";
+import type * as migrations from "../migrations.js";
+import type * as userProfiles from "../userProfiles.js";
 import type * as users from "../users.js";
 
 import type {
@@ -26,7 +32,13 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  admin: typeof admin;
+  componentPreviews: typeof componentPreviews;
+  components: typeof components_;
+  files: typeof files;
   gistConfigurations: typeof gistConfigurations;
+  migrations: typeof migrations;
+  userProfiles: typeof userProfiles;
   users: typeof users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
