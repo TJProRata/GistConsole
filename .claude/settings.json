@@ -1,0 +1,70 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/tjmcgovern/gist-console/**)",
+      "Read(//Users/tjmcgovern/**)",
+      "WebSearch",
+      "WebFetch(domain:blog.maximeheckel.com)",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(bun run build:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.embla-carousel.com)",
+      "Bash(find:*)",
+      "Bash(bun add:*)",
+      "Bash(npm run dev:*)",
+      "Bash(lsof:*)",
+      "Bash(bun:*)",
+      "Bash(timeout 15 bun run dev:*)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "shadcn"
+  ],
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run /Users/tjmcgovern/.claude/hooks/notification.py --notify"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run /Users/tjmcgovern/.claude/hooks/stop.py --chat"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run /Users/tjmcgovern/.claude/hooks/subagent_stop.py --notify"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "uv run /Users/tjmcgovern/.claude/status_lines/status_line.py",
+    "padding": 0
+  },
+  "outputStyle": "Ultra Concise"
+}
