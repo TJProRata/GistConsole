@@ -65,6 +65,7 @@
     --gradient-brand: linear-gradient(90deg, #6F61EF 0%, #E19736 100%);
     --gradient-brand-reverse: linear-gradient(90deg, #E19736 0%, #6F61EF 100%);
     --gradient-brand-teal: linear-gradient(90deg, #6F61EF 0%, #36E1AE 100%);
+    --gradient-womens-world: linear-gradient(180deg, #FB9649 0%, #A361E9 100%);
 
     /* Typography Scale */
     --font-size-xs: 0.75rem;        /* 12px */
@@ -92,6 +93,13 @@
     /* Border Radius */
     --radius-pill: 40px;
     --radius-circle: 50%;
+
+    /* Rufus Widget (Amazon Shopping Assistant) Design Tokens */
+    /* Amazon Brand Colors */
+    --color-amazon-orange: 255 153 0; /* #FF9900 */
+    --color-rufus-blue: 95 153 207; /* #5F99CF */
+    --color-rufus-blue-light: 232 244 253; /* #E8F4FD */
+    --color-rufus-blue-dark: 67 110 156; /* #436E9C */
   }
 
   .dark {
@@ -129,4 +137,79 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Woman's World Widget Styles */
+.womens-world-title {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .womens-world-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Rufus Widget Styles */
+.rufus-pill-light {
+  background-color: rgb(var(--color-rufus-blue-light));
+  color: rgb(var(--color-rufus-blue));
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.rufus-pill-light:hover {
+  background-color: rgb(var(--color-rufus-blue) / 0.2);
+}
+
+.rufus-pill-dark {
+  background-color: rgb(var(--color-rufus-blue-dark));
+  color: white;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.rufus-pill-dark:hover {
+  background-color: rgb(var(--color-rufus-blue-dark) / 0.85);
+}
+
+.rufus-pill-cta {
+  background-color: rgb(var(--color-rufus-blue-dark));
+  color: white;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.rufus-pill-cta:hover {
+  background-color: rgb(var(--color-rufus-blue-dark) / 0.85);
+}
+
+.rufus-input {
+  border: 1px solid rgb(var(--color-rufus-blue));
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.rufus-input:focus {
+  border-color: rgb(var(--color-rufus-blue-dark));
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(var(--color-rufus-blue) / 0.1);
 }

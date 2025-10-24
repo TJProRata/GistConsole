@@ -308,7 +308,9 @@ The admin portal provides role-based access control with a dedicated interface f
 - **User Management**: View all users, search/filter by name or email, view user roles
 - **Configuration Management**: View all widget configurations across all users with search and category filtering
 - **Component Library**: Browse and manage UI components (shadcn/ui) and widget components organized by category
-- **Complete Widget Previews**: Interactive demos of full widget implementations with live functionality, syntax-highlighted code, and copy-to-clipboard (includes 18-phase onboarding widget)
+- **Complete Widget Previews**: Interactive demos of full widget implementations with live functionality, syntax-highlighted code, and copy-to-clipboard
+  - **Onboarding Widget**: 18-phase multi-step onboarding with form validation, search, results, and paywall
+  - **Women's World Widget**: Health-focused Q&A widget with auto-scrolling seed questions carousel and glassmorphism input
 - **Analytics Dashboard**: Platform usage trends and performance metrics (placeholder - coming soon)
 - **System Settings**: Configure system-wide preferences (placeholder - coming soon)
 - **Audit Logging**: All admin actions are logged to the `adminLogs` table for security tracking
@@ -392,12 +394,19 @@ The admin portal provides role-based access control with a dedicated interface f
    - Click "UI Components" and verify table shows shadcn/ui components
    - Test search functionality on UI Components page
    - Click "Widgets" and verify tabs display for each category (Icons, Animations, AI Elements, Ask Anything, **Widgets**)
-   - Click "Widgets" tab and verify onboarding-widget card displays with phase count and component count badges
-   - Click "View Preview" on onboarding-widget to open interactive demo
-   - Interact with the 18-phase onboarding widget (navigate phases, click suggestions)
-   - Toggle dark mode on widget preview
-   - Click "Code" tab and verify syntax-highlighted code displays
-   - Test copy-to-clipboard functionality on code snippet
+   - Click "Widgets" tab and verify widget cards display (onboarding-widget, womens-world-widget)
+   - **Onboarding Widget Test:**
+     - Click "View Preview" on onboarding-widget to open interactive demo
+     - Interact with the 18-phase onboarding widget (navigate phases, click suggestions)
+     - Toggle dark mode on widget preview
+     - Click "Code" tab and verify syntax-highlighted code displays
+     - Test copy-to-clipboard functionality on code snippet
+   - **Women's World Widget Test:**
+     - Click "View Preview" on womens-world-widget to open interactive demo
+     - Verify auto-scrolling seed questions carousel
+     - Test hover-to-pause carousel functionality
+     - Click a seed question pill to populate input
+     - Test glassmorphism input styling
    - Navigate back to Widgets tab with "Back to Widgets" button
    - Test search functionality across all widget categories
 8. Test search and filter functionality on all pages

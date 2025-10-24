@@ -1009,6 +1009,38 @@ export function OnboardingWidget({ isExpanded, onExpandChange }: OnboardingWidge
   );
 }`,
   },
+  {
+    name: "womens-world-widget",
+    description: "Health-focused Q&A widget with dual auto-scrolling seed question carousels",
+    category: "widgets",
+    phases: 1,
+    componentCount: 4,
+    dependencies: [
+      "Carousel (x2 instances)",
+      "Button",
+      "PoweredByButton",
+      "ProfileBlank",
+      "Autoplay Plugin (x2 instances)"
+    ],
+    code: `"use client";
+
+import { useState } from "react";
+import { WomensWorldWidget } from "@/components/widget_components/complete/womens-world-widget";
+
+export function WomensWorldWidgetDemo() {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  return (
+    <div className="flex items-center justify-center min-h-[600px] p-8 bg-gradient-to-br from-orange-50 to-purple-50">
+      <WomensWorldWidget
+        isExpanded={isExpanded}
+        onExpandChange={setIsExpanded}
+        onSubmit={(question) => console.log("Question submitted:", question)}
+      />
+    </div>
+  );
+}`,
+  },
 ];
 
 // Query: Get widget preview data (complete widgets)

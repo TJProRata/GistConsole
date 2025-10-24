@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { ComponentPreview } from "@/components/ComponentPreview";
@@ -8,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
@@ -21,6 +24,9 @@ export default function CompleteWidgetPreviewPage({ params }: PageProps) {
   const widgetData = useQuery(api.componentPreviews.getWidgetPreview, {
     widgetName: widget,
   });
+
+  // Dimension controls state (only for womens-world-widget)
+  const [widgetWidth, setWidgetWidth] = useState(392);
 
   // Loading state
   if (widgetData === undefined) {
@@ -154,11 +160,42 @@ export default function CompleteWidgetPreviewPage({ params }: PageProps) {
         </div>
       </div>
 
+      {/* Dimension Controls - Admin Preview Only */}
+      {widget === "womens-world-widget" && (
+        <div className="mb-6 p-4 border rounded-lg bg-white space-y-4">
+          <h3 className="text-sm font-semibold mb-2">Widget Width (Preview Only)</h3>
+
+          {/* Width Control */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="widget-width">Width</Label>
+              <span className="text-sm text-muted-foreground">{widgetWidth}px</span>
+            </div>
+            <Slider
+              id="widget-width"
+              min={392}
+              max={800}
+              step={8}
+              value={[widgetWidth]}
+              onValueChange={(value) => setWidgetWidth(value[0])}
+            />
+          </div>
+
+          <p className="text-xs text-muted-foreground">
+            Adjust width to test widget responsiveness. Current width: {widgetWidth}px
+          </p>
+        </div>
+      )}
+
       {/* Widget Preview */}
       {DemoComponent ? (
         <ComponentPreview>
           <ComponentPreview.Demo>
-            <DemoComponent />
+            {widget === "womens-world-widget" ? (
+              <DemoComponent width={widgetWidth} />
+            ) : (
+              <DemoComponent />
+            )}
           </ComponentPreview.Demo>
           <ComponentPreview.Code code={widgetData.code} />
         </ComponentPreview>

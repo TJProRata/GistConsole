@@ -21,7 +21,7 @@ export const getComponentStats = query({
     const widgetComponentsCount = 12; // 3 icons + 1 animation + 7 ai-elements + 1 ask-anything
 
     // Complete widgets count
-    const completeWidgetsCount = 1; // onboarding-widget
+    const completeWidgetsCount = 3; // onboarding-widget, womens-world-widget, rufus-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
@@ -122,6 +122,20 @@ export const getCompleteWidgetsList = query({
         description: "Complete multi-phase onboarding widget with 18 interactive phases",
         phases: 18,
         componentCount: 13,
+      },
+      {
+        name: "womens-world-widget",
+        path: "components/widget_components/complete/womens-world-widget.tsx",
+        description: "Health-focused Q&A widget for Woman's World with auto-scrolling seed questions",
+        phases: 1,
+        componentCount: 3,
+      },
+      {
+        name: "rufus-widget",
+        path: "components/widget_components/complete/rufus-widget.tsx",
+        description: "Amazon Rufus AI shopping assistant with collapsed/expanded states and seed questions",
+        phases: 2,
+        componentCount: 5,
       },
     ];
 

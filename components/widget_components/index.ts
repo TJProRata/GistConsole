@@ -32,6 +32,8 @@ export { PricingCard } from "./ask-anything/pricing-card";
 
 // Complete Widgets
 export { OnboardingWidget } from "./complete/onboarding-widget";
+export { WomensWorldWidget } from "./complete/womens-world-widget";
+export { RufusWidget } from "./complete/rufus-widget";
 
 // Types
 export type {
@@ -43,5 +45,20 @@ export type {
   OnboardingWidgetProps,
   PhaseState,
   Phase,
-  PhaseConfig
+  PhaseConfig,
+  WomensWorldWidgetProps,
+  SearchInputSectionProps,
+  SeedQuestionsCarouselProps,
+  QuestionPillProps,
+  WomensWorldWidgetState,
+  CarouselState,
+  CarouselApi,
+  RufusWidgetProps,
+  RufusWidgetCollapsedProps,
+  RufusWidgetExpandedProps,
+  SeedQuestionsListProps,
+  SeedQuestionPillProps,
+  WelcomeCardProps,
+  RufusWidgetState,
+  SeedQuestionsListState
 } from "./types";

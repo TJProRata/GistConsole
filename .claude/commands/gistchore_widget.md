@@ -23,6 +23,12 @@ Create a new plan in specs/*.md to resolve the `Widget Chore` using the exact sp
 - **Follow shadcn/ui best practices**: Read `ai_docs/shadcn/shadcn_component_library_bp.md` for component maintenance, styling, and update patterns
 - **Update components properly**: When updating shadcn/ui components, maintain CVA variants, forwardRef patterns, CSS variables, and accessibility features
 - **Bundling Impact**: Consider impact on embeddable widget bundles (size, performance) from `ai_docs/bun_docs/bun_bundling.md`
+- **CRITICAL - Component Reuse During Refactoring**:
+  - ✅ **Leverage Existing**: When refactoring, consolidate to existing components from `/Users/tjmcgovern/gist-console/components` rather than creating new variants
+  - ✅ **Component Audit**: Check if custom code can be replaced with existing shadcn/ui components from `components/ui/`
+  - ❌ **Don't Recreate**: Never create new Button, Form, Input, Card, Dialog, Select components during refactoring - use existing
+  - ✅ **Variants allowed**: Create new variants of existing components using CVA pattern if needed
+  - ✅ **CSS edits allowed**: Modify `app/globals.css` for theme-level styling improvements
 - Respect requested files in the `Relevant Files` section.
 - Start your research by reading the `README.md` file.
 
@@ -30,10 +36,11 @@ Create a new plan in specs/*.md to resolve the `Widget Chore` using the exact sp
 
 Focus on the following files:
 - `README.md` - Project overview and setup instructions
+- `/Users/tjmcgovern/gist-console/components/` - **PRIMARY SOURCE**: All reusable components live here
+- `components/ui/` - **CHECK FIRST**: shadcn/ui component library (accordion, alert, badge, button, card, carousel, checkbox, dialog, dropdown-menu, form, input, label, radio-group, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, phase-navigation, powered-by-button)
 - `components/widget_components/` - Widget library structure (all categories)
 - `components/widget_components/index.ts` - Widget exports (may need updates)
 - `components/widget_components/types.ts` - TypeScript type definitions
-- `components/ui/` - shadcn/ui component library
 - `app/admin/components/widgets/` - Widget preview pages (may need updates)
 - `convex/componentPreviews.ts` - Component preview metadata (may need updates)
 - `lib/utils.ts` - Utility functions including cn() for class name merging
@@ -96,6 +103,7 @@ Ignore all other files in the codebase.
 <describe code quality improvements>
 
 - Component decomposition (single responsibility)
+- **Component consolidation** (replace custom code with existing components from `components/ui/`)
 - Prop interface cleanup
 - Naming consistency
 - Documentation updates

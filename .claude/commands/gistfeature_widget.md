@@ -24,6 +24,13 @@ Create a new plan in specs/*.md to implement the `Widget Feature` using the exac
 - **Add new shadcn/ui components**: Use `npx shadcn@latest add <component>` when needed
 - **Component patterns**: Use CVA for variants, React.forwardRef for DOM elements, CSS variables for theming, cn() utility for class merging
 - **Embeddable Widgets**: For complete widgets that need to be embeddable, include Bun bundling strategy from `ai_docs/bun_docs/bun_bundling.md`
+- **CRITICAL - Component Reuse Philosophy**:
+  - ✅ **ALWAYS check first**: `components/ui/` for shadcn components, `components/widget_components/` for widget components
+  - ❌ **NEVER recreate**: Button, Form, Input, Card, Dialog, Select, Checkbox, etc. - these already exist in `components/ui/`
+  - ✅ **Variants allowed**: Create new variants of existing shadcn components using CVA pattern
+  - ✅ **CSS edits allowed**: Modify `app/globals.css` for theme-level styling changes
+  - ✅ **Custom widgets only**: Only create NEW components for unique widget-specific functionality not available in existing library
+  - 📍 **Component location**: All reusable components are in `/Users/tjmcgovern/gist-console/components`
 - Respect requested files in the `Relevant Files` section.
 - Start your research by reading the `README.md` file.
 
@@ -31,10 +38,11 @@ Create a new plan in specs/*.md to implement the `Widget Feature` using the exac
 
 Focus on the following files:
 - `README.md` - Project overview and setup instructions
+- `/Users/tjmcgovern/gist-console/components/` - **PRIMARY SOURCE**: All reusable components live here
+- `components/ui/` - **CHECK FIRST**: shadcn/ui component library (accordion, alert, badge, button, card, carousel, checkbox, dialog, dropdown-menu, form, input, label, radio-group, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, phase-navigation, powered-by-button)
 - `components/widget_components/` - Widget library structure (icons, animations, ai-elements, ask-anything, complete)
 - `components/widget_components/index.ts` - Widget exports (must be updated for new widgets)
 - `components/widget_components/types.ts` - TypeScript type definitions for widgets
-- `components/ui/` - shadcn/ui component library for UI elements
 - `app/admin/components/widgets/` - Widget preview and management pages
 - `convex/componentPreviews.ts` - Component preview data and metadata
 - `lib/utils.ts` - Utility functions including cn() for class name merging
@@ -159,18 +167,41 @@ Use these files to implement the widget:
 
 ## shadcn/ui Components
 
-### Existing Components to Use
-<list which shadcn/ui components from `components/ui/` you will use (button, card, form, input, label, dialog, etc.)>
+### Component Reuse Checklist
+**BEFORE adding any new component, verify it doesn't already exist:**
+- [ ] Checked `components/ui/` for existing shadcn components
+- [ ] Checked `components/widget_components/` for existing widget components
+- [ ] Confirmed the needed functionality is NOT available in existing components
+- [ ] Verified that creating a variant won't suffice
 
-### New Components to Add
-<list which shadcn/ui components need to be added via `npx shadcn@latest add <component>`. Include the exact command.>
+### Existing Components to Use
+<list which components from `components/ui/` you WILL use. Be thorough - check the full list before claiming you need something new.>
+
+**Available in `components/ui/`:**
+- accordion, alert, badge, button, card, carousel, checkbox, dialog, dropdown-menu, form, input, label, radio-group, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, phase-navigation, powered-by-button
+
+### New Components to Add (DISCOURAGED)
+<list shadcn components to add via `npx shadcn@latest add <component>` ONLY if genuinely needed and not already in `components/ui/`.>
+
+**⚠️ WARNING**: Only add if component doesn't exist in `components/ui/`. Adding duplicates is wasteful.
+
+Example (only if truly needed):
+- `npx shadcn@latest add tooltip` - For tooltip functionality (verify not already added first)
+
+### Variants of Existing Components (ENCOURAGED)
+<list variants you'll create of EXISTING shadcn components using CVA pattern. This is preferred over adding new components.>
 
 Example:
-- `npx shadcn@latest add dialog` - For modal widget container
-- `npx shadcn@latest add slider` - For range input control
+- Create "ghost-gradient" variant of existing Button component in `app/globals.css`
+- Create "compact" variant of existing Card component using CVA
 
-### Custom Components to Create
-<if you need custom components not available in shadcn/ui registry, list them here and note that they must follow shadcn/ui patterns from `ai_docs/shadcn/shadcn_component_library_bp.md` (CVA variants, forwardRef, CSS variables, cn() utility)>
+### Custom Widget Components (Only if Necessary)
+<list ONLY widget-specific components that have no equivalent in existing library. These should be truly custom functionality not available in shadcn/ui or existing widgets.>
+
+**Requirements for custom components:**
+- Must follow shadcn/ui patterns from `ai_docs/shadcn/shadcn_component_library_bp.md`
+- Must use CVA for variants, forwardRef for DOM elements, CSS variables for theming, cn() utility for class merging
+- Must be truly unique widget functionality (not a button, form, input, card, etc.)
 
 ## Widget Integration
 

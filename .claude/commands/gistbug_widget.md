@@ -29,6 +29,12 @@ Create a new plan in specs/*.md to resolve the `Widget Bug` using the exact spec
 - **Use shadcn/ui components**: If UI bug fixes are needed, understand shadcn/ui component architecture and patterns
 - **Follow shadcn/ui debugging**: Read `ai_docs/shadcn/shadcn_component_library_bp.md` for component debugging, common pitfalls, and proper fix patterns
 - **Maintain component integrity**: When fixing bugs in shadcn/ui components, preserve CVA variants, forwardRef patterns, CSS variables, and accessibility
+- **CRITICAL - No New Components for Bug Fixes**:
+  - ❌ **Fix within existing structure**: Bug fixes should work within existing component architecture from `/Users/tjmcgovern/gist-console/components`
+  - ❌ **Don't create new components**: Never create new UI components (Button, Form, Input, Card, Dialog, etc.) as part of bug fix unless absolutely necessary
+  - ✅ **Reuse existing**: If additional UI needed, use existing components from `components/ui/`
+  - ✅ **Variants allowed**: Create variants of existing components using CVA if fix requires it
+  - ✅ **CSS edits allowed**: Modify `app/globals.css` for styling bug fixes
 - Don't use decorators. Keep it simple.
 - If you need a new library, use `bun add` and be sure to report it in the `Notes` section of the `Plan Format`.
 - Respect requested files in the `Relevant Files` section.
@@ -38,10 +44,11 @@ Create a new plan in specs/*.md to resolve the `Widget Bug` using the exact spec
 
 Focus on the following files:
 - `README.md` - Project overview and setup instructions
+- `/Users/tjmcgovern/gist-console/components/` - **PRIMARY SOURCE**: All reusable components live here
+- `components/ui/` - **CHECK FIRST**: shadcn/ui component library (accordion, alert, badge, button, card, carousel, checkbox, dialog, dropdown-menu, form, input, label, radio-group, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, phase-navigation, powered-by-button)
 - `components/widget_components/` - Widget library (specific widget with bug)
 - `components/widget_components/index.ts` - Widget exports
 - `components/widget_components/types.ts` - TypeScript type definitions
-- `components/ui/` - shadcn/ui component library
 - `app/admin/components/widgets/` - Widget preview pages (for reproduction)
 - `convex/componentPreviews.ts` - Component preview metadata
 - `lib/utils.ts` - Utility functions including cn() for class name merging

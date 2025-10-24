@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { BlueStar } from "@/components/widget_components/icons/blue-star";
 import { ProfileBlank } from "@/components/widget_components/icons/profile-blank";
 import { Wand } from "@/components/widget_components/icons/wand";
@@ -10,6 +10,7 @@ import { SimpleProgressBar } from "@/components/widget_components/ai-elements/si
 import { ReadinessScoreGauge } from "@/components/widget_components/ai-elements/readiness-score-gauge";
 import { PricingCard } from "@/components/widget_components/ask-anything/pricing-card";
 import { OnboardingWidget } from "@/components/widget_components/complete/onboarding-widget";
+import { WomensWorldWidget } from "@/components/widget_components/complete/womens-world-widget";
 import { GlassWidgetContainer, GlassWidgetHeader, GlassWidgetContent, GlassWidgetFooter } from "@/components/widget_components/ai-elements/glass_widget_container";
 import { GifHousing } from "@/components/widget_components/ai-elements/gif-housing";
 import { SuccessPhase } from "@/components/widget_components/ai-elements/success-phase";
@@ -268,8 +269,29 @@ export function OnboardingWidgetDemo() {
   );
 }
 
+export function WomensWorldWidgetDemo(props?: { width?: number; height?: number }) {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  return (
+    <div className="flex items-center justify-center min-h-[600px] p-8 bg-gradient-to-br from-orange-50 to-purple-50">
+      <div className="text-center space-y-4">
+        <p className="text-sm text-gray-600 mb-6">
+          Health-focused Q&A widget with auto-scrolling seed questions
+        </p>
+        <WomensWorldWidget
+          isExpanded={isExpanded}
+          onExpandChange={setIsExpanded}
+          onSubmit={(question) => console.log("Question submitted:", question)}
+          width={props?.width}
+          height={props?.height}
+        />
+      </div>
+    </div>
+  );
+}
+
 // Demo component mapping for dynamic rendering
-export const WIDGET_DEMOS: Record<string, (props?: { variant?: string }) => React.ReactElement> = {
+export const WIDGET_DEMOS: Record<string, (props?: any) => React.ReactElement> = {
   "blue-star": BlueStarDemo,
   "profile-blank": ProfileBlankDemo,
   wand: WandDemo,
@@ -283,4 +305,5 @@ export const WIDGET_DEMOS: Record<string, (props?: { variant?: string }) => Reac
   "prompt-input": PromptInputDemo,
   "pricing-card": PricingCardDemo,
   "onboarding-widget": OnboardingWidgetDemo,
+  "womens-world-widget": WomensWorldWidgetDemo,
 };

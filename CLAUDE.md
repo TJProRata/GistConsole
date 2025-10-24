@@ -73,6 +73,7 @@ ngrok http 3000 # Terminal 3 (webhook testing)
 
 ## Recent Changes
 
+**Oct 24, 2025:** Women's World Widget - health Q&A widget with auto-scroll carousel, glassmorphism input, 40px pill radius
 **Oct 24, 2025:** Complete Widget Preview Tab - interactive demos with 18-phase onboarding widget
 **Oct 24, 2025:** Added Admin Components Section (UI + Widget component browsing)
 **Oct 24, 2025:** Schema migration fix (added role field to existing users)
