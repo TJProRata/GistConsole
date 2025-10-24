@@ -30,7 +30,7 @@ All components will be migrated to a new `components/widget_components/` directo
 All files will be created under `components/widget_components/`:
 
 #### Main Widget
-- **`components/widget_components/onboarding-widget.tsx`** - Main onboarding widget component
+- **`components/widget_components/complete/onboarding-widget.tsx`** - Main onboarding widget component
 
 #### AI Elements (Custom Components)
 - **`components/widget_components/ai-elements/glass_widget_container.tsx`** - Glassmorphic widget container with expand/collapse
@@ -165,7 +165,7 @@ Copy TypeScript type definitions:
 
 Copy and adapt the main onboarding widget:
 
-- **`components/widget_components/onboarding-widget.tsx`**
+- **`components/widget_components/complete/onboarding-widget.tsx`**
   - Read from: `/Users/tjmcgovern/ask-anything-ui/components/widgets/onboarding-widget/onboarding-widget.tsx`
   - Update all import paths to reference new `widget_components/` directory
   - Update shadcn/ui component imports to use `@/components/ui/`

@@ -47,59 +47,93 @@ export function AccordionDemo() {
   );
 }
 
-export function AlertDemo() {
-  return (
-    <div className="space-y-4">
-      <Alert>
-        <Terminal className="h-4 w-4" />
-        <AlertTitle>Heads up!</AlertTitle>
-        <AlertDescription>
-          You can add components to your app using the cli.
-        </AlertDescription>
-      </Alert>
+export function AlertDemo(props?: { variant?: string }) {
+  const variant = props?.variant || "default";
+  const alertVariant = variant as "default" | "destructive" | undefined;
+
+  if (variant === "destructive") {
+    return (
       <Alert variant="destructive">
+        <Terminal className="h-4 w-4" />
         <AlertTitle>Error</AlertTitle>
         <AlertDescription>
           Your session has expired. Please log in again.
         </AlertDescription>
       </Alert>
+    );
+  }
+
+  return (
+    <Alert>
+      <Terminal className="h-4 w-4" />
+      <AlertTitle>Heads up!</AlertTitle>
+      <AlertDescription>
+        You can add components to your app using the cli.
+      </AlertDescription>
+    </Alert>
+  );
+}
+
+AlertDemo.variants = [
+  { name: "default", label: "Default", description: "Informational alert" },
+  { name: "destructive", label: "Destructive", description: "Error or critical alert" }
+];
+
+AlertDemo.defaultVariant = "default";
+
+export function BadgeDemo(props?: { variant?: string }) {
+  const variant = props?.variant || "default";
+  const badgeVariant = variant as "default" | "secondary" | "destructive" | "outline";
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <Badge variant={badgeVariant}>
+        {variant.charAt(0).toUpperCase() + variant.slice(1)} Badge
+      </Badge>
+      <p className="text-sm text-muted-foreground">
+        {variant.charAt(0).toUpperCase() + variant.slice(1)} variant
+      </p>
     </div>
   );
 }
 
-export function BadgeDemo() {
-  return (
-    <div className="flex flex-wrap gap-2">
-      <Badge>Default</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="destructive">Destructive</Badge>
-      <Badge variant="outline">Outline</Badge>
-    </div>
-  );
-}
+BadgeDemo.variants = [
+  { name: "default", label: "Default", description: "Standard badge style" },
+  { name: "secondary", label: "Secondary", description: "Muted alternative style" },
+  { name: "destructive", label: "Destructive", description: "For errors or warnings" },
+  { name: "outline", label: "Outline", description: "Bordered style" }
+];
 
-export function ButtonDemo() {
+BadgeDemo.defaultVariant = "default";
+
+export function ButtonDemo(props?: { variant?: string }) {
+  const variant = props?.variant || "default";
+  const buttonVariant = variant as "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+
   return (
-    <div className="flex flex-wrap gap-4">
-      <div className="space-y-2">
-        <div className="flex flex-wrap gap-2">
-          <Button variant="default">Default</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="link">Link</Button>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button size="sm">Small</Button>
-          <Button size="default">Default</Button>
-          <Button size="lg">Large</Button>
-          <Button size="icon">⚙</Button>
-        </div>
+    <div className="flex flex-col items-center justify-center gap-4">
+      <div className="flex flex-wrap gap-2 justify-center">
+        <Button variant={buttonVariant} size="sm">Small</Button>
+        <Button variant={buttonVariant} size="default">Default</Button>
+        <Button variant={buttonVariant} size="lg">Large</Button>
       </div>
+      <p className="text-sm text-muted-foreground">
+        Showing {variant} variant in different sizes
+      </p>
     </div>
   );
 }
+
+ButtonDemo.variants = [
+  { name: "default", label: "Default", description: "Primary button style" },
+  { name: "destructive", label: "Destructive", description: "For dangerous actions" },
+  { name: "outline", label: "Outline", description: "Secondary action style" },
+  { name: "secondary", label: "Secondary", description: "Alternative primary style" },
+  { name: "ghost", label: "Ghost", description: "Minimal style" },
+  { name: "link", label: "Link", description: "Styled like a link" }
+];
+
+ButtonDemo.defaultVariant = "default";
 
 export function CardDemo() {
   return (
@@ -425,7 +459,7 @@ export function TextareaDemo() {
 }
 
 // Demo component mapping for dynamic rendering
-export const UI_DEMOS: Record<string, () => React.ReactElement> = {
+export const UI_DEMOS: Record<string, (props?: { variant?: string }) => React.ReactElement> = {
   accordion: AccordionDemo,
   alert: AlertDemo,
   badge: BadgeDemo,

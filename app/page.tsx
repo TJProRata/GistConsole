@@ -13,13 +13,20 @@ export default function Home() {
     <main className="container mx-auto p-8">
         <SignedOut>
           <div className="text-center">
-            <h1 className="mb-4 text-4xl font-bold">Welcome to Gist Console</h1>
-            <p className="text-gray-600">
-              Chat widget management console for your applications
+            <h1 className="mb-4 text-4xl font-bold">Welcome to Gist Widget Builder</h1>
+            <p className="text-gray-600 mb-8">
+              Chat widget builder for your applications
             </p>
-            <p className="mt-4 text-sm text-gray-500">
-              Please sign in to access your dashboard
-            </p>
+            <div className="flex flex-col items-center gap-4">
+              <Link href="/preview">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                  Preview Widget
+                </Button>
+              </Link>
+              <p className="text-sm text-gray-500">
+                Try before you sign up - no account required
+              </p>
+            </div>
           </div>
         </SignedOut>
 

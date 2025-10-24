@@ -30,8 +30,8 @@ export {
 // Ask Anything
 export { PricingCard } from "./ask-anything/pricing-card";
 
-// Main Widget
-export { OnboardingWidget } from "./onboarding-widget";
+// Complete Widgets
+export { OnboardingWidget } from "./complete/onboarding-widget";
 
 // Types
 export type {

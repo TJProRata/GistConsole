@@ -1,4 +1,4 @@
-# Gist Console
+# Gist Widget Builder
 
 A Next.js 16 application with Clerk authentication and Convex backend.
 
@@ -308,6 +308,7 @@ The admin portal provides role-based access control with a dedicated interface f
 - **User Management**: View all users, search/filter by name or email, view user roles
 - **Configuration Management**: View all widget configurations across all users with search and category filtering
 - **Component Library**: Browse and manage UI components (shadcn/ui) and widget components organized by category
+- **Complete Widget Previews**: Interactive demos of full widget implementations with live functionality, syntax-highlighted code, and copy-to-clipboard (includes 18-phase onboarding widget)
 - **Analytics Dashboard**: Platform usage trends and performance metrics (placeholder - coming soon)
 - **System Settings**: Configure system-wide preferences (placeholder - coming soon)
 - **Audit Logging**: All admin actions are logged to the `adminLogs` table for security tracking
@@ -361,7 +362,8 @@ The admin portal provides role-based access control with a dedicated interface f
 - `/admin/configurations` - Configuration management with category filters
 - `/admin/components` - Component library overview with statistics
 - `/admin/components/ui-components` - Browse shadcn/ui components with search
-- `/admin/components/widgets` - Browse widget components organized by category (icons, animations, AI elements, ask-anything)
+- `/admin/components/widgets` - Browse widget components organized by category (icons, animations, AI elements, ask-anything, **complete widgets**)
+- `/admin/components/widgets/complete/[widget]` - Interactive preview page for complete widget implementations (e.g., onboarding-widget with 18 phases)
 - `/admin/analytics` - Analytics dashboard (placeholder)
 - `/admin/settings` - System settings (placeholder)
 
@@ -386,11 +388,18 @@ The admin portal provides role-based access control with a dedicated interface f
 5. Verify admin dashboard loads with statistics
 6. Test navigation to Users and Configurations pages
 7. Test navigation to Components pages:
-   - Click "Components" → "Overview" and verify statistics display
+   - Click "Components" → "Overview" and verify statistics display (including Complete Widgets count)
    - Click "UI Components" and verify table shows shadcn/ui components
    - Test search functionality on UI Components page
-   - Click "Widgets" and verify tabs display for each category
-   - Test search functionality across widget categories
+   - Click "Widgets" and verify tabs display for each category (Icons, Animations, AI Elements, Ask Anything, **Widgets**)
+   - Click "Widgets" tab and verify onboarding-widget card displays with phase count and component count badges
+   - Click "View Preview" on onboarding-widget to open interactive demo
+   - Interact with the 18-phase onboarding widget (navigate phases, click suggestions)
+   - Toggle dark mode on widget preview
+   - Click "Code" tab and verify syntax-highlighted code displays
+   - Test copy-to-clipboard functionality on code snippet
+   - Navigate back to Widgets tab with "Back to Widgets" button
+   - Test search functionality across all widget categories
 8. Test search and filter functionality on all pages
 9. Sign out and sign in as a regular user
 10. Verify no "Admin Portal" button on home page

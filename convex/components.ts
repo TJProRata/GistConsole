@@ -18,20 +18,25 @@ export const getComponentStats = query({
     const uiComponentsCount = 20; // accordion, alert, badge, button, card, dropdown-menu, form, input, label, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, etc.
 
     // Manually counted widget components
-    const widgetComponentsCount = 13;
+    const widgetComponentsCount = 12; // 3 icons + 1 animation + 7 ai-elements + 1 ask-anything
+
+    // Complete widgets count
+    const completeWidgetsCount = 1; // onboarding-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
       icons: 3, // blue-star, profile-blank, wand
       animations: 1, // searching-animation
-      "ai-elements": 8, // dual-phase-progress, gif-housing, glass_widget_container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase
+      "ai-elements": 7, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase
       "ask-anything": 1, // pricing-card
+      widgets: completeWidgetsCount, // complete widget implementations (in complete/ folder)
     };
 
     return {
       totalUIComponents: uiComponentsCount,
       totalWidgetComponents: widgetComponentsCount,
-      totalComponents: uiComponentsCount + widgetComponentsCount,
+      completeWidgets: completeWidgetsCount,
+      totalComponents: uiComponentsCount + widgetComponentsCount + completeWidgetsCount,
       categoryBreakdown,
     };
   },
@@ -102,5 +107,24 @@ export const getWidgetComponentsList = query({
     };
 
     return widgetComponents;
+  },
+});
+
+// Query: Get complete widgets list
+export const getCompleteWidgetsList = query({
+  handler: async (ctx) => {
+    await requireAdmin(ctx);
+
+    const completeWidgets = [
+      {
+        name: "onboarding-widget",
+        path: "components/widget_components/complete/onboarding-widget.tsx",
+        description: "Complete multi-phase onboarding widget with 18 interactive phases",
+        phases: 18,
+        componentCount: 13,
+      },
+    ];
+
+    return completeWidgets;
   },
 });

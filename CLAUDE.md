@@ -1,4 +1,4 @@
-# Gist Console
+# Gist Widget Builder
 
 Chat widget management system: Admin console (Phase 1) + embeddable widget library (Phase 2).
 
@@ -20,6 +20,7 @@ Chat widget management system: Admin console (Phase 1) + embeddable widget libra
 - Admin portal with role-based access control
 - Admin dashboard: Users, Configurations, Components sections
 - Component library management (UI + Widget components)
+- Complete widget preview system (interactive demos with code)
 
 ### 🔄 Phase 2 (Pending)
 - Embeddable chat widget library
@@ -72,6 +73,7 @@ ngrok http 3000 # Terminal 3 (webhook testing)
 
 ## Recent Changes
 
+**Oct 24, 2025:** Complete Widget Preview Tab - interactive demos with 18-phase onboarding widget
 **Oct 24, 2025:** Added Admin Components Section (UI + Widget component browsing)
 **Oct 24, 2025:** Schema migration fix (added role field to existing users)
 **Oct 23, 2025:** Clerk webhook integration (fix: user sync reliability)

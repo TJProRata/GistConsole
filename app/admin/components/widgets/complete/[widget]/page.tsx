@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { ComponentPreview, usePreviewContext } from "@/components/ComponentPreview";
+import { ComponentPreview } from "@/components/ComponentPreview";
 import { WIDGET_DEMOS } from "@/components/component-previews/widget-demos";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +16,9 @@ interface PageProps {
   params: Promise<{ widget: string }>;
 }
 
-export default function WidgetPreviewPage({ params }: PageProps) {
+export default function CompleteWidgetPreviewPage({ params }: PageProps) {
   const { widget } = use(params);
-  const widgetData = useQuery(api.componentPreviews.getWidgetComponentPreview, {
+  const widgetData = useQuery(api.componentPreviews.getWidgetPreview, {
     widgetName: widget,
   });
 
@@ -31,6 +30,12 @@ export default function WidgetPreviewPage({ params }: PageProps) {
         <div className="space-y-2">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-4 w-96" />
+        </div>
+
+        {/* Metadata Skeleton */}
+        <div className="flex gap-2">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-6 w-32" />
         </div>
 
         {/* Navigation Skeleton */}
@@ -58,9 +63,9 @@ export default function WidgetPreviewPage({ params }: PageProps) {
         </Alert>
         <div className="mt-6">
           <Button asChild variant="outline">
-            <Link href="/admin/components/widgets">
+            <Link href="/admin/components/widgets?tab=widgets">
               <ChevronLeft className="h-4 w-4 mr-2" />
-              Back to Widget Components
+              Back to Widgets
             </Link>
           </Button>
         </div>
@@ -70,16 +75,6 @@ export default function WidgetPreviewPage({ params }: PageProps) {
 
   // Get the demo component
   const DemoComponent = WIDGET_DEMOS[widget];
-
-  // Extract variant metadata from demo component (if available)
-  const variants = DemoComponent && 'variants' in DemoComponent ? (DemoComponent as any).variants : undefined;
-  const defaultVariant = DemoComponent && 'defaultVariant' in DemoComponent ? (DemoComponent as any).defaultVariant : undefined;
-
-  // Format category display name
-  const categoryDisplay = widgetData.category
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
 
   return (
     <div className="p-8 space-y-6">
@@ -93,16 +88,31 @@ export default function WidgetPreviewPage({ params }: PageProps) {
           Widget Components
         </Link>
         <span>/</span>
+        <Link href="/admin/components/widgets?tab=widgets" className="hover:text-foreground">
+          Widgets
+        </Link>
+        <span>/</span>
         <span className="text-foreground font-medium capitalize">{widget.replace(/-/g, " ")}</span>
       </div>
 
       {/* Header */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-bold capitalize">{widget.replace(/-/g, " ")}</h1>
-          <Badge variant="secondary">{categoryDisplay}</Badge>
         </div>
         <p className="text-muted-foreground">{widgetData.description}</p>
+        <div className="flex gap-2">
+          {widgetData.phases && (
+            <Badge variant="secondary">
+              {widgetData.phases} Phases
+            </Badge>
+          )}
+          {widgetData.componentCount && (
+            <Badge variant="outline">
+              {widgetData.componentCount} Components
+            </Badge>
+          )}
+        </div>
       </div>
 
       {/* Navigation Between Widgets */}
@@ -110,7 +120,7 @@ export default function WidgetPreviewPage({ params }: PageProps) {
         <div>
           {widgetData.navigation.previous ? (
             <Button asChild variant="outline">
-              <Link href={`/admin/components/widgets/${widgetData.navigation.previous}`}>
+              <Link href={`/admin/components/widgets/complete/${widgetData.navigation.previous}`}>
                 <ChevronLeft className="h-4 w-4 mr-2" />
                 <span className="capitalize">{widgetData.navigation.previous.replace(/-/g, " ")}</span>
               </Link>
@@ -130,7 +140,7 @@ export default function WidgetPreviewPage({ params }: PageProps) {
         <div>
           {widgetData.navigation.next ? (
             <Button asChild variant="outline">
-              <Link href={`/admin/components/widgets/${widgetData.navigation.next}`}>
+              <Link href={`/admin/components/widgets/complete/${widgetData.navigation.next}`}>
                 <span className="capitalize">{widgetData.navigation.next.replace(/-/g, " ")}</span>
                 <ChevronRight className="h-4 w-4 ml-2" />
               </Link>
@@ -146,13 +156,12 @@ export default function WidgetPreviewPage({ params }: PageProps) {
 
       {/* Widget Preview */}
       {DemoComponent ? (
-        <WidgetPreviewWithVariant
-          DemoComponent={DemoComponent}
-          widget={widget}
-          code={widgetData.code}
-          variants={variants}
-          defaultVariant={defaultVariant}
-        />
+        <ComponentPreview>
+          <ComponentPreview.Demo>
+            <DemoComponent />
+          </ComponentPreview.Demo>
+          <ComponentPreview.Code code={widgetData.code} />
+        </ComponentPreview>
       ) : (
         <Alert>
           <AlertDescription>
@@ -164,49 +173,12 @@ export default function WidgetPreviewPage({ params }: PageProps) {
       {/* Back Button */}
       <div className="pt-6">
         <Button asChild variant="ghost">
-          <Link href="/admin/components/widgets">
+          <Link href="/admin/components/widgets?tab=widgets">
             <ChevronLeft className="h-4 w-4 mr-2" />
-            Back to Widget Components
+            Back to Widgets
           </Link>
         </Button>
       </div>
     </div>
-  );
-}
-
-// Client component wrapper to handle variant state
-function WidgetPreviewWithVariant({
-  DemoComponent,
-  widget,
-  code,
-  variants,
-  defaultVariant
-}: {
-  DemoComponent: any;
-  widget: string;
-  code: string;
-  variants?: any[];
-  defaultVariant?: string;
-}) {
-  return (
-    <ComponentPreview
-      variants={variants}
-      componentName={widget}
-      defaultVariant={defaultVariant}
-    >
-      <DemoWithVariant DemoComponent={DemoComponent} />
-      <ComponentPreview.Code code={code} />
-    </ComponentPreview>
-  );
-}
-
-// Wrapper that accesses variant from context and passes to demo
-function DemoWithVariant({ DemoComponent }: { DemoComponent: any }) {
-  const { variant } = usePreviewContext();
-
-  return (
-    <ComponentPreview.Demo>
-      <DemoComponent variant={variant || undefined} />
-    </ComponentPreview.Demo>
   );
 }

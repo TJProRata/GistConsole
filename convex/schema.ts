@@ -155,6 +155,70 @@ export default defineSchema(
     createdAt: v.number(),
     updatedAt: v.number(),
   }).index("by_user_id", ["userId"]),
+
+  // Preview Configurations (ephemeral, for unauthenticated users)
+  // Purpose: Allow widget preview before sign-up
+  // TTL: 24 hours (cleaned up by scheduled job)
+  previewConfigurations: defineTable({
+    sessionId: v.string(), // UUID for preview session
+    apiKey: v.string(), // User's Gist API key (validation permissive for preview)
+
+    // Widget Configuration
+    widgetType: v.optional(
+      v.union(
+        v.literal("floating"),
+        v.literal("rufus"),
+        v.literal("womensWorld")
+      )
+    ),
+
+    // Appearance Configuration
+    configuration: v.optional(
+      v.object({
+        // Colors
+        primaryColor: v.optional(v.string()),
+        secondaryColor: v.optional(v.string()),
+        backgroundColor: v.optional(v.string()),
+        textColor: v.optional(v.string()),
+        useGradient: v.optional(v.boolean()),
+        gradientStart: v.optional(v.string()),
+        gradientEnd: v.optional(v.string()),
+
+        // Dimensions
+        width: v.optional(v.number()),
+        height: v.optional(v.number()),
+
+        // Behavior
+        placement: v.optional(
+          v.union(
+            v.literal("bottom-right"),
+            v.literal("bottom-left"),
+            v.literal("top-right"),
+            v.literal("top-left")
+          )
+        ),
+        openByDefault: v.optional(v.boolean()),
+
+        // Icons
+        iconUrl: v.optional(v.string()),
+        iconStorageId: v.optional(v.id("_storage")),
+      })
+    ),
+
+    // Timestamps
+    createdAt: v.number(),
+    expiresAt: v.number(), // Auto-cleanup after 24 hours
+  })
+    .index("by_session_id", ["sessionId"])
+    .index("by_expiration", ["expiresAt"]),
+
+  // Preview to User Mapping (tracks conversions)
+  previewToUserMapping: defineTable({
+    sessionId: v.string(), // Preview session ID
+    userId: v.string(), // User's Clerk ID after sign-up
+    converted: v.boolean(), // Whether preview was converted to user config
+    convertedAt: v.optional(v.number()), // When conversion happened
+  }).index("by_session_id", ["sessionId"]),
 },
   { strictTableNameTypes: true }
 );

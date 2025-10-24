@@ -1,8 +1,9 @@
 "use client";
 
+import * as React from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { ComponentPreview } from "@/components/ComponentPreview";
+import { ComponentPreview, usePreviewContext } from "@/components/ComponentPreview";
 import { UI_DEMOS } from "@/components/component-previews/ui-demos";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -70,6 +71,10 @@ export default function UIComponentPreviewPage({ params }: PageProps) {
   // Get the demo component
   const DemoComponent = UI_DEMOS[component];
 
+  // Extract variant metadata from demo component (if available)
+  const variants = DemoComponent && 'variants' in DemoComponent ? (DemoComponent as any).variants : undefined;
+  const defaultVariant = DemoComponent && 'defaultVariant' in DemoComponent ? (DemoComponent as any).defaultVariant : undefined;
+
   return (
     <div className="p-8 space-y-6">
       {/* Breadcrumb */}
@@ -135,12 +140,13 @@ export default function UIComponentPreviewPage({ params }: PageProps) {
 
       {/* Component Preview */}
       {DemoComponent ? (
-        <ComponentPreview>
-          <ComponentPreview.Demo>
-            <DemoComponent />
-          </ComponentPreview.Demo>
-          <ComponentPreview.Code code={componentData.code} />
-        </ComponentPreview>
+        <UIComponentPreviewWithVariant
+          DemoComponent={DemoComponent}
+          component={component}
+          code={componentData.code}
+          variants={variants}
+          defaultVariant={defaultVariant}
+        />
       ) : (
         <Alert>
           <AlertDescription>
@@ -159,5 +165,42 @@ export default function UIComponentPreviewPage({ params }: PageProps) {
         </Button>
       </div>
     </div>
+  );
+}
+
+// Client component wrapper to handle variant state
+function UIComponentPreviewWithVariant({
+  DemoComponent,
+  component,
+  code,
+  variants,
+  defaultVariant
+}: {
+  DemoComponent: any;
+  component: string;
+  code: string;
+  variants?: any[];
+  defaultVariant?: string;
+}) {
+  return (
+    <ComponentPreview
+      variants={variants}
+      componentName={component}
+      defaultVariant={defaultVariant}
+    >
+      <DemoWithVariant DemoComponent={DemoComponent} />
+      <ComponentPreview.Code code={code} />
+    </ComponentPreview>
+  );
+}
+
+// Wrapper that accesses variant from context and passes to demo
+function DemoWithVariant({ DemoComponent }: { DemoComponent: any }) {
+  const { variant } = usePreviewContext();
+
+  return (
+    <ComponentPreview.Demo>
+      <DemoComponent variant={variant || undefined} />
+    </ComponentPreview.Demo>
   );
 }

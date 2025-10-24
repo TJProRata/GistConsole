@@ -24,7 +24,7 @@ export default function ComponentsOverview() {
       </div>
 
       {/* Statistics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {/* Total UI Components */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -58,7 +58,27 @@ export default function ComponentsOverview() {
               <>
                 <div className="text-2xl font-bold">{stats.totalWidgetComponents}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Custom widget components
+                  Individual components
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Complete Widgets */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Complete Widgets</CardTitle>
+            <Package className="h-4 w-4 text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <Skeleton className="h-8 w-20" />
+            ) : (
+              <>
+                <div className="text-2xl font-bold">{stats.completeWidgets}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Full widget implementations
                 </p>
               </>
             )}

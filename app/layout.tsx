@@ -5,8 +5,8 @@ import { Header } from "@/components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Gist Console",
-  description: "Chat widget management console",
+  title: "Gist Widget Builder",
+  description: "Chat widget management builder",
 };
 
 export default function RootLayout({

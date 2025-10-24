@@ -1,10 +1,10 @@
 # Authentication & Login System
 
-Complete documentation for how authentication and user management works in Gist Console.
+Complete documentation for how authentication and user management works in Gist Widget Builder.
 
 ## Overview
 
-Gist Console uses **Clerk** for authentication and **Convex** for user data storage, with a dual-layer sync strategy ensuring reliable user profile creation.
+Gist Widget Builder uses **Clerk** for authentication and **Convex** for user data storage, with a dual-layer sync strategy ensuring reliable user profile creation.
 
 ## Complete Authentication Flow
 

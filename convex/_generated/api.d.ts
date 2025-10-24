@@ -14,6 +14,7 @@ import type * as components_ from "../components.js";
 import type * as files from "../files.js";
 import type * as gistConfigurations from "../gistConfigurations.js";
 import type * as migrations from "../migrations.js";
+import type * as previewConfigurations from "../previewConfigurations.js";
 import type * as userProfiles from "../userProfiles.js";
 import type * as users from "../users.js";
 
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   files: typeof files;
   gistConfigurations: typeof gistConfigurations;
   migrations: typeof migrations;
+  previewConfigurations: typeof previewConfigurations;
   userProfiles: typeof userProfiles;
   users: typeof users;
 }>;

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Convex backend provides type-safe database operations for the Gist Console application with strong schema validation and separated concerns between authentication and business data.
+This Convex backend provides type-safe database operations for the Gist Widget Builder application with strong schema validation and separated concerns between authentication and business data.
 
 ## Database Tables
 

@@ -15,9 +15,10 @@ import Link from "next/link";
 
 export default function WidgetComponentsPage() {
   const components = useQuery(api.components.getWidgetComponentsList);
+  const completeWidgets = useQuery(api.components.getCompleteWidgetsList);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const isLoading = components === undefined;
+  const isLoading = components === undefined || completeWidgets === undefined;
 
   // Filter components by search query across all categories
   const filterComponents = (categoryComponents: any[]) => {
@@ -32,6 +33,10 @@ export default function WidgetComponentsPage() {
 
   // Get filtered counts for each category
   const getFilteredCount = (categoryKey: string) => {
+    if (categoryKey === "widgets") {
+      if (!completeWidgets) return 0;
+      return filterComponents(completeWidgets).length;
+    }
     if (!components) return 0;
     return filterComponents(components[categoryKey as keyof typeof components] || []).length;
   };
@@ -58,14 +63,15 @@ export default function WidgetComponentsPage() {
       </div>
 
       {/* Stats */}
-      {!isLoading && components && (
+      {!isLoading && components && completeWidgets && (
         <div className="flex gap-4 text-sm text-gray-600">
           <span>
             Total Widget Components: <strong>
               {(components.icons?.length || 0) +
                 (components.animations?.length || 0) +
                 (components["ai-elements"]?.length || 0) +
-                (components["ask-anything"]?.length || 0)}
+                (components["ask-anything"]?.length || 0) +
+                (completeWidgets?.length || 0)}
             </strong>
           </span>
           {searchQuery && (
@@ -76,7 +82,8 @@ export default function WidgetComponentsPage() {
                   {getFilteredCount("icons") +
                     getFilteredCount("animations") +
                     getFilteredCount("ai-elements") +
-                    getFilteredCount("ask-anything")}
+                    getFilteredCount("ask-anything") +
+                    getFilteredCount("widgets")}
                 </strong>
               </span>
             </>
@@ -86,7 +93,7 @@ export default function WidgetComponentsPage() {
 
       {/* Widget Tabs by Category */}
       <Tabs defaultValue="icons" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="icons">
             Icons {!isLoading && `(${getFilteredCount("icons")})`}
           </TabsTrigger>
@@ -98,6 +105,9 @@ export default function WidgetComponentsPage() {
           </TabsTrigger>
           <TabsTrigger value="ask-anything">
             Ask Anything {!isLoading && `(${getFilteredCount("ask-anything")})`}
+          </TabsTrigger>
+          <TabsTrigger value="widgets">
+            Widgets {!isLoading && `(${getFilteredCount("widgets")})`}
           </TabsTrigger>
         </TabsList>
 
@@ -334,6 +344,75 @@ export default function WidgetComponentsPage() {
                 {filterComponents(components?.["ask-anything"] || []).length === 0 && (
                   <p className="text-center text-gray-500 col-span-full py-8">
                     {searchQuery ? "No ask-anything components match your search." : "No ask-anything components found."}
+                  </p>
+                )}
+              </div>
+            )}
+          </ScrollArea>
+        </TabsContent>
+
+        {/* Widgets Tab (Complete Widgets) */}
+        <TabsContent value="widgets" className="space-y-4">
+          <ScrollArea className="h-[600px] rounded-md border p-4">
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Array.from({ length: 1 }).map((_, i) => (
+                  <Card key={i}>
+                    <CardHeader>
+                      <Skeleton className="h-5 w-32" />
+                      <Skeleton className="h-4 w-full" />
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filterComponents(completeWidgets || []).map((widget) => (
+                  <Card key={widget.name} className="hover:shadow-md transition-shadow">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-base">
+                        <Package className="h-4 w-4" />
+                        <Link
+                          href={`/admin/components/widgets/complete/${widget.name}`}
+                          className="hover:text-blue-600 hover:underline"
+                        >
+                          {widget.name.replace(/-/g, " ")}
+                        </Link>
+                      </CardTitle>
+                      <CardDescription className="text-xs">
+                        {widget.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex gap-2">
+                          {widget.phases && (
+                            <Badge variant="secondary" className="text-xs">
+                              {widget.phases} Phases
+                            </Badge>
+                          )}
+                          {widget.componentCount && (
+                            <Badge variant="outline" className="text-xs">
+                              {widget.componentCount} Components
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 font-mono truncate">
+                          {widget.path}
+                        </p>
+                        <Button asChild variant="outline" size="sm" className="w-full">
+                          <Link href={`/admin/components/widgets/complete/${widget.name}`}>
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Preview
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                {filterComponents(completeWidgets || []).length === 0 && (
+                  <p className="text-center text-gray-500 col-span-full py-8">
+                    {searchQuery ? "No complete widgets match your search." : "No complete widgets found."}
                   </p>
                 )}
               </div>

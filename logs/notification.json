@@ -404,5 +404,110 @@
     "cwd": "/Users/tjmcgovern/gist-console",
     "hook_event_name": "Notification",
     "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "7f7d6019-9f5a-413a-8099-d792360a2535",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/7f7d6019-9f5a-413a-8099-d792360a2535.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "d4be3872-c240-4fef-aa29-edd45fe230e7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d4be3872-c240-4fef-aa29-edd45fe230e7.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "c68ab82d-4b18-472a-a051-00218212e877",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c68ab82d-4b18-472a-a051-00218212e877.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "c68ab82d-4b18-472a-a051-00218212e877",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c68ab82d-4b18-472a-a051-00218212e877.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude needs your permission to use Update"
+  },
+  {
+    "session_id": "a5ef1441-b57f-46a1-8b9e-21c813da9088",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a5ef1441-b57f-46a1-8b9e-21c813da9088.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "a5ef1441-b57f-46a1-8b9e-21c813da9088",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a5ef1441-b57f-46a1-8b9e-21c813da9088.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "a5ef1441-b57f-46a1-8b9e-21c813da9088",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a5ef1441-b57f-46a1-8b9e-21c813da9088.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "00682b98-b3bb-4a88-ad26-52dc3d60c839",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/00682b98-b3bb-4a88-ad26-52dc3d60c839.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "a5ef1441-b57f-46a1-8b9e-21c813da9088",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a5ef1441-b57f-46a1-8b9e-21c813da9088.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "a56a0459-82c5-45be-9ee6-c8324ade4f9f",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a56a0459-82c5-45be-9ee6-c8324ade4f9f.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "a56a0459-82c5-45be-9ee6-c8324ade4f9f",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a56a0459-82c5-45be-9ee6-c8324ade4f9f.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "199d94b4-5609-4f1a-ad89-5c57625488cf",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/199d94b4-5609-4f1a-ad89-5c57625488cf.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention"
+  },
+  {
+    "session_id": "a56a0459-82c5-45be-9ee6-c8324ade4f9f",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a56a0459-82c5-45be-9ee6-c8324ade4f9f.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "199d94b4-5609-4f1a-ad89-5c57625488cf",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/199d94b4-5609-4f1a-ad89-5c57625488cf.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan"
+  },
+  {
+    "session_id": "199d94b4-5609-4f1a-ad89-5c57625488cf",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/199d94b4-5609-4f1a-ad89-5c57625488cf.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan"
   }
 ]
