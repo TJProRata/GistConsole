@@ -65,7 +65,7 @@
     --gradient-brand: linear-gradient(90deg, #6F61EF 0%, #E19736 100%);
     --gradient-brand-reverse: linear-gradient(90deg, #E19736 0%, #6F61EF 100%);
     --gradient-brand-teal: linear-gradient(90deg, #6F61EF 0%, #36E1AE 100%);
-    --gradient-womens-world: linear-gradient(180deg, #FB9649 0%, #A361E9 100%);
+    --gradient-womens-world: linear-gradient(180deg, #FEAC04 0%, #C79966 50%, #9C7BC8 100%);
 
     /* Typography Scale */
     --font-size-xs: 0.75rem;        /* 12px */
@@ -157,7 +157,7 @@
   font-size: 2rem;
   font-weight: 400;
   line-height: 1.2;
-  color: var(--color-text-primary);
+  color: white;
   text-align: center;
 }
 

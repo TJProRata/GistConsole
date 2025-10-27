@@ -9,7 +9,7 @@ A health-focused Q&A widget designed for Woman's World magazine's audience. The 
 - **Title**: "✨ Woman's World Answers" in large serif font (Playfair Display or similar)
 - **Input Container**: Pill-shaped glassmorphism container with gradient border, white background with blur effect
 - **Seed Questions**: Auto-scrolling carousel of health question pills with rounded corners (40px radius)
-- **Branding**: "Powered by Gist.ai" in bottom-right corner
+- **Branding**: "Powered by Gist.ai" in bottom-right corner (use the )
 
 **Interactions:**
 - Auto-scrolling question carousel (scrolls left continuously)

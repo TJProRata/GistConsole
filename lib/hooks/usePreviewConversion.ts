@@ -24,6 +24,12 @@ export function usePreviewConversion() {
     const sessionId = localStorage.getItem(PREVIEW_SESSION_KEY);
     if (!sessionId) return;
 
+    // Guard: Validate sessionId is non-empty
+    if (sessionId.trim() === '') {
+      localStorage.removeItem(PREVIEW_SESSION_KEY);
+      return;
+    }
+
     // Convert preview to user configuration
     const convert = async () => {
       try {
@@ -34,8 +40,10 @@ export function usePreviewConversion() {
 
         console.log("Preview configuration converted successfully");
       } catch (err) {
-        // Preview might not exist or already converted
-        console.log("Preview conversion skipped:", err);
+        // Preview might not exist or already converted - silent handling in production
+        if (process.env.NODE_ENV === 'development') {
+          console.debug("Preview conversion not needed:", err);
+        }
         // Clean up session ID anyway
         localStorage.removeItem(PREVIEW_SESSION_KEY);
       }

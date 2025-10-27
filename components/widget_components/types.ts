@@ -129,7 +129,23 @@ export interface WomensWorldWidgetProps {
   /** Placeholder text for search input */
   placeholder?: string;
 
-  /** Pre-populated seed questions for carousel */
+  /**
+   * Pre-populated seed questions for first carousel row.
+   * Use this for health/medical-focused questions.
+   */
+  seedQuestionsRow1?: string[];
+
+  /**
+   * Pre-populated seed questions for second carousel row.
+   * Use this for wellness/lifestyle-focused questions.
+   */
+  seedQuestionsRow2?: string[];
+
+  /**
+   * @deprecated Use seedQuestionsRow1 and seedQuestionsRow2 instead for independent carousel rows.
+   * This prop is maintained for backward compatibility. If provided without row-specific props,
+   * the array will be split: first 6 items go to row 1, next 6 items go to row 2.
+   */
   seedQuestions?: string[];
 
   /** Auto-scroll interval in milliseconds */
@@ -161,8 +177,23 @@ export interface SearchInputSectionProps {
   /** Submit handler */
   onSubmit: (query: string) => void;
 
-  /** Seed questions for dual carousels (displayed in two rows) */
-  seedQuestions: string[];
+  /**
+   * Seed questions for first carousel row.
+   * These questions should be thematically distinct from row 2 (e.g., health/medical focus).
+   */
+  seedQuestionsRow1: string[];
+
+  /**
+   * Seed questions for second carousel row.
+   * These questions should be thematically distinct from row 1 (e.g., wellness/lifestyle focus).
+   */
+  seedQuestionsRow2: string[];
+
+  /**
+   * @deprecated Use seedQuestionsRow1 and seedQuestionsRow2 instead for independent carousel rows.
+   * This prop is maintained for backward compatibility only.
+   */
+  seedQuestions?: string[];
 
   /** Auto-scroll interval in milliseconds (applies to both carousel rows) */
   autoScrollInterval: number;

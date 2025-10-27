@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, animate } from "framer-motion";
 import { X, Sparkles, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PoweredByButton } from "@/components/ui/powered-by-button";
+import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { ProfileBlank } from "@/components/widget_components/icons/profile-blank";
 import { cn } from "@/lib/utils";
 import type {
@@ -18,13 +18,30 @@ import type {
 // Default Values
 // ============================================================================
 
-const DEFAULT_SEED_QUESTIONS = [
+/**
+ * Default seed questions for first carousel row (health/medical focus).
+ * These questions target specific health concerns and medical topics.
+ */
+const DEFAULT_SEED_QUESTIONS_ROW_1 = [
   "What's the best bread for weight loss?",
-  "How can I make Hamburger Helper healthier?",
   "Can I prevent dementia?",
   "Is there a link between trauma and autoimmune symptoms?",
-  "What are natural ways to boost energy?",
   "How do I improve my gut health?",
+  "What are signs of vitamin deficiency?",
+  "Can exercise reduce inflammation?",
+];
+
+/**
+ * Default seed questions for second carousel row (wellness/lifestyle focus).
+ * These questions focus on daily wellness practices and lifestyle improvements.
+ */
+const DEFAULT_SEED_QUESTIONS_ROW_2 = [
+  "How can I make Hamburger Helper healthier?",
+  "What are natural ways to boost energy?",
+  "Best morning routine for productivity?",
+  "How much water should I drink daily?",
+  "What foods improve sleep quality?",
+  "Natural remedies for stress relief?",
 ];
 
 // ============================================================================
@@ -67,13 +84,13 @@ function SeedQuestionsCarousel({
   const carouselRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<any>(null);
 
-  // Calculate duration for smooth continuous scroll (20s base duration)
-  const scrollDuration = 20;
+  // Calculate duration based on autoScrollInterval prop (convert ms to seconds)
+  const scrollDuration = autoScrollInterval / 1000;
 
   // Duplicate questions array for seamless infinite loop
   const duplicatedQuestions = [...questions, ...questions];
 
-  // Initialize animation on mount
+  // Initialize animation on mount and restart when autoScrollInterval changes
   useEffect(() => {
     if (carouselRef.current) {
       animationRef.current = animate(
@@ -87,11 +104,11 @@ function SeedQuestionsCarousel({
       );
     }
 
-    // Cleanup animation on unmount
+    // Cleanup animation on unmount or when autoScrollInterval changes
     return () => {
       animationRef.current?.stop();
     };
-  }, [scrollDuration]);
+  }, [autoScrollInterval, scrollDuration]);
 
   // Pause animation on hover
   const handleMouseEnter = () => {
@@ -135,6 +152,8 @@ function SearchInputSection({
   placeholder,
   onSubmit,
   seedQuestions,
+  seedQuestionsRow1,
+  seedQuestionsRow2,
   autoScrollInterval,
 }: SearchInputSectionProps) {
   const [selectedQuestion, setSelectedQuestion] = useState<string>("");
@@ -197,20 +216,24 @@ function SearchInputSection({
       </form>
 
       {/* Seed Questions Carousels - Dual Rows */}
-      {seedQuestions.length > 0 && (
+      {(seedQuestionsRow1.length > 0 || seedQuestionsRow2.length > 0) && (
         <div className="flex flex-col gap-2 w-full">
-          <SeedQuestionsCarousel
-            questions={seedQuestions}
-            autoScrollInterval={autoScrollInterval}
-            onQuestionClick={handleQuestionClick}
-            selectedQuestion={selectedQuestion}
-          />
-          <SeedQuestionsCarousel
-            questions={seedQuestions}
-            autoScrollInterval={autoScrollInterval}
-            onQuestionClick={handleQuestionClick}
-            selectedQuestion={selectedQuestion}
-          />
+          {seedQuestionsRow1.length > 0 && (
+            <SeedQuestionsCarousel
+              questions={seedQuestionsRow1}
+              autoScrollInterval={autoScrollInterval}
+              onQuestionClick={handleQuestionClick}
+              selectedQuestion={selectedQuestion}
+            />
+          )}
+          {seedQuestionsRow2.length > 0 && (
+            <SeedQuestionsCarousel
+              questions={seedQuestionsRow2}
+              autoScrollInterval={autoScrollInterval}
+              onQuestionClick={handleQuestionClick}
+              selectedQuestion={selectedQuestion}
+            />
+          )}
         </div>
       )}
     </div>
@@ -228,14 +251,26 @@ export function WomensWorldWidget({
   collapsedText = "Ask AI",
   title = "✨ Woman's World Answers",
   placeholder = "Ask us your health questions",
-  seedQuestions = DEFAULT_SEED_QUESTIONS,
-  autoScrollInterval = 3000,
+  seedQuestions,
+  seedQuestionsRow1,
+  seedQuestionsRow2,
+  autoScrollInterval = 35000,
   brandingText = "Powered by Gist.ai",
   onSubmit,
   width = 392,
   height,
   className,
 }: WomensWorldWidgetProps) {
+  // Backward compatibility fallback logic
+  const row1Questions =
+    seedQuestionsRow1 ??
+    seedQuestions?.slice(0, 6) ??
+    DEFAULT_SEED_QUESTIONS_ROW_1;
+  const row2Questions =
+    seedQuestionsRow2 ??
+    seedQuestions?.slice(6, 12) ??
+    DEFAULT_SEED_QUESTIONS_ROW_2;
+
   // Controlled/uncontrolled pattern
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
   const isExpanded = controlledIsExpanded ?? internalExpanded;
@@ -342,7 +377,8 @@ export function WomensWorldWidget({
               <SearchInputSection
                 placeholder={placeholder}
                 onSubmit={handleSubmit}
-                seedQuestions={seedQuestions}
+                seedQuestionsRow1={row1Questions}
+                seedQuestionsRow2={row2Questions}
                 autoScrollInterval={autoScrollInterval}
               />
             </div>

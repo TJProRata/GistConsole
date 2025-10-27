@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { BlueStar } from "@/components/widget_components/icons/blue-star";
+import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { ProfileBlank } from "@/components/widget_components/icons/profile-blank";
 import { Wand } from "@/components/widget_components/icons/wand";
 import { SearchingAnimation } from "@/components/widget_components/animations/searching-animation";
@@ -60,6 +61,14 @@ export function ProfileBlankDemo() {
   return (
     <div className="flex items-center justify-center p-8">
       <ProfileBlank />
+    </div>
+  );
+}
+
+export function PoweredByButtonDemo() {
+  return (
+    <div className="flex items-center justify-center p-8 bg-gradient-to-br from-orange-50 to-purple-50">
+      <PoweredByButton />
     </div>
   );
 }
@@ -269,14 +278,25 @@ export function OnboardingWidgetDemo() {
   );
 }
 
-export function WomensWorldWidgetDemo(props?: { width?: number; height?: number }) {
+export function WomensWorldWidgetDemo(props?: {
+  width?: number;
+  height?: number;
+  collapsedText?: string;
+  title?: string;
+  placeholder?: string;
+  seedQuestionsRow1?: string[];
+  seedQuestionsRow2?: string[];
+  autoScrollInterval?: number;
+  brandingText?: string;
+}) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <div className="flex items-center justify-center min-h-[600px] p-8 bg-gradient-to-br from-orange-50 to-purple-50">
       <div className="text-center space-y-4">
         <p className="text-sm text-gray-600 mb-6">
-          Health-focused Q&A widget with auto-scrolling seed questions
+          Health Q&A widget with dual independent auto-scrolling seed question
+          carousels
         </p>
         <WomensWorldWidget
           isExpanded={isExpanded}
@@ -284,6 +304,13 @@ export function WomensWorldWidgetDemo(props?: { width?: number; height?: number 
           onSubmit={(question) => console.log("Question submitted:", question)}
           width={props?.width}
           height={props?.height}
+          collapsedText={props?.collapsedText}
+          title={props?.title}
+          placeholder={props?.placeholder}
+          seedQuestionsRow1={props?.seedQuestionsRow1}
+          seedQuestionsRow2={props?.seedQuestionsRow2}
+          autoScrollInterval={props?.autoScrollInterval}
+          brandingText={props?.brandingText}
         />
       </div>
     </div>
@@ -293,6 +320,7 @@ export function WomensWorldWidgetDemo(props?: { width?: number; height?: number 
 // Demo component mapping for dynamic rendering
 export const WIDGET_DEMOS: Record<string, (props?: any) => React.ReactElement> = {
   "blue-star": BlueStarDemo,
+  "powered-by-button": PoweredByButtonDemo,
   "profile-blank": ProfileBlankDemo,
   wand: WandDemo,
   "searching-animation": SearchingAnimationDemo,

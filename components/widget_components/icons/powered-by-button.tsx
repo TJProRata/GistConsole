@@ -1,6 +1,4 @@
 export function PoweredByButton() {
-  const cdnUrl = process.env.NEXT_PUBLIC_CDN_BASE_URL || '';
-
   return (
     <a
       href="https://www.gistanswers.ai/"
@@ -10,7 +8,7 @@ export function PoweredByButton() {
       aria-label="Powered by GistAnswers"
     >
       <img
-        src={`${cdnUrl}/assets/svgs/poweredbyfooter.svg`}
+        src="/assets/svgs/poweredbyfooter.svg"
         alt="Powered by GistAnswers"
         width={145}
         height={14}

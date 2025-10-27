@@ -11,6 +11,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
@@ -27,6 +30,31 @@ export default function CompleteWidgetPreviewPage({ params }: PageProps) {
 
   // Dimension controls state (only for womens-world-widget)
   const [widgetWidth, setWidgetWidth] = useState(392);
+
+  // Women's World Widget configuration state
+  const [womensWorldConfig, setWomensWorldConfig] = useState({
+    collapsedText: "Ask AI",
+    title: "✨ Woman's World Answers",
+    placeholder: "Ask us your health questions",
+    seedQuestionsRow1: [
+      "What's the best bread for weight loss?",
+      "Can I prevent dementia?",
+      "Is there a link between trauma and autoimmune symptoms?",
+      "How do I improve my gut health?",
+      "What are signs of vitamin deficiency?",
+      "Can exercise reduce inflammation?",
+    ],
+    seedQuestionsRow2: [
+      "How can I make Hamburger Helper healthier?",
+      "What are natural ways to boost energy?",
+      "Best morning routine for productivity?",
+      "How much water should I drink daily?",
+      "What foods improve sleep quality?",
+      "Natural remedies for stress relief?",
+    ],
+    autoScrollInterval: 35000,
+    brandingText: "Powered by Gist.ai",
+  });
 
   // Loading state
   if (widgetData === undefined) {
@@ -160,30 +188,187 @@ export default function CompleteWidgetPreviewPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Dimension Controls - Admin Preview Only */}
+      {/* Widget Configuration Controls - Admin Preview Only */}
       {widget === "womens-world-widget" && (
-        <div className="mb-6 p-4 border rounded-lg bg-white space-y-4">
-          <h3 className="text-sm font-semibold mb-2">Widget Width (Preview Only)</h3>
+        <div className="mb-6 p-4 border rounded-lg bg-white">
+          <h3 className="text-sm font-semibold mb-4">Widget Configuration (Preview Only)</h3>
 
-          {/* Width Control */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="widget-width">Width</Label>
-              <span className="text-sm text-muted-foreground">{widgetWidth}px</span>
-            </div>
-            <Slider
-              id="widget-width"
-              min={392}
-              max={800}
-              step={8}
-              value={[widgetWidth]}
-              onValueChange={(value) => setWidgetWidth(value[0])}
-            />
-          </div>
+          <Tabs defaultValue="appearance" className="w-full">
+            <TabsList className="w-full">
+              <TabsTrigger value="appearance" className="flex-1">
+                Appearance
+              </TabsTrigger>
+              <TabsTrigger value="behavior" className="flex-1">
+                Behavior
+              </TabsTrigger>
+              <TabsTrigger value="content" className="flex-1">
+                Content
+              </TabsTrigger>
+            </TabsList>
 
-          <p className="text-xs text-muted-foreground">
-            Adjust width to test widget responsiveness. Current width: {widgetWidth}px
-          </p>
+            {/* Appearance Tab */}
+            <TabsContent value="appearance" className="space-y-4 mt-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="widget-width">Width</Label>
+                  <span className="text-sm text-muted-foreground">{widgetWidth}px</span>
+                </div>
+                <Slider
+                  id="widget-width"
+                  min={392}
+                  max={800}
+                  step={8}
+                  value={[widgetWidth]}
+                  onValueChange={(value) => setWidgetWidth(value[0])}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Adjust width to test widget responsiveness. Current width: {widgetWidth}px
+                </p>
+              </div>
+            </TabsContent>
+
+            {/* Behavior Tab */}
+            <TabsContent value="behavior" className="space-y-4 mt-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="auto-scroll-interval">Auto-scroll Interval</Label>
+                  <span className="text-sm text-muted-foreground">{womensWorldConfig.autoScrollInterval}ms</span>
+                </div>
+                <Slider
+                  id="auto-scroll-interval"
+                  min={30000}
+                  max={40000}
+                  step={500}
+                  value={[womensWorldConfig.autoScrollInterval]}
+                  onValueChange={(value) =>
+                    setWomensWorldConfig({ ...womensWorldConfig, autoScrollInterval: value[0] })
+                  }
+                />
+                <p className="text-xs text-muted-foreground">
+                  How often the carousel auto-scrolls (30-40 seconds)
+                </p>
+              </div>
+            </TabsContent>
+
+            {/* Content Tab */}
+            <TabsContent value="content" className="space-y-4 mt-4">
+              <div>
+                <Label htmlFor="ww-collapsedText">Collapsed Button Text</Label>
+                <Input
+                  id="ww-collapsedText"
+                  value={womensWorldConfig.collapsedText}
+                  onChange={(e) =>
+                    setWomensWorldConfig({ ...womensWorldConfig, collapsedText: e.target.value })
+                  }
+                  placeholder="Ask AI"
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Text shown on the collapsed button
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="ww-title">Widget Title</Label>
+                <Input
+                  id="ww-title"
+                  value={womensWorldConfig.title}
+                  onChange={(e) =>
+                    setWomensWorldConfig({ ...womensWorldConfig, title: e.target.value })
+                  }
+                  placeholder="✨ Woman's World Answers"
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Main title shown in the expanded widget
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="ww-placeholder">Search Placeholder</Label>
+                <Input
+                  id="ww-placeholder"
+                  value={womensWorldConfig.placeholder}
+                  onChange={(e) =>
+                    setWomensWorldConfig({ ...womensWorldConfig, placeholder: e.target.value })
+                  }
+                  placeholder="Ask us your health questions"
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Placeholder text for the search input
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="ww-brandingText">Branding Text</Label>
+                <Input
+                  id="ww-brandingText"
+                  value={womensWorldConfig.brandingText}
+                  onChange={(e) =>
+                    setWomensWorldConfig({ ...womensWorldConfig, brandingText: e.target.value })
+                  }
+                  placeholder="Powered by Gist.ai"
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Footer branding text
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="ww-seedQuestionsRow1">
+                  Seed Questions - Row 1
+                </Label>
+                <Textarea
+                  id="ww-seedQuestionsRow1"
+                  value={womensWorldConfig.seedQuestionsRow1.join("\n")}
+                  onChange={(e) =>
+                    setWomensWorldConfig({
+                      ...womensWorldConfig,
+                      seedQuestionsRow1: e.target.value
+                        .split("\n")
+                        .map((q) => q.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  placeholder="One question per line"
+                  className="mt-2"
+                  rows={6}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  First carousel row (one question per line). Health/medical
+                  focus recommended.
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="ww-seedQuestionsRow2">
+                  Seed Questions - Row 2
+                </Label>
+                <Textarea
+                  id="ww-seedQuestionsRow2"
+                  value={womensWorldConfig.seedQuestionsRow2.join("\n")}
+                  onChange={(e) =>
+                    setWomensWorldConfig({
+                      ...womensWorldConfig,
+                      seedQuestionsRow2: e.target.value
+                        .split("\n")
+                        .map((q) => q.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  placeholder="One question per line"
+                  className="mt-2"
+                  rows={6}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Second carousel row (one question per line). Wellness/lifestyle
+                  focus recommended.
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       )}
 
@@ -192,7 +377,16 @@ export default function CompleteWidgetPreviewPage({ params }: PageProps) {
         <ComponentPreview>
           <ComponentPreview.Demo>
             {widget === "womens-world-widget" ? (
-              <DemoComponent width={widgetWidth} />
+              <DemoComponent
+                width={widgetWidth}
+                seedQuestionsRow1={womensWorldConfig.seedQuestionsRow1}
+                seedQuestionsRow2={womensWorldConfig.seedQuestionsRow2}
+                collapsedText={womensWorldConfig.collapsedText}
+                title={womensWorldConfig.title}
+                placeholder={womensWorldConfig.placeholder}
+                autoScrollInterval={womensWorldConfig.autoScrollInterval}
+                brandingText={womensWorldConfig.brandingText}
+              />
             ) : (
               <DemoComponent />
             )}

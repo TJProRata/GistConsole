@@ -15,17 +15,17 @@ export const getComponentStats = query({
     await requireAdmin(ctx);
 
     // Manually counted components from components/ui/ directory
-    const uiComponentsCount = 20; // accordion, alert, badge, button, card, dropdown-menu, form, input, label, scroll-area, select, separator, skeleton, slider, table, tabs, textarea, etc.
+    const uiComponentsCount = 19; // accordion, alert, badge, button, card, carousel, dropdown-menu, form, input, label, phase-navigation, scroll-area, select, separator, skeleton, slider, table, tabs, textarea
 
     // Manually counted widget components
-    const widgetComponentsCount = 12; // 3 icons + 1 animation + 7 ai-elements + 1 ask-anything
+    const widgetComponentsCount = 13; // 4 icons + 1 animation + 7 ai-elements + 1 ask-anything
 
     // Complete widgets count
     const completeWidgetsCount = 4; // onboarding-widget, womens-world-widget, rufus-widget, nyt-chat-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
-      icons: 3, // blue-star, profile-blank, wand
+      icons: 4, // blue-star, profile-blank, wand, powered-by-button
       animations: 1, // searching-animation
       "ai-elements": 7, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase
       "ask-anything": 1, // pricing-card
@@ -61,7 +61,6 @@ export const getUIComponentsList = query({
       { name: "input", path: "components/ui/input.tsx", category: "shadcn/ui" },
       { name: "label", path: "components/ui/label.tsx", category: "shadcn/ui" },
       { name: "phase-navigation", path: "components/ui/phase-navigation.tsx", category: "shadcn/ui" },
-      { name: "powered-by-button", path: "components/ui/powered-by-button.tsx", category: "shadcn/ui" },
       { name: "scroll-area", path: "components/ui/scroll-area.tsx", category: "shadcn/ui" },
       { name: "select", path: "components/ui/select.tsx", category: "shadcn/ui" },
       { name: "separator", path: "components/ui/separator.tsx", category: "shadcn/ui" },
@@ -86,6 +85,7 @@ export const getWidgetComponentsList = query({
     const widgetComponents = {
       icons: [
         { name: "blue-star", path: "components/widget_components/icons/blue-star.tsx", category: "icons", description: "Blue star icon component" },
+        { name: "powered-by-button", path: "components/widget_components/icons/powered-by-button.tsx", category: "icons", description: "Powered by Gist.ai branding button" },
         { name: "profile-blank", path: "components/widget_components/icons/profile-blank.tsx", category: "icons", description: "Blank profile icon component" },
         { name: "wand", path: "components/widget_components/icons/wand.tsx", category: "icons", description: "Magic wand icon component" },
       ],

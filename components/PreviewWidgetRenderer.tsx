@@ -5,7 +5,11 @@ import { cn } from "@/lib/utils";
 import { MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { RufusWidget, NYTChatWidget, WomensWorldWidget } from "@/components/widget_components";
+import {
+  RufusWidget,
+  NYTChatWidget,
+  WomensWorldWidget,
+} from "@/components/widget_components";
 
 interface WidgetConfiguration {
   primaryColor?: string;
@@ -17,11 +21,7 @@ interface WidgetConfiguration {
   gradientEnd?: string;
   width?: number;
   height?: number;
-  placement?:
-    | "bottom-right"
-    | "bottom-left"
-    | "top-right"
-    | "top-left";
+  placement?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
   openByDefault?: boolean;
   iconUrl?: string;
   // NYT Chat Widget Configuration
@@ -109,14 +109,14 @@ export function PreviewWidgetRenderer({
               "Technology",
             ]
           }
-          brandingText={
-            configuration.brandingText || "Powered by Gist Answers"
-          }
+          brandingText={configuration.brandingText || "Powered by Gist Answers"}
           primaryColor={configuration.primaryColor}
           useGradient={configuration.useGradient}
           gradientStart={configuration.gradientStart}
           gradientEnd={configuration.gradientEnd}
-          onSubmit={(query) => console.log("Preview: Question submitted:", query)}
+          onSubmit={(query) =>
+            console.log("Preview: Question submitted:", query)
+          }
           onCategoryClick={(category) =>
             console.log("Preview: Category clicked:", category)
           }
@@ -135,7 +135,13 @@ export function PreviewWidgetRenderer({
       : "absolute bottom-4 left-0 right-0";
 
     return (
-      <div className={cn(positionClasses, "flex items-end justify-center", className)}>
+      <div
+        className={cn(
+          positionClasses,
+          "flex items-end justify-center",
+          className
+        )}
+      >
         <RufusWidget
           defaultExpanded={configuration.openByDefault ?? false}
           customColors={{
@@ -165,9 +171,12 @@ export function PreviewWidgetRenderer({
       : "absolute bottom-4 right-4";
 
     // Inject CSS variable override for gradient colors
-    const gradientOverride = configuration.useGradient && configuration.gradientStart && configuration.gradientEnd
-      ? `--gradient-womens-world: linear-gradient(180deg, ${configuration.gradientStart}, ${configuration.gradientEnd});`
-      : '';
+    const gradientOverride =
+      configuration.useGradient &&
+      configuration.gradientStart &&
+      configuration.gradientEnd
+        ? `--gradient-womens-world: linear-gradient(180deg, ${configuration.gradientStart}, ${configuration.gradientEnd});`
+        : "";
 
     return (
       <>
@@ -182,13 +191,17 @@ export function PreviewWidgetRenderer({
           <WomensWorldWidget
             collapsedText={configuration.collapsedText || "Ask AI"}
             title={configuration.title || "✨ Woman's World Answers"}
-            placeholder={configuration.placeholder || "Ask us your health questions"}
+            placeholder={
+              configuration.placeholder || "Ask us your health questions"
+            }
             seedQuestions={configuration.seedQuestions}
             autoScrollInterval={configuration.autoScrollInterval || 3000}
             brandingText={configuration.brandingText || "Powered by Gist.ai"}
             width={configuration.width || 392}
             height={configuration.height}
-            onSubmit={(question) => console.log("Preview: Question submitted:", question)}
+            onSubmit={(question) =>
+              console.log("Preview: Question submitted:", question)
+            }
           />
         </div>
       </>

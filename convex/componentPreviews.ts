@@ -508,6 +508,20 @@ export function BlueStarDemo() {
 }`,
   },
   {
+    name: "powered-by-button",
+    description: "Powered by Gist.ai branding button",
+    category: "icons",
+    code: `import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button"
+
+export function PoweredByButtonDemo() {
+  return (
+    <div className="flex items-center justify-center p-8 bg-gradient-to-br from-orange-50 to-purple-50">
+      <PoweredByButton />
+    </div>
+  )
+}`,
+  },
+  {
     name: "profile-blank",
     description: "Blank profile icon component",
     category: "icons",
@@ -831,7 +845,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PoweredByButton } from "@/components/ui/powered-by-button";
+import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import {
   Carousel,
   CarouselContent,
@@ -1011,12 +1025,12 @@ export function OnboardingWidget({ isExpanded, onExpandChange }: OnboardingWidge
   },
   {
     name: "womens-world-widget",
-    description: "Health-focused Q&A widget with dual auto-scrolling seed question carousels",
+    description: "Health-focused Q&A widget with dual auto-scrolling seed question carousels with independent data sets",
     category: "widgets",
     phases: 1,
     componentCount: 4,
     dependencies: [
-      "Carousel (x2 instances)",
+      "Carousel (x2 instances with separate data)",
       "Button",
       "PoweredByButton",
       "ProfileBlank",
@@ -1036,6 +1050,25 @@ export function WomensWorldWidgetDemo() {
         isExpanded={isExpanded}
         onExpandChange={setIsExpanded}
         onSubmit={(question) => console.log("Question submitted:", question)}
+        // Row 1: Health/medical-focused questions
+        seedQuestionsRow1={[
+          "What's the best bread for weight loss?",
+          "Can I prevent dementia?",
+          "Is there a link between trauma and autoimmune symptoms?",
+          "How do I improve my gut health?",
+          "What are signs of vitamin deficiency?",
+          "Can exercise reduce inflammation?",
+        ]}
+        // Row 2: Wellness/lifestyle-focused questions
+        seedQuestionsRow2={[
+          "How can I make Hamburger Helper healthier?",
+          "What are natural ways to boost energy?",
+          "Best morning routine for productivity?",
+          "How much water should I drink daily?",
+          "What foods improve sleep quality?",
+          "Natural remedies for stress relief?",
+        ]}
+        autoScrollInterval={15000}
       />
     </div>
   );
