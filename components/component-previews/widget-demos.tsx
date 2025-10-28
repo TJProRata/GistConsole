@@ -9,9 +9,13 @@ import { SearchingAnimation } from "@/components/widget_components/animations/se
 import { DualPhaseProgress } from "@/components/widget_components/ai-elements/dual-phase-progress";
 import { SimpleProgressBar } from "@/components/widget_components/ai-elements/simple-progress-bar";
 import { ReadinessScoreGauge } from "@/components/widget_components/ai-elements/readiness-score-gauge";
+import { QuestionPill } from "@/components/widget_components/ai-elements/question-pill";
+import { SeedQuestionsCarousel } from "@/components/widget_components/ai-elements/seed-questions-carousel";
+import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
 import { PricingCard } from "@/components/widget_components/ask-anything/pricing-card";
 import { OnboardingWidget } from "@/components/widget_components/complete/onboarding-widget";
 import { WomensWorldWidget } from "@/components/widget_components/complete/womens-world-widget";
+import { WomensWorldInlineWidget } from "@/components/widget_components/complete/womens-world-inline-widget";
 import { GlassWidgetContainer, GlassWidgetHeader, GlassWidgetContent, GlassWidgetFooter } from "@/components/widget_components/ai-elements/glass_widget_container";
 import { GifHousing } from "@/components/widget_components/ai-elements/gif-housing";
 import { SuccessPhase } from "@/components/widget_components/ai-elements/success-phase";
@@ -111,6 +115,74 @@ export function ReadinessScoreGaugeDemo() {
   return (
     <div className="flex items-center justify-center p-8">
       <ReadinessScoreGauge score={85} />
+    </div>
+  );
+}
+
+export function QuestionPillDemo() {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <div className="flex items-center gap-2 p-8">
+      <QuestionPill
+        question="What is the best diet for weight loss?"
+        onClick={() => setSelected(!selected)}
+        isSelected={selected}
+      />
+      <QuestionPill
+        question="How can I improve my gut health?"
+        onClick={() => {}}
+        isSelected={false}
+      />
+    </div>
+  );
+}
+
+export function SeedQuestionsCarouselDemo() {
+  const [selected, setSelected] = useState("");
+
+  const questions = [
+    "What's the best bread for weight loss?",
+    "Can I prevent dementia?",
+    "Is there a link between trauma and autoimmune symptoms?",
+    "How do I improve my gut health?",
+    "What are signs of vitamin deficiency?",
+  ];
+
+  return (
+    <div className="w-full max-w-2xl p-8">
+      <SeedQuestionsCarousel
+        questions={questions}
+        autoScrollInterval={35000}
+        onQuestionClick={setSelected}
+        selectedQuestion={selected}
+      />
+    </div>
+  );
+}
+
+export function SearchInputSectionDemo() {
+  const seedQuestionsRow1 = [
+    "What's the best bread for weight loss?",
+    "Can I prevent dementia?",
+    "How do I improve my gut health?",
+  ];
+
+  const seedQuestionsRow2 = [
+    "How can I make Hamburger Helper healthier?",
+    "What are natural ways to boost energy?",
+    "What foods improve sleep quality?",
+  ];
+
+  return (
+    <div className="w-full max-w-md p-8 bg-gradient-to-br from-orange-50 to-purple-50 rounded-xl">
+      <SearchInputSection
+        placeholder="Ask us your health questions"
+        onSubmit={(question) => console.log("Submitted:", question)}
+        seedQuestionsRow1={seedQuestionsRow1}
+        seedQuestionsRow2={seedQuestionsRow2}
+        autoScrollInterval={35000}
+      />
     </div>
   );
 }
@@ -278,6 +350,46 @@ export function OnboardingWidgetDemo() {
   );
 }
 
+export function WomensWorldInlineWidgetDemo(props?: {
+  title?: string;
+  placeholder?: string;
+  seedQuestionsRow1?: string[];
+  seedQuestionsRow2?: string[];
+  autoScrollInterval?: number;
+  maxWidth?: number;
+  variant?: "light" | "neutral" | "subtle";
+}) {
+  return (
+    <div className="flex items-center justify-center min-h-[500px] p-8 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="w-full max-w-3xl">
+        <div className="prose prose-sm mb-8">
+          <p className="text-gray-600">
+            This inline widget is designed to be embedded naturally within article content.
+            It maintains the same Q&A functionality but with a compact, article-friendly design.
+          </p>
+        </div>
+
+        <WomensWorldInlineWidget
+          title={props?.title}
+          placeholder={props?.placeholder}
+          seedQuestionsRow1={props?.seedQuestionsRow1}
+          seedQuestionsRow2={props?.seedQuestionsRow2}
+          autoScrollInterval={props?.autoScrollInterval}
+          maxWidth={props?.maxWidth}
+          variant={props?.variant}
+          onSubmit={(question) => console.log("Question submitted:", question)}
+        />
+
+        <div className="prose prose-sm mt-8">
+          <p className="text-gray-600">
+            Article content continues naturally after the widget, creating a seamless reading experience.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function WomensWorldWidgetDemo(props?: {
   width?: number;
   height?: number;
@@ -327,11 +439,15 @@ export const WIDGET_DEMOS: Record<string, (props?: any) => React.ReactElement> =
   "dual-phase-progress": DualPhaseProgressDemo,
   "simple-progress-bar": SimpleProgressBarDemo,
   "readiness-score-gauge": ReadinessScoreGaugeDemo,
+  "question-pill": QuestionPillDemo,
+  "seed-questions-carousel": SeedQuestionsCarouselDemo,
+  "search-input-section": SearchInputSectionDemo,
   "glass-widget-container": GlassWidgetContainerDemo,
   "gif-housing": GifHousingDemo,
   "success-phase": SuccessPhaseDemo,
   "prompt-input": PromptInputDemo,
   "pricing-card": PricingCardDemo,
   "onboarding-widget": OnboardingWidgetDemo,
+  "womens-world-inline-widget": WomensWorldInlineWidgetDemo,
   "womens-world-widget": WomensWorldWidgetDemo,
 };

@@ -18,16 +18,16 @@ export const getComponentStats = query({
     const uiComponentsCount = 19; // accordion, alert, badge, button, card, carousel, dropdown-menu, form, input, label, phase-navigation, scroll-area, select, separator, skeleton, slider, table, tabs, textarea
 
     // Manually counted widget components
-    const widgetComponentsCount = 13; // 4 icons + 1 animation + 7 ai-elements + 1 ask-anything
+    const widgetComponentsCount = 16; // 4 icons + 1 animation + 10 ai-elements + 1 ask-anything
 
     // Complete widgets count
-    const completeWidgetsCount = 4; // onboarding-widget, womens-world-widget, rufus-widget, nyt-chat-widget
+    const completeWidgetsCount = 5; // onboarding-widget, womens-world-widget, womens-world-inline-widget, rufus-widget, nyt-chat-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
       icons: 4, // blue-star, profile-blank, wand, powered-by-button
       animations: 1, // searching-animation
-      "ai-elements": 7, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase
+      "ai-elements": 10, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase, question-pill, seed-questions-carousel, search-input-section
       "ask-anything": 1, // pricing-card
       widgets: completeWidgetsCount, // complete widget implementations (in complete/ folder)
     };
@@ -100,6 +100,9 @@ export const getWidgetComponentsList = query({
         { name: "readiness-score-gauge", path: "components/widget_components/ai-elements/readiness-score-gauge.tsx", category: "ai-elements", description: "Visual gauge for readiness score" },
         { name: "simple-progress-bar", path: "components/widget_components/ai-elements/simple-progress-bar.tsx", category: "ai-elements", description: "Basic progress bar component" },
         { name: "success-phase", path: "components/widget_components/ai-elements/success-phase.tsx", category: "ai-elements", description: "Success state display component" },
+        { name: "question-pill", path: "components/widget_components/ai-elements/question-pill.tsx", category: "ai-elements", description: "Reusable question button with gradient selection state" },
+        { name: "seed-questions-carousel", path: "components/widget_components/ai-elements/seed-questions-carousel.tsx", category: "ai-elements", description: "Auto-scrolling carousel with pause-on-hover functionality" },
+        { name: "search-input-section", path: "components/widget_components/ai-elements/search-input-section.tsx", category: "ai-elements", description: "Glassmorphism input with dual auto-scrolling seed question carousels" },
       ],
       "ask-anything": [
         { name: "pricing-card", path: "components/widget_components/ask-anything/pricing-card.tsx", category: "ask-anything", description: "Pricing plan card component" },
@@ -129,6 +132,13 @@ export const getCompleteWidgetsList = query({
         description: "Health-focused Q&A widget for Woman's World with auto-scrolling seed questions",
         phases: 1,
         componentCount: 3,
+      },
+      {
+        name: "womens-world-inline-widget",
+        path: "components/widget_components/complete/womens-world-inline-widget.tsx",
+        description: "Compact inline Q&A widget optimized for embedding between article paragraphs",
+        phases: 1,
+        componentCount: 4,
       },
       {
         name: "rufus-widget",

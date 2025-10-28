@@ -606,6 +606,92 @@ export function ReadinessScoreGaugeDemo() {
 }`,
   },
   {
+    name: "question-pill",
+    description: "Reusable question button with gradient selection state and pill shape (40px border-radius)",
+    category: "ai-elements",
+    code: `import { QuestionPill } from "@/components/widget_components/ai-elements/question-pill"
+
+export function QuestionPillDemo() {
+  const [selected, setSelected] = React.useState(false)
+
+  return (
+    <div className="flex items-center gap-2 p-8">
+      <QuestionPill
+        question="What is the best diet for weight loss?"
+        onClick={() => setSelected(!selected)}
+        isSelected={selected}
+      />
+      <QuestionPill
+        question="How can I improve my gut health?"
+        onClick={() => {}}
+        isSelected={false}
+      />
+    </div>
+  )
+}`,
+  },
+  {
+    name: "seed-questions-carousel",
+    description: "Auto-scrolling carousel for seed questions with pause-on-hover functionality using Framer Motion",
+    category: "ai-elements",
+    code: `import { SeedQuestionsCarousel } from "@/components/widget_components/ai-elements/seed-questions-carousel"
+
+export function SeedQuestionsCarouselDemo() {
+  const [selected, setSelected] = React.useState("")
+
+  const questions = [
+    "What's the best bread for weight loss?",
+    "Can I prevent dementia?",
+    "Is there a link between trauma and autoimmune symptoms?",
+    "How do I improve my gut health?",
+    "What are signs of vitamin deficiency?",
+  ]
+
+  return (
+    <div className="w-full max-w-2xl p-8">
+      <SeedQuestionsCarousel
+        questions={questions}
+        autoScrollInterval={35000}
+        onQuestionClick={setSelected}
+        selectedQuestion={selected}
+      />
+    </div>
+  )
+}`,
+  },
+  {
+    name: "search-input-section",
+    description: "Glassmorphism input with dual auto-scrolling seed question carousels, gradient border, and profile icon",
+    category: "ai-elements",
+    code: `import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section"
+
+export function SearchInputSectionDemo() {
+  const seedQuestionsRow1 = [
+    "What's the best bread for weight loss?",
+    "Can I prevent dementia?",
+    "How do I improve my gut health?",
+  ]
+
+  const seedQuestionsRow2 = [
+    "How can I make Hamburger Helper healthier?",
+    "What are natural ways to boost energy?",
+    "What foods improve sleep quality?",
+  ]
+
+  return (
+    <div className="w-full max-w-md p-8 bg-gradient-to-br from-orange-50 to-purple-50 rounded-xl">
+      <SearchInputSection
+        placeholder="Ask us your health questions"
+        onSubmit={(question) => console.log("Submitted:", question)}
+        seedQuestionsRow1={seedQuestionsRow1}
+        seedQuestionsRow2={seedQuestionsRow2}
+        autoScrollInterval={35000}
+      />
+    </div>
+  )
+}`,
+  },
+  {
     name: "glass-widget-container",
     description: "Glassmorphism styled container with expand/collapse",
     category: "ai-elements",
@@ -1022,6 +1108,51 @@ export function OnboardingWidget({ isExpanded, onExpandChange }: OnboardingWidge
     </GlassWidgetContainer>
   );
 }`,
+  },
+  {
+    name: "womens-world-inline-widget",
+    description: "Compact inline Q&A widget optimized for embedding between article paragraphs - always expanded, responsive width",
+    category: "widgets",
+    phases: 1,
+    componentCount: 4,
+    dependencies: [
+      "SearchInputSection",
+      "SeedQuestionsCarousel (x2)",
+      "PoweredByButton",
+      "ProfileBlank"
+    ],
+    code: `"use client";
+
+import { WomensWorldInlineWidget } from "@/components/widget_components/complete/womens-world-inline-widget";
+
+export function WomensWorldInlineWidgetDemo() {
+  return (
+    <div className="flex items-center justify-center min-h-[500px] p-8 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="w-full max-w-3xl">
+        <div className="prose prose-sm mb-8">
+          <p className="text-gray-600">
+            This inline widget is designed to be embedded naturally within article content.
+            It maintains the same Q&A functionality but with a compact, article-friendly design.
+          </p>
+        </div>
+
+        <WomensWorldInlineWidget
+          title="✨ Woman's World Answers"
+          placeholder="Ask us your health questions"
+          variant="light"
+          maxWidth={640}
+          onSubmit={(question) => console.log("Question submitted:", question)}
+        />
+
+        <div className="prose prose-sm mt-8">
+          <p className="text-gray-600">
+            Article content continues naturally after the widget, creating a seamless reading experience.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}`
   },
   {
     name: "womens-world-widget",

@@ -1,17 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, animate } from "framer-motion";
-import { X, Sparkles, Search } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { ProfileBlank } from "@/components/widget_components/icons/profile-blank";
+import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
 import { cn } from "@/lib/utils";
 import type {
   WomensWorldWidgetProps,
-  SearchInputSectionProps,
-  SeedQuestionsCarouselProps,
-  QuestionPillProps,
 } from "@/components/widget_components/types";
 
 // ============================================================================
@@ -43,202 +41,6 @@ const DEFAULT_SEED_QUESTIONS_ROW_2 = [
   "What foods improve sleep quality?",
   "Natural remedies for stress relief?",
 ];
-
-// ============================================================================
-// QuestionPill Component
-// ============================================================================
-
-function QuestionPill({
-  question,
-  onClick,
-  isSelected,
-  className,
-}: QuestionPillProps) {
-  return (
-    <Button
-      variant="outline"
-      onClick={onClick}
-      className={cn(
-        "rounded-[40px] bg-white shadow-sm hover:shadow-md transition-all duration-200 whitespace-nowrap px-6 py-2 h-auto text-sm font-medium border-gray-200",
-        isSelected &&
-          "bg-gradient-to-r from-[#FB9649] to-[#A361E9] text-white border-transparent",
-        className
-      )}
-    >
-      {question}
-    </Button>
-  );
-}
-
-// ============================================================================
-// SeedQuestionsCarousel Component
-// ============================================================================
-
-function SeedQuestionsCarousel({
-  questions,
-  autoScrollInterval,
-  onQuestionClick,
-  selectedQuestion,
-}: SeedQuestionsCarouselProps) {
-  // Refs for animation control
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<any>(null);
-
-  // Calculate duration based on autoScrollInterval prop (convert ms to seconds)
-  const scrollDuration = autoScrollInterval / 1000;
-
-  // Duplicate questions array for seamless infinite loop
-  const duplicatedQuestions = [...questions, ...questions];
-
-  // Initialize animation on mount and restart when autoScrollInterval changes
-  useEffect(() => {
-    if (carouselRef.current) {
-      animationRef.current = animate(
-        carouselRef.current,
-        { x: ["0%", "-50%"] },
-        {
-          duration: scrollDuration,
-          repeat: Infinity,
-          ease: "linear",
-        }
-      );
-    }
-
-    // Cleanup animation on unmount or when autoScrollInterval changes
-    return () => {
-      animationRef.current?.stop();
-    };
-  }, [autoScrollInterval, scrollDuration]);
-
-  // Pause animation on hover
-  const handleMouseEnter = () => {
-    animationRef.current?.pause();
-  };
-
-  // Resume animation on mouse leave
-  const handleMouseLeave = () => {
-    animationRef.current?.play();
-  };
-
-  return (
-    <div
-      className="w-full overflow-hidden"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div
-        ref={carouselRef}
-        className="flex gap-2"
-        style={{ width: "fit-content" }}
-      >
-        {duplicatedQuestions.map((question, index) => (
-          <QuestionPill
-            key={index}
-            question={question}
-            onClick={() => onQuestionClick(question)}
-            isSelected={selectedQuestion === question}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ============================================================================
-// SearchInputSection Component
-// ============================================================================
-
-function SearchInputSection({
-  placeholder,
-  onSubmit,
-  seedQuestions,
-  seedQuestionsRow1,
-  seedQuestionsRow2,
-  autoScrollInterval,
-}: SearchInputSectionProps) {
-  const [selectedQuestion, setSelectedQuestion] = useState<string>("");
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (selectedQuestion.trim()) {
-      onSubmit(selectedQuestion);
-    }
-  };
-
-  const handleQuestionClick = (question: string) => {
-    setSelectedQuestion(question);
-    inputRef.current?.focus();
-  };
-
-  return (
-    <div className="flex flex-col gap-4 w-full">
-      {/* Glassmorphism Input Container */}
-      <form onSubmit={handleSubmit} className="w-full">
-        <div className="relative w-full">
-          {/* Gradient Border */}
-          <div className="absolute inset-0 rounded-[40px] p-[2px] bg-gradient-to-r from-[#FB9649] to-[#A361E9]">
-            <div className="absolute inset-[2px] rounded-[38px] bg-white/80 backdrop-blur-sm" />
-          </div>
-
-          {/* Input Content */}
-          <div className="relative flex items-center gap-2 px-4 py-3">
-            {/* Sparkle Icon */}
-            <Sparkles className="w-5 h-5 text-[#FB9649] flex-shrink-0" />
-
-            {/* Input Field */}
-            <input
-              ref={inputRef}
-              type="text"
-              value={selectedQuestion}
-              onChange={(e) => setSelectedQuestion(e.target.value)}
-              placeholder={placeholder}
-              className="flex-1 bg-transparent border-none outline-none text-sm font-medium placeholder:text-gray-400"
-            />
-
-            {/* Submit Button (Search Icon) */}
-            {selectedQuestion && (
-              <button
-                type="submit"
-                className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-[#FB9649] to-[#A361E9] flex items-center justify-center hover:opacity-90 transition-opacity"
-                aria-label="Search"
-              >
-                <Search className="w-4 h-4 text-white" />
-              </button>
-            )}
-
-            {/* Profile Icon */}
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-              <ProfileBlank className="w-5 h-5 text-gray-600" />
-            </div>
-          </div>
-        </div>
-      </form>
-
-      {/* Seed Questions Carousels - Dual Rows */}
-      {(seedQuestionsRow1.length > 0 || seedQuestionsRow2.length > 0) && (
-        <div className="flex flex-col gap-2 w-full">
-          {seedQuestionsRow1.length > 0 && (
-            <SeedQuestionsCarousel
-              questions={seedQuestionsRow1}
-              autoScrollInterval={autoScrollInterval}
-              onQuestionClick={handleQuestionClick}
-              selectedQuestion={selectedQuestion}
-            />
-          )}
-          {seedQuestionsRow2.length > 0 && (
-            <SeedQuestionsCarousel
-              questions={seedQuestionsRow2}
-              autoScrollInterval={autoScrollInterval}
-              onQuestionClick={handleQuestionClick}
-              selectedQuestion={selectedQuestion}
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 // ============================================================================
 // WomensWorldWidget Component
