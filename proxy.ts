@@ -11,6 +11,7 @@ const isPublicRoute = createRouteMatcher([
 
 export default clerkMiddleware(async (auth, request) => {
   // Protect all routes except public ones
+  // Note: API routes like /api/openai/stream are accessible to authenticated users
   if (!isPublicRoute(request)) {
     await auth.protect();
   }

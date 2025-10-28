@@ -18,16 +18,16 @@ export const getComponentStats = query({
     const uiComponentsCount = 19; // accordion, alert, badge, button, card, carousel, dropdown-menu, form, input, label, phase-navigation, scroll-area, select, separator, skeleton, slider, table, tabs, textarea
 
     // Manually counted widget components
-    const widgetComponentsCount = 16; // 4 icons + 1 animation + 10 ai-elements + 1 ask-anything
+    const widgetComponentsCount = 20; // 4 icons + 1 animation + 14 ai-elements + 1 ask-anything
 
     // Complete widgets count
-    const completeWidgetsCount = 5; // onboarding-widget, womens-world-widget, womens-world-inline-widget, rufus-widget, nyt-chat-widget
+    const completeWidgetsCount = 6; // onboarding-widget, womens-world-widget, womens-world-inline-widget, rufus-widget, nyt-chat-widget, eater-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
       icons: 4, // blue-star, profile-blank, wand, powered-by-button
       animations: 1, // searching-animation
-      "ai-elements": 10, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase, question-pill, seed-questions-carousel, search-input-section
+      "ai-elements": 14, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase, question-pill, seed-questions-carousel, search-input-section, eater-header, eater-question-pill, eater-search-input-section, eater-seed-question-pills
       "ask-anything": 1, // pricing-card
       widgets: completeWidgetsCount, // complete widget implementations (in complete/ folder)
     };
@@ -103,6 +103,10 @@ export const getWidgetComponentsList = query({
         { name: "question-pill", path: "components/widget_components/ai-elements/question-pill.tsx", category: "ai-elements", description: "Reusable question button with gradient selection state" },
         { name: "seed-questions-carousel", path: "components/widget_components/ai-elements/seed-questions-carousel.tsx", category: "ai-elements", description: "Auto-scrolling carousel with pause-on-hover functionality" },
         { name: "search-input-section", path: "components/widget_components/ai-elements/search-input-section.tsx", category: "ai-elements", description: "Glassmorphism input with dual auto-scrolling seed question carousels" },
+        { name: "eater-header", path: "components/widget_components/ai-elements/eater-header.tsx", category: "ai-elements", description: "Eater widget header with title and close button" },
+        { name: "eater-question-pill", path: "components/widget_components/ai-elements/eater-question-pill.tsx", category: "ai-elements", description: "Individual Eater seed question button with red squiggle underline" },
+        { name: "eater-search-input-section", path: "components/widget_components/ai-elements/eater-search-input-section.tsx", category: "ai-elements", description: "Eater search input with icon prefix and circular submit button" },
+        { name: "eater-seed-question-pills", path: "components/widget_components/ai-elements/eater-seed-question-pills.tsx", category: "ai-elements", description: "Container for Eater seed question pills with squiggle underlines" },
       ],
       "ask-anything": [
         { name: "pricing-card", path: "components/widget_components/ask-anything/pricing-card.tsx", category: "ask-anything", description: "Pricing plan card component" },
@@ -153,6 +157,13 @@ export const getCompleteWidgetsList = query({
         description: "New York Times news Q&A assistant with dark theme, autocomplete, streaming answers, and citation pills",
         phases: 4,
         componentCount: 11,
+      },
+      {
+        name: "eater-widget",
+        path: "components/widget_components/complete/eater-widget.tsx",
+        description: "Food and restaurant discovery AI assistant with Eater red branding, squiggle underlines, and ultra-rounded pill input",
+        phases: 1,
+        componentCount: 5,
       },
     ];
 

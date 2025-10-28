@@ -35,6 +35,10 @@ export { AttributionCards } from "./ai-elements/attribution-cards";
 export { FeedbackButtons } from "./ai-elements/feedback-buttons";
 export { RelatedQuestions } from "./ai-elements/related-questions";
 export { NewSearchButton } from "./ai-elements/new-search-button";
+export { EaterHeader } from "./ai-elements/eater-header";
+export { EaterQuestionPill } from "./ai-elements/eater-question-pill";
+export { EaterSearchInputSection } from "./ai-elements/eater-search-input-section";
+export { EaterSeedQuestionPills } from "./ai-elements/eater-seed-question-pills";
 
 // Ask Anything
 export { PricingCard } from "./ask-anything/pricing-card";
@@ -45,6 +49,7 @@ export { WomensWorldWidget } from "./complete/womens-world-widget";
 export { WomensWorldInlineWidget } from "./complete/womens-world-inline-widget";
 export { RufusWidget } from "./complete/rufus-widget";
 export { NYTChatWidget } from "./complete/nyt-chat-widget";
+export { EaterWidget } from "./complete/eater-widget";
 
 // Types
 export type {

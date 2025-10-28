@@ -859,5 +859,47 @@
     "cwd": "/Users/tjmcgovern/gist-console",
     "hook_event_name": "Notification",
     "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "9afa09c8-dd5a-4de3-8f09-6d14cea98ea4",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/9afa09c8-dd5a-4de3-8f09-6d14cea98ea4.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "9afa09c8-dd5a-4de3-8f09-6d14cea98ea4",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/9afa09c8-dd5a-4de3-8f09-6d14cea98ea4.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "cbac015f-fd14-44b4-bc78-611116440d91",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cbac015f-fd14-44b4-bc78-611116440d91.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "9afa09c8-dd5a-4de3-8f09-6d14cea98ea4",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/9afa09c8-dd5a-4de3-8f09-6d14cea98ea4.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "cbac015f-fd14-44b4-bc78-611116440d91",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cbac015f-fd14-44b4-bc78-611116440d91.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
+  },
+  {
+    "session_id": "cbac015f-fd14-44b4-bc78-611116440d91",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cbac015f-fd14-44b4-bc78-611116440d91.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input"
   }
 ]

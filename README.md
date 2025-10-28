@@ -191,6 +191,10 @@ These are automatically created when you run `npx convex dev`:
 
 - `CLERK_WEBHOOK_SECRET`: For automatic user sync via webhooks (see [Webhook Setup](#webhook-setup-optional-but-recommended) below)
 
+### Optional (OpenAI Integration)
+
+- `OPENAI_API_KEY`: Required for the Women's World Answers page AI functionality (see [OpenAI Setup](#openai-setup-optional) below)
+
 ## Webhook Setup (Optional but Recommended)
 
 To ensure users are automatically synced to Convex when they sign up, configure Clerk webhooks:

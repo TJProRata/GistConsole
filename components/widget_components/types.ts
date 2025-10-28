@@ -874,3 +874,68 @@ export interface NewSearchButtonProps {
   onClick: () => void;
   className?: string;
 }
+
+/**
+ * Eater Widget TypeScript Type Definitions
+ */
+
+export interface EaterWidgetProps {
+  /** Controls whether the widget is expanded or collapsed (controlled mode) */
+  isExpanded?: boolean;
+  /** Callback when expand state changes */
+  onExpandChange?: (expanded: boolean) => void;
+  /** Initial expanded state (uncontrolled mode) */
+  defaultExpanded?: boolean;
+  /** Text shown in collapsed button state */
+  collapsedText?: string;
+  /** Main widget title */
+  title?: string;
+  /** Search input placeholder */
+  placeholder?: string;
+  /** Array of seed question strings */
+  seedQuestions?: string[];
+  /** Callback when question is submitted */
+  onSubmit?: (question: string) => void;
+  /** Additional CSS classes */
+  className?: string;
+}
+
+export interface EaterHeaderProps {
+  /** Widget title */
+  title?: string;
+  /** Callback when close button is clicked */
+  onClose?: () => void;
+}
+
+export interface EaterSearchInputProps {
+  /** Input placeholder text */
+  placeholder?: string;
+  /** Current input value */
+  value: string;
+  /** Callback when input value changes */
+  onChange: (value: string) => void;
+  /** Callback when form is submitted */
+  onSubmit: () => void;
+  /** Whether submit button is enabled */
+  canSubmit: boolean;
+}
+
+export interface EaterSeedQuestionPillsProps {
+  /** Array of seed question strings */
+  questions: string[];
+  /** Callback when a question pill is clicked */
+  onQuestionClick: (question: string) => void;
+  /** Currently selected question */
+  selectedQuestion?: string | null;
+}
+
+export interface EaterQuestionPillProps {
+  /** Question text to display */
+  question: string;
+  /** Callback when pill is clicked */
+  onClick: () => void;
+  /** Whether this pill is selected */
+  isSelected?: boolean;
+  /** Additional CSS classes */
+  className?: string;
+}

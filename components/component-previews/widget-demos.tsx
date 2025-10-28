@@ -16,6 +16,11 @@ import { PricingCard } from "@/components/widget_components/ask-anything/pricing
 import { OnboardingWidget } from "@/components/widget_components/complete/onboarding-widget";
 import { WomensWorldWidget } from "@/components/widget_components/complete/womens-world-widget";
 import { WomensWorldInlineWidget } from "@/components/widget_components/complete/womens-world-inline-widget";
+import { EaterWidget } from "@/components/widget_components/complete/eater-widget";
+import { EaterHeader } from "@/components/widget_components/ai-elements/eater-header";
+import { EaterQuestionPill } from "@/components/widget_components/ai-elements/eater-question-pill";
+import { EaterSearchInputSection } from "@/components/widget_components/ai-elements/eater-search-input-section";
+import { EaterSeedQuestionPills } from "@/components/widget_components/ai-elements/eater-seed-question-pills";
 import { GlassWidgetContainer, GlassWidgetHeader, GlassWidgetContent, GlassWidgetFooter } from "@/components/widget_components/ai-elements/glass_widget_container";
 import { GifHousing } from "@/components/widget_components/ai-elements/gif-housing";
 import { SuccessPhase } from "@/components/widget_components/ai-elements/success-phase";
@@ -429,6 +434,95 @@ export function WomensWorldWidgetDemo(props?: {
   );
 }
 
+// Eater Component Demos
+export function EaterHeaderDemo() {
+  return (
+    <div className="flex items-center justify-center p-8 bg-[#EFD9CE]">
+      <EaterHeader />
+    </div>
+  );
+}
+
+export function EaterQuestionPillDemo() {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <div className="flex items-center gap-2 p-8 bg-[#EFD9CE]">
+      <EaterQuestionPill
+        question="Where can I find the best tacos in NYC?"
+        onClick={() => setSelected(!selected)}
+        isSelected={selected}
+      />
+      <EaterQuestionPill
+        question="What are the top new restaurants this month?"
+        onClick={() => {}}
+        isSelected={false}
+      />
+    </div>
+  );
+}
+
+export function EaterSearchInputSectionDemo() {
+  const seedQuestions = [
+    "Where can I find the best tacos in NYC?",
+    "What are the top new restaurants?",
+    "Best brunch spots near me?",
+  ];
+
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="w-full max-w-md p-8 bg-[#EFD9CE] rounded-xl">
+      <EaterSearchInputSection
+        placeholder="Ask about restaurants..."
+        value={value}
+        onChange={setValue}
+        onSubmit={() => console.log("Submitted:", value)}
+        canSubmit={value.trim().length > 0}
+      />
+    </div>
+  );
+}
+
+export function EaterSeedQuestionPillsDemo() {
+  const [selected, setSelected] = useState("");
+
+  const questions = [
+    "Where can I find the best tacos in NYC?",
+    "What are the top new restaurants this month?",
+    "Best brunch spots near me?",
+  ];
+
+  return (
+    <div className="w-full max-w-2xl p-8 bg-[#EFD9CE]">
+      <EaterSeedQuestionPills
+        questions={questions}
+        onQuestionClick={setSelected}
+        selectedQuestion={selected}
+      />
+    </div>
+  );
+}
+
+export function EaterWidgetDemo() {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  return (
+    <div className="flex items-center justify-center min-h-[600px] p-8 bg-[#EFD9CE]">
+      <div className="text-center space-y-4">
+        <p className="text-sm text-gray-600 mb-6">
+          Food discovery widget with restaurant recommendations
+        </p>
+        <EaterWidget
+          isExpanded={isExpanded}
+          onExpandChange={setIsExpanded}
+          onSubmit={(question) => console.log("Question submitted:", question)}
+        />
+      </div>
+    </div>
+  );
+}
+
 // Demo component mapping for dynamic rendering
 export const WIDGET_DEMOS: Record<string, (props?: any) => React.ReactElement> = {
   "blue-star": BlueStarDemo,
@@ -450,4 +544,9 @@ export const WIDGET_DEMOS: Record<string, (props?: any) => React.ReactElement> =
   "onboarding-widget": OnboardingWidgetDemo,
   "womens-world-inline-widget": WomensWorldInlineWidgetDemo,
   "womens-world-widget": WomensWorldWidgetDemo,
+  "eater-header": EaterHeaderDemo,
+  "eater-question-pill": EaterQuestionPillDemo,
+  "eater-search-input-section": EaterSearchInputSectionDemo,
+  "eater-seed-question-pills": EaterSeedQuestionPillsDemo,
+  "eater-widget": EaterWidgetDemo,
 };

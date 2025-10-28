@@ -54,6 +54,7 @@ export default function AnswersPage() {
       setPageState("streaming");
 
       // Call OpenAI API (streaming)
+      console.log("[Answers] Submitting query:", query);
       const response = await fetch("/api/openai/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -61,11 +62,47 @@ export default function AnswersPage() {
         credentials: "include",
       });
 
+      console.log("[Answers] API response status:", response.status);
+
       if (!response.ok) {
+        console.log("[Answers] Entering error handling");
+        let errorMessage = `API request failed with status ${response.status}`;
+
+        // Read body as text first (single read), then try parsing as JSON
         const errorText = await response.text();
-        throw new Error(`API request failed: ${response.status}`);
+        console.log("[Answers] Error response body:", errorText);
+
+        try {
+          const errorData = JSON.parse(errorText);
+          console.log("[Answers] Parsed error data:", errorData);
+          if (errorData.error) {
+            errorMessage = errorData.error;
+            if (errorData.details) {
+              errorMessage += ` (${errorData.details})`;
+            }
+          }
+        } catch (parseError) {
+          // If JSON parsing fails, use the raw text
+          console.log("[Answers] JSON parse failed, using raw text");
+          if (errorText) {
+            errorMessage = errorText;
+          }
+        }
+
+        // Add helpful context based on status code
+        if (response.status === 404) {
+          errorMessage = "API endpoint not found. Please check that the server is running correctly.";
+        } else if (response.status === 401 || response.status === 403) {
+          errorMessage = "Authentication error. Please sign in again.";
+        } else if (response.status === 500) {
+          errorMessage = `Server error: ${errorMessage}`;
+        }
+
+        console.error("[Answers] Final error message:", errorMessage);
+        throw new Error(errorMessage);
       }
 
+      console.log("[Answers] Streaming started");
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
       let accumulatedText = "";
@@ -78,6 +115,8 @@ export default function AnswersPage() {
         accumulatedText += chunk;
         setStreamedText(accumulatedText);
       }
+
+      console.log("[Answers] Streaming complete");
 
       // Phase 3: Complete with sources
       setPageState("complete");
