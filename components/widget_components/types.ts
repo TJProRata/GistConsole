@@ -717,3 +717,160 @@ export interface NYTChatWidgetState {
   /** Internal expanded state (uncontrolled mode) */
   internalExpanded: boolean;
 }
+
+/**
+ * Women's World Inline Widget TypeScript Type Definitions
+ * Optimized for embedding within article content
+ */
+
+/**
+ * Theme variants for inline widget styling
+ */
+export type WomensWorldInlineVariant = "light" | "neutral" | "subtle";
+
+/**
+ * Women's World Inline Widget Props
+ * Compact, always-expanded variation optimized for article embedding
+ */
+export interface WomensWorldInlineWidgetProps {
+  /** Widget title with sparkle emoji (default: "✨ Woman's World Answers") */
+  title?: string;
+
+  /** Placeholder text for search input (default: "Ask us your health questions") */
+  placeholder?: string;
+
+  /**
+   * Pre-populated seed questions for first carousel row.
+   * Use this for health/medical-focused questions.
+   * Defaults to health-focused questions if not provided.
+   */
+  seedQuestionsRow1?: string[];
+
+  /**
+   * Pre-populated seed questions for second carousel row.
+   * Use this for wellness/lifestyle-focused questions.
+   * Defaults to wellness-focused questions if not provided.
+   */
+  seedQuestionsRow2?: string[];
+
+  /** Auto-scroll interval in milliseconds (default: 35000) */
+  autoScrollInterval?: number;
+
+  /** Branding text for footer (default: "Powered by Gist.ai") */
+  brandingText?: string;
+
+  /** Callback when question is submitted */
+  onSubmit?: (question: string) => void;
+
+  /**
+   * Maximum width in pixels (default: 640px for readable line length).
+   * Widget will be responsive (100% width) up to this max-width.
+   */
+  maxWidth?: number;
+
+  /**
+   * Theme variant for article context (default: "light").
+   * - light: Warm gradient (orange/pink tones)
+   * - neutral: Cool gray gradient
+   * - subtle: Minimal gray gradient
+   */
+  variant?: WomensWorldInlineVariant;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Answer Page TypeScript Type Definitions
+ * OpenAI streaming integration for Q&A answer pages
+ */
+
+/**
+ * OpenAI Streaming Response Structure
+ */
+export interface OpenAIStreamChunk {
+  id: string;
+  object: "chat.completion.chunk";
+  created: number;
+  model: string;
+  choices: Array<{
+    index: number;
+    delta: {
+      content?: string;
+      role?: "assistant";
+    };
+    finish_reason: "stop" | "length" | null;
+  }>;
+}
+
+/**
+ * Attribution Source Data
+ */
+export interface AttributionSource {
+  id: string;
+  title: string;
+  url: string;
+  domain: string;
+  publishedDate?: string;
+  author?: string;
+}
+
+/**
+ * Answer Page State Machine
+ */
+export type AnswerPageState = "input" | "loading" | "streaming" | "complete" | "error";
+
+/**
+ * Answer Data Structure
+ */
+export interface AnswerData {
+  text: string;
+  sources: AttributionSource[];
+  relatedQuestions: string[];
+  confidence?: number;
+}
+
+/**
+ * Component Props
+ */
+export interface LoadingStateProps {
+  phase: "generating" | "sources";
+  className?: string;
+}
+
+export interface StreamingTextProps {
+  text: string;
+  isComplete: boolean;
+  className?: string;
+}
+
+export interface AttributionBarProps {
+  sourceCount: number;
+  sources: AttributionSource[];
+  onViewSources?: () => void;
+  className?: string;
+}
+
+export interface AttributionCardsProps {
+  sources: AttributionSource[];
+  onCardClick?: (source: AttributionSource) => void;
+  className?: string;
+}
+
+export interface FeedbackButtonsProps {
+  onThumbsUp: () => void;
+  onThumbsDown: () => void;
+  selected?: "up" | "down" | null;
+  className?: string;
+}
+
+export interface RelatedQuestionsProps {
+  questions: string[];
+  onQuestionClick: (question: string) => void;
+  className?: string;
+}
+
+export interface NewSearchButtonProps {
+  onClick: () => void;
+  className?: string;
+}

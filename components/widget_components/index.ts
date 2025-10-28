@@ -2,6 +2,8 @@
 export { BlueStar } from "./icons/blue-star";
 export { Wand } from "./icons/wand";
 export { ProfileBlank } from "./icons/profile-blank";
+export { ThumbsUpIcon } from "./icons/thumbs-up";
+export { ThumbsDownIcon } from "./icons/thumbs-down";
 
 // Animations
 export { SearchingAnimation } from "./animations/searching-animation";
@@ -26,6 +28,13 @@ export {
   GradientSubmitButton,
   type PromptInputMessage
 } from "./ai-elements/prompt-input";
+export { LoadingState } from "./ai-elements/loading-state";
+export { StreamingText } from "./ai-elements/streaming-text";
+export { AttributionBar } from "./ai-elements/attribution-bar";
+export { AttributionCards } from "./ai-elements/attribution-cards";
+export { FeedbackButtons } from "./ai-elements/feedback-buttons";
+export { RelatedQuestions } from "./ai-elements/related-questions";
+export { NewSearchButton } from "./ai-elements/new-search-button";
 
 // Ask Anything
 export { PricingCard } from "./ask-anything/pricing-card";
@@ -33,6 +42,7 @@ export { PricingCard } from "./ask-anything/pricing-card";
 // Complete Widgets
 export { OnboardingWidget } from "./complete/onboarding-widget";
 export { WomensWorldWidget } from "./complete/womens-world-widget";
+export { WomensWorldInlineWidget } from "./complete/womens-world-inline-widget";
 export { RufusWidget } from "./complete/rufus-widget";
 export { NYTChatWidget } from "./complete/nyt-chat-widget";
 
@@ -48,6 +58,8 @@ export type {
   Phase,
   PhaseConfig,
   WomensWorldWidgetProps,
+  WomensWorldInlineWidgetProps,
+  WomensWorldInlineVariant,
   SearchInputSectionProps,
   SeedQuestionsCarouselProps,
   QuestionPillProps,
@@ -70,5 +82,16 @@ export type {
   CitationPillsProps,
   SuggestionCategoriesProps,
   NYTChatWidgetState,
-  NYTWidgetState
+  NYTWidgetState,
+  OpenAIStreamChunk,
+  AttributionSource,
+  AnswerPageState,
+  AnswerData,
+  LoadingStateProps,
+  StreamingTextProps,
+  AttributionBarProps,
+  AttributionCardsProps,
+  FeedbackButtonsProps,
+  RelatedQuestionsProps,
+  NewSearchButtonProps
 } from "./types";

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
 import { cn } from "@/lib/utils";
@@ -63,7 +64,13 @@ export function WomensWorldInlineWidget({
   variant = "light",
   className,
 }: WomensWorldInlineWidgetProps) {
+  const router = useRouter();
+
   const handleSubmit = (question: string) => {
+    // Navigate to answers page with query parameter
+    router.push(`/admin/components/widgets/complete/answers?q=${encodeURIComponent(question)}`);
+
+    // Optional: call parent onSubmit if provided
     onSubmit?.(question);
   };
 
