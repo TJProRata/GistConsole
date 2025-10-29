@@ -36,6 +36,7 @@ const configurationSchema = v.object({
   seedQuestions: v.optional(v.array(v.string())),
   autoScrollInterval: v.optional(v.number()),
   womensWorldVariant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
+  enableStreaming: v.optional(v.boolean()),
 });
 
 // Create new preview configuration
