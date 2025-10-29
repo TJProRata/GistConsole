@@ -163,8 +163,43 @@ export interface WomensWorldWidgetProps {
   /** Optional max-height constraint in pixels for expanded state (default: auto). Preview-only feature. */
   height?: number;
 
+  /**
+   * Widget placement position for floating variant only (default: "bottom-right").
+   * Controls where the widget appears on the page.
+   * - "bottom-left": Fixed position at bottom-left corner
+   * - "bottom-center": Fixed position at bottom-center
+   * - "bottom-right": Fixed position at bottom-right corner
+   */
+  placement?: "bottom-left" | "bottom-center" | "bottom-right";
+
   /** Additional CSS classes */
   className?: string;
+
+  /** Enable inline OpenAI streaming answers (default: false) */
+  enableStreaming?: boolean;
+
+  /** Callback when streaming answer completes successfully */
+  onAnswerComplete?: (answer: string) => void;
+
+  /** Callback when streaming answer encounters an error */
+  onAnswerError?: (error: string) => void;
+}
+
+/**
+ * Answer state for streaming responses
+ */
+export type AnswerState = "idle" | "loading" | "streaming" | "complete" | "error";
+
+/**
+ * Data structure for Women's World streaming answers
+ */
+export interface WomensWorldAnswerData {
+  /** Accumulated answer text */
+  text: string;
+  /** Whether streaming is complete */
+  isComplete: boolean;
+  /** Error message if state is "error" */
+  error?: string;
 }
 
 /**
@@ -936,6 +971,347 @@ export interface EaterQuestionPillProps {
   onClick: () => void;
   /** Whether this pill is selected */
   isSelected?: boolean;
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * New Page Answer Widget TypeScript Type Definitions
+ * Full-page AI-powered Q&A widget with streaming answers and source attribution
+ */
+
+/**
+ * New Page Answer Widget Props
+ */
+export interface NewPageAnswerWidgetProps {
+  /** Initial query from URL parameter or POST body */
+  initialQuery?: string;
+
+  /** Brand configuration for theming */
+  brandConfig?: BrandConfig;
+
+  /** Pre-loaded source distribution data (optional, can be fetched) */
+  sources?: SourceDistribution[];
+
+  /** Sponsored content configuration (optional) */
+  sponsoredContent?: SponsoredContentData;
+
+  /** Callback when widget is closed */
+  onClose?: () => void;
+
+  /** Callback when new search is initiated */
+  onNewSearch?: (query: string) => void;
+
+  /** Callback when article is clicked */
+  onArticleClick?: (articleId: string, url: string) => void;
+
+  /** Callback when citation is clicked */
+  onCitationClick?: (citationId: string) => void;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Brand Configuration
+ */
+export interface BrandConfig {
+  /** Brand name (e.g., "Eater", "Woman's World") */
+  name: string;
+
+  /** Primary brand color (hex) */
+  primaryColor: string;
+
+  /** Secondary brand color (hex, optional) */
+  secondaryColor?: string;
+
+  /** Brand logo URL (optional) */
+  logo?: string;
+
+  /** Custom fonts */
+  fonts?: {
+    heading: string;
+    body: string;
+  };
+
+  /** Custom gradient configuration */
+  gradient?: {
+    start: string;
+    end: string;
+  };
+}
+
+/**
+ * Source Distribution Data
+ */
+export interface SourceDistribution {
+  /** Source name */
+  name: string;
+
+  /** Percentage contribution (0-100) */
+  percentage: number;
+
+  /** Brand color (hex) */
+  color: string;
+
+  /** Source logo URL (optional) */
+  logo?: string;
+}
+
+/**
+ * Sponsored Content Data
+ */
+export interface SponsoredContentData {
+  /** Sponsored content label */
+  label?: string;
+
+  /** Main heading */
+  heading: string;
+
+  /** Description text (2-3 sentences) */
+  description: string;
+
+  /** Call-to-action text */
+  ctaText: string;
+
+  /** Target URL */
+  ctaUrl: string;
+
+  /** Additional tracking parameters */
+  tracking?: Record<string, string>;
+}
+
+/**
+ * Article Recommendation Data
+ */
+export interface ArticleRecommendation {
+  /** Unique article ID */
+  id: string;
+
+  /** Article title */
+  title: string;
+
+  /** Article description/excerpt */
+  description: string;
+
+  /** Thumbnail image URL */
+  thumbnail: string;
+
+  /** Source information */
+  source: {
+    name: string;
+    logo?: string;
+  };
+
+  /** Relevance score (0-100) */
+  relevanceScore: number;
+
+  /** Article URL */
+  url: string;
+}
+
+/**
+ * Citation Data
+ */
+export interface Citation {
+  /** Citation ID ([1], [2], etc.) */
+  id: string;
+
+  /** Citation number (1, 2, 3...) */
+  number: number;
+
+  /** Source article title */
+  title: string;
+
+  /** Source URL */
+  url: string;
+
+  /** Source domain */
+  domain: string;
+
+  /** Publication date (optional) */
+  publishedDate?: string;
+
+  /** Author (optional) */
+  author?: string;
+}
+
+/**
+ * Widget State Machine
+ */
+export type AnswerPageWidgetState = "input" | "loading" | "streaming" | "complete" | "error";
+
+/**
+ * Answer Data Structure (Extended for New Page Widget)
+ */
+export interface NewPageAnswerData {
+  /** Streamed answer text */
+  text: string;
+
+  /** Source attribution data */
+  sources: Citation[];
+
+  /** Related follow-up questions */
+  relatedQuestions: string[];
+
+  /** Article recommendations */
+  recommendations?: ArticleRecommendation[];
+
+  /** Confidence score (0-100, optional) */
+  confidence?: number;
+}
+
+/**
+ * Widget Internal State
+ */
+export interface NewPageAnswerWidgetState {
+  /** Current widget mode */
+  widgetState: AnswerPageWidgetState;
+
+  /** Current query text */
+  currentQuery: string;
+
+  /** Accumulated streamed text */
+  streamedText: string;
+
+  /** Complete answer data */
+  answerData: NewPageAnswerData | null;
+
+  /** User feedback selection */
+  feedback: "up" | "down" | null;
+
+  /** Error message */
+  error: string | null;
+}
+
+/**
+ * Query Display Props
+ */
+export interface QueryDisplayProps {
+  /** Query text to display */
+  query: string;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Answer Content Props
+ */
+export interface AnswerContentProps {
+  /** Raw answer text with citation markers [1], [2] */
+  answerText: string;
+
+  /** Whether streaming is complete */
+  isComplete: boolean;
+
+  /** Citation data for inline references */
+  citations: Citation[];
+
+  /** Click handler for citations */
+  onCitationClick: (citationId: string) => void;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Inline Citation Props
+ */
+export interface InlineCitationProps {
+  /** Citation number (1, 2, 3...) */
+  citationNumber: number;
+
+  /** Click handler */
+  onClick: () => void;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Disclaimer Banner Props
+ */
+export interface DisclaimerBannerProps {
+  /** Disclaimer text */
+  text: string;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Article Card Props
+ */
+export interface ArticleCardProps {
+  /** Article title */
+  title: string;
+
+  /** Article description */
+  description: string;
+
+  /** Thumbnail image URL */
+  thumbnail: string;
+
+  /** Source name */
+  sourceName: string;
+
+  /** Source logo URL (optional) */
+  sourceLogo?: string;
+
+  /** Relevance score (0-100) */
+  relevanceScore: number;
+
+  /** Click handler */
+  onClick: () => void;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Recommended Articles Props
+ */
+export interface RecommendedArticlesProps {
+  /** Array of article recommendations */
+  articles: ArticleRecommendation[];
+
+  /** Article click handler */
+  onArticleClick: (articleId: string, url: string) => void;
+
+  /** Section heading (optional) */
+  heading?: string;
+
+  /** Additional CSS classes */
+  className?: string;
+}
+
+/**
+ * Answer Widget Container TypeScript Type Definitions
+ * Inline container for full-page answer displays (760px fixed width)
+ */
+
+/**
+ * Answer Widget Container Props
+ */
+export interface AnswerWidgetContainerProps {
+  /** Container content */
+  children: React.ReactNode;
+
+  /** Additional CSS classes */
+  className?: string;
+
+  /** Forward ref to container div */
+  ref?: React.Ref<HTMLDivElement>;
+}
+
+/**
+ * Answer Widget Sub-Component Props
+ */
+export interface AnswerWidgetSubComponentProps {
+  /** Sub-component content */
+  children: React.ReactNode;
+
   /** Additional CSS classes */
   className?: string;
 }
