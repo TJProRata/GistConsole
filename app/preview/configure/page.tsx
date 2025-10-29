@@ -120,6 +120,7 @@ export default function ConfigurePage() {
           ],
           autoScrollInterval: config.autoScrollInterval ?? 3000,
           brandingText: config.brandingText ?? "Powered by Gist.ai",
+          enableStreaming: (config as any).enableStreaming ?? true,
         });
         setWomensWorldVariant(config.womensWorldVariant ?? "floating");
         setOpenByDefault(config.openByDefault ?? false);
