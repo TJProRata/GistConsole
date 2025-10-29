@@ -14,6 +14,7 @@ const answerDisplayVariants = cva(
   {
     variants: {
       state: {
+        idle: "min-h-[200px]",
         loading: "min-h-[200px]",
         streaming: "min-h-[200px]",
         complete: "min-h-[200px]",
