@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { ProfileBlank } from "@/components/widget_components/icons/profile-blank";
 import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
+import { WomensWorldAnswerDisplay } from "@/components/widget_components/ai-elements/womens-world-answer-display";
+import { useStreamingAnswer } from "@/lib/hooks/useStreamingAnswer";
 import { cn } from "@/lib/utils";
 import type {
   WomensWorldWidgetProps,
@@ -61,7 +63,11 @@ export function WomensWorldWidget({
   onSubmit,
   width = 392,
   height,
+  placement = "bottom-right",
   className,
+  enableStreaming = false,
+  onAnswerComplete,
+  onAnswerError,
 }: WomensWorldWidgetProps) {
   // Backward compatibility fallback logic
   const row1Questions =
@@ -77,13 +83,63 @@ export function WomensWorldWidget({
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
   const isExpanded = controlledIsExpanded ?? internalExpanded;
 
+  // Streaming state management
+  const { answerState, streamedText, error, startStreaming, resetAnswer } =
+    useStreamingAnswer();
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [lastQuery, setLastQuery] = useState("");
+
   const handleExpandChange = (expanded: boolean) => {
     setInternalExpanded(expanded);
     onExpandChange?.(expanded);
   };
 
-  const handleSubmit = (question: string) => {
+  const handleSubmit = async (question: string) => {
+    // Always call the onSubmit callback for backward compatibility
     onSubmit?.(question);
+
+    // If streaming is enabled, start streaming the answer
+    if (enableStreaming) {
+      setLastQuery(question);
+      setShowAnswer(true);
+
+      try {
+        await startStreaming(question);
+        // Call onAnswerComplete callback if provided
+        if (streamedText && answerState === "complete") {
+          onAnswerComplete?.(streamedText);
+        }
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to generate answer";
+        onAnswerError?.(errorMessage);
+      }
+    }
+  };
+
+  const handleNewSearch = () => {
+    setShowAnswer(false);
+    resetAnswer();
+  };
+
+  const handleRetry = () => {
+    if (lastQuery) {
+      startStreaming(lastQuery);
+    }
+  };
+
+  // Get placement classes based on placement prop
+  const getPlacementClasses = () => {
+    switch (placement) {
+      case "bottom-left":
+        return "fixed bottom-4 left-4 z-50";
+      case "bottom-center":
+        return "fixed bottom-4 left-1/2 -translate-x-1/2 z-50";
+      case "bottom-right":
+        return "fixed bottom-4 right-4 z-50";
+      default:
+        return "fixed bottom-4 right-4 z-50";
+    }
   };
 
   return (
@@ -118,7 +174,7 @@ export function WomensWorldWidget({
       `}</style>
 
       {/* Widget Container */}
-      <div className={cn("relative", className)}>
+      <div className={cn(getPlacementClasses(), className)}>
         {/* Collapsed State */}
         {!isExpanded && (
           <motion.button
@@ -162,7 +218,20 @@ export function WomensWorldWidget({
           >
             {/* Header */}
             <div className="relative flex items-center justify-center px-6 py-4 flex-shrink-0">
-              <h2 className="womens-world-title text-white">{title}</h2>
+              <AnimatePresence mode="wait">
+                {!showAnswer && (
+                  <motion.h2
+                    key="title"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="womens-world-title text-white"
+                  >
+                    {title}
+                  </motion.h2>
+                )}
+              </AnimatePresence>
               <Button
                 variant="ghost"
                 size="icon"
@@ -176,13 +245,41 @@ export function WomensWorldWidget({
 
             {/* Content */}
             <div className="px-6 py-4 flex-1 overflow-y-auto">
-              <SearchInputSection
-                placeholder={placeholder}
-                onSubmit={handleSubmit}
-                seedQuestionsRow1={row1Questions}
-                seedQuestionsRow2={row2Questions}
-                autoScrollInterval={autoScrollInterval}
-              />
+              <AnimatePresence mode="wait">
+                {!showAnswer ? (
+                  <motion.div
+                    key="search"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <SearchInputSection
+                      placeholder={placeholder}
+                      onSubmit={handleSubmit}
+                      seedQuestionsRow1={row1Questions}
+                      seedQuestionsRow2={row2Questions}
+                      autoScrollInterval={autoScrollInterval}
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="answer"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <WomensWorldAnswerDisplay
+                      answerState={answerState}
+                      text={streamedText}
+                      error={error}
+                      onNewSearch={handleNewSearch}
+                      onRetry={handleRetry}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Footer */}
