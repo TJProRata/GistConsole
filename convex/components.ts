@@ -18,16 +18,16 @@ export const getComponentStats = query({
     const uiComponentsCount = 19; // accordion, alert, badge, button, card, carousel, dropdown-menu, form, input, label, phase-navigation, scroll-area, select, separator, skeleton, slider, table, tabs, textarea
 
     // Manually counted widget components
-    const widgetComponentsCount = 20; // 4 icons + 1 animation + 14 ai-elements + 1 ask-anything
+    const widgetComponentsCount = 21; // 4 icons + 1 animation + 15 ai-elements + 1 ask-anything
 
     // Complete widgets count
-    const completeWidgetsCount = 6; // onboarding-widget, womens-world-widget, womens-world-inline-widget, rufus-widget, nyt-chat-widget, eater-widget
+    const completeWidgetsCount = 7; // onboarding-widget, womens-world-widget, womens-world-inline-widget, rufus-widget, nyt-chat-widget, eater-widget, new-page-answer-widget
 
     // Category breakdown for widget components
     const categoryBreakdown = {
       icons: 4, // blue-star, profile-blank, wand, powered-by-button
       animations: 1, // searching-animation
-      "ai-elements": 14, // dual-phase-progress, gif-housing, glass-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase, question-pill, seed-questions-carousel, search-input-section, eater-header, eater-question-pill, eater-search-input-section, eater-seed-question-pills
+      "ai-elements": 15, // dual-phase-progress, gif-housing, glass-widget-container, answer-widget-container, prompt-input, readiness-score-gauge, simple-progress-bar, success-phase, question-pill, seed-questions-carousel, search-input-section, eater-header, eater-question-pill, eater-search-input-section, eater-seed-question-pills
       "ask-anything": 1, // pricing-card
       widgets: completeWidgetsCount, // complete widget implementations (in complete/ folder)
     };
@@ -96,6 +96,7 @@ export const getWidgetComponentsList = query({
         { name: "dual-phase-progress", path: "components/widget_components/ai-elements/dual-phase-progress.tsx", category: "ai-elements", description: "Two-phase progress indicator" },
         { name: "gif-housing", path: "components/widget_components/ai-elements/gif-housing.tsx", category: "ai-elements", description: "Container for animated GIF content" },
         { name: "glass-widget-container", path: "components/widget_components/ai-elements/glass_widget_container.tsx", category: "ai-elements", description: "Glassmorphism styled container" },
+        { name: "answer-widget-container", path: "components/widget_components/ai-elements/answer_widget_container.tsx", category: "ai-elements", description: "Inline container for full-page answer displays (760px fixed width, red outline)" },
         { name: "prompt-input", path: "components/widget_components/ai-elements/prompt-input.tsx", category: "ai-elements", description: "AI prompt input field with suggestions" },
         { name: "readiness-score-gauge", path: "components/widget_components/ai-elements/readiness-score-gauge.tsx", category: "ai-elements", description: "Visual gauge for readiness score" },
         { name: "simple-progress-bar", path: "components/widget_components/ai-elements/simple-progress-bar.tsx", category: "ai-elements", description: "Basic progress bar component" },
@@ -164,6 +165,13 @@ export const getCompleteWidgetsList = query({
         description: "Food and restaurant discovery AI assistant with Eater red branding, squiggle underlines, and ultra-rounded pill input",
         phases: 1,
         componentCount: 5,
+      },
+      {
+        name: "new-page-answer-widget",
+        path: "components/widget_components/complete/new-page-answer-widget.tsx",
+        description: "Full-page AI-powered Q&A widget with OpenAI streaming, citations, source attribution, article recommendations, and user feedback",
+        phases: 5,
+        componentCount: 9,
       },
     ];
 

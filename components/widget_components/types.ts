@@ -813,6 +813,15 @@ export interface WomensWorldInlineWidgetProps {
 
   /** Additional CSS classes */
   className?: string;
+
+  /** Enable inline OpenAI streaming answers (default: false) */
+  enableStreaming?: boolean;
+
+  /** Callback when streaming answer completes successfully */
+  onAnswerComplete?: (answer: string) => void;
+
+  /** Callback when streaming answer encounters an error */
+  onAnswerError?: (error: string) => void;
 }
 
 /**

@@ -5,7 +5,9 @@ Create a new plan in specs/*.md to implement the `Feature` using the exact speci
 ## Instructions
 
 - You're writing a plan to implement a net new feature that will add value to the application.
-- Create the plan in the `specs/*.md` file. Name it appropriately based on the `Feature`.
+- Create the plan in the `specs/active/YYYY-MM-DD-HHMM-{feature-name}.md` file. Name it appropriately based on the `Feature`.
+- Use today's date and time in YYYY-MM-DD-HHMM format (24-hour time) as the filename prefix.
+- Example: For a feature 'add user profiles' created on Oct 29, 2025 at 2:30 PM, the filename would be: `specs/active/2025-10-29-1430-add-user-profiles.md`
 - Use the `Plan Format` below to create the plan.
 - Research the codebase to understand existing patterns, architecture, and conventions before planning the feature.
 - IMPORTANT: Replace every <placeholder> in the `Plan Format` with the requested value. Add as much detail as needed to implement the feature successfully.

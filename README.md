@@ -433,3 +433,4 @@ The admin portal provides role-based access control with a dedicated interface f
 - **Clerk Migration Guide**: See `ai_docs/clerkmigration.md` for complete Clerk + Convex integration details
 - **Next.js 16 Docs**: See `ai_docs/next_js_docs/next_js_update.md`
 - **React 19.2 Docs**: See `ai_docs/react_docs/react_update.md`
+- **Specs Organization**: See `specs/README.md` for specification management guidelines and directory structure (active, completed, archived with timestamped filenames)

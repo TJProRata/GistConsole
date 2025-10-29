@@ -16,6 +16,7 @@ const configurationSchema = v.object({
     v.union(
       v.literal("bottom-right"),
       v.literal("bottom-left"),
+      v.literal("bottom-center"),
       v.literal("top-right"),
       v.literal("top-left")
     )
@@ -34,6 +35,7 @@ const configurationSchema = v.object({
   // Women's World Widget Configuration
   seedQuestions: v.optional(v.array(v.string())),
   autoScrollInterval: v.optional(v.number()),
+  womensWorldVariant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
 });
 
 // Create new preview configuration

@@ -5,7 +5,9 @@ Create a new plan in specs/*.md to resolve the `Widget Bug` using the exact spec
 ## Instructions
 
 - You're writing a plan to resolve a widget bug - it should be thorough and precise so we fix the root cause and prevent regressions.
-- Create the plan in the `specs/*.md` file. Name it appropriately based on the `Widget Bug`.
+- Create the plan in the `specs/active/YYYY-MM-DD-HHMM-fix-{widget-bug-name}.md` file. Name it appropriately based on the `Widget Bug`.
+- Use today's date and time in YYYY-MM-DD-HHMM format (24-hour time) as the filename prefix.
+- Example: For a widget bug 'fix carousel scroll jump' created on Oct 29, 2025 at 4:15 PM, the filename would be: `specs/active/2025-10-29-1615-fix-carousel-scroll-jump.md`
 - Use the plan format below to create the plan.
 - Research the codebase to understand the bug, reproduce it, and put together a plan to fix it.
 - IMPORTANT: Replace every <placeholder> in the `Plan Format` with the requested value. Add as much detail as needed to fix the bug.

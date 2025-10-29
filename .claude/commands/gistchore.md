@@ -5,7 +5,9 @@ Create a new plan in specs/*.md to resolve the `Chore` using the exact specified
 ## Instructions
 
 - You're writing a plan to resolve a chore, it should be simple but we need to be thorough and precise so we don't miss anything or waste time with any second round of changes.
-- Create the plan in the `specs/*.md` file. Name it appropriately based on the `Chore`.
+- Create the plan in the `specs/active/YYYY-MM-DD-HHMM-{chore-name}.md` file. Name it appropriately based on the `Chore`.
+- Use today's date and time in YYYY-MM-DD-HHMM format (24-hour time) as the filename prefix.
+- Example: For a chore 'refactor authentication' created on Oct 29, 2025 at 9:15 AM, the filename would be: `specs/active/2025-10-29-0915-refactor-authentication.md`
 - Use the plan format below to create the plan.
 - Research the codebase and put together a plan to accomplish the chore.
 - IMPORTANT: Replace every <placeholder> in the `Plan Format` with the requested value. Add as much detail as needed to accomplish the chore.

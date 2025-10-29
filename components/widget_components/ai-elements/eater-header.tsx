@@ -1,31 +1,68 @@
-"use client";
+import React from "react";
+import { Map, Search, Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import type { EaterHeaderProps } from "../types";
+interface EaterHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-/**
- * Header Component
- * Widget title and close button
- */
-export function EaterHeader({ title, onClose }: EaterHeaderProps) {
-  return (
-    <div className="flex items-center justify-between mb-6">
-      <h1
-        className="text-[32px] font-bold text-black leading-[32px]"
-        style={{ fontFamily: "Degular, sans-serif" }}
+export const EaterHeader = React.forwardRef<HTMLDivElement, EaterHeaderProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "bg-white border-b-2 border-dotted border-[#E60001] py-4 px-6",
+          className
+        )}
+        {...props}
       >
-        {title}
-      </h1>
-      <Button
-        onClick={onClose}
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8 rounded-full hover:bg-black/5"
-        aria-label="Close widget"
-      >
-        <X className="h-5 w-5 text-black" aria-hidden="true" />
-      </Button>
-    </div>
-  );
-}
+        {/* Top Row: Maps Icon | Logo | Search & Menu Icons */}
+        <div className="flex items-center justify-between max-w-4xl mx-auto">
+          {/* Left: Maps Icon */}
+          <button
+            className="text-[#E60001] hover:text-[#c20001] transition-colors"
+            aria-label="View map"
+          >
+            <Map className="w-6 h-6" />
+          </button>
+
+          {/* Center: Eater Logo */}
+          <h1
+            className="text-4xl font-bold text-[#E60001] tracking-wider"
+            style={{ fontFamily: "Degular, sans-serif" }}
+          >
+            EATER
+          </h1>
+
+          {/* Right: Search & Menu Icons */}
+          <div className="flex items-center gap-3">
+            <button
+              className="text-[#E60001] hover:text-[#c20001] transition-colors"
+              aria-label="Search"
+            >
+              <Search className="w-6 h-6" />
+            </button>
+            <button
+              className="text-[#E60001] hover:text-[#c20001] transition-colors"
+              aria-label="Menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Row: Location Dropdown */}
+        <div className="flex items-center justify-center mt-3">
+          <button
+            className="text-[#E60001] text-xs font-bold tracking-widest hover:underline"
+            style={{ fontFamily: "Degular, sans-serif" }}
+            aria-label="Select location"
+          >
+            LOS ANGELES
+          </button>
+        </div>
+      </div>
+    );
+  }
+);
+
+EaterHeader.displayName = "EaterHeader";

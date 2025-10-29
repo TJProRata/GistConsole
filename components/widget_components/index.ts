@@ -39,6 +39,18 @@ export { EaterHeader } from "./ai-elements/eater-header";
 export { EaterQuestionPill } from "./ai-elements/eater-question-pill";
 export { EaterSearchInputSection } from "./ai-elements/eater-search-input-section";
 export { EaterSeedQuestionPills } from "./ai-elements/eater-seed-question-pills";
+export { QueryDisplay } from "./ai-elements/query-display";
+export { AnswerContent } from "./ai-elements/answer-content";
+export { InlineCitation } from "./ai-elements/inline-citation";
+export { ArticleCard } from "./ai-elements/article-card";
+export { RecommendedArticles } from "./ai-elements/recommended-articles";
+export { DisclaimerBanner } from "./ai-elements/disclaimer-banner";
+export {
+  AnswerWidgetContainer,
+  AnswerWidgetHeader,
+  AnswerWidgetContent,
+  AnswerWidgetFooter
+} from "./ai-elements/answer_widget_container";
 
 // Ask Anything
 export { PricingCard } from "./ask-anything/pricing-card";
@@ -50,6 +62,7 @@ export { WomensWorldInlineWidget } from "./complete/womens-world-inline-widget";
 export { RufusWidget } from "./complete/rufus-widget";
 export { NYTChatWidget } from "./complete/nyt-chat-widget";
 export { EaterWidget } from "./complete/eater-widget";
+export { NewPageAnswerWidget } from "./complete/new-page-answer-widget";
 
 // Types
 export type {
@@ -98,5 +111,22 @@ export type {
   AttributionCardsProps,
   FeedbackButtonsProps,
   RelatedQuestionsProps,
-  NewSearchButtonProps
+  NewSearchButtonProps,
+  NewPageAnswerWidgetProps,
+  BrandConfig,
+  SourceDistribution,
+  SponsoredContentData,
+  ArticleRecommendation,
+  Citation,
+  AnswerPageWidgetState,
+  NewPageAnswerData,
+  NewPageAnswerWidgetState,
+  QueryDisplayProps,
+  AnswerContentProps,
+  InlineCitationProps,
+  DisclaimerBannerProps,
+  ArticleCardProps,
+  RecommendedArticlesProps,
+  AnswerWidgetContainerProps,
+  AnswerWidgetSubComponentProps
 } from "./types";

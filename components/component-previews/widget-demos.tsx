@@ -22,6 +22,16 @@ import { EaterQuestionPill } from "@/components/widget_components/ai-elements/ea
 import { EaterSearchInputSection } from "@/components/widget_components/ai-elements/eater-search-input-section";
 import { EaterSeedQuestionPills } from "@/components/widget_components/ai-elements/eater-seed-question-pills";
 import { GlassWidgetContainer, GlassWidgetHeader, GlassWidgetContent, GlassWidgetFooter } from "@/components/widget_components/ai-elements/glass_widget_container";
+import { AnswerWidgetContainer, AnswerWidgetHeader, AnswerWidgetContent, AnswerWidgetFooter } from "@/components/widget_components/ai-elements/answer_widget_container";
+import { QueryDisplay } from "@/components/widget_components/ai-elements/query-display";
+import { AnswerContent } from "@/components/widget_components/ai-elements/answer-content";
+import { DisclaimerBanner } from "@/components/widget_components/ai-elements/disclaimer-banner";
+import { SponsoredContent } from "@/components/widget_components/ai-elements/sponsored-content";
+import { ArticleCard } from "@/components/widget_components/ai-elements/article-card";
+import { RecommendedArticles } from "@/components/widget_components/ai-elements/recommended-articles";
+import { FeedbackButtons } from "@/components/widget_components/ai-elements/feedback-buttons";
+import { RelatedQuestions } from "@/components/widget_components/ai-elements/related-questions";
+import { SourceDistributionBar } from "@/components/widget_components/ai-elements/source-distribution-bar";
 import { GifHousing } from "@/components/widget_components/ai-elements/gif-housing";
 import { SuccessPhase } from "@/components/widget_components/ai-elements/success-phase";
 import {
@@ -233,6 +243,193 @@ export function GlassWidgetContainerDemo() {
           <button className="text-sm text-gray-600">Action</button>
         </GlassWidgetFooter>
       </GlassWidgetContainer>
+    </div>
+  );
+}
+
+export function AnswerWidgetContainerDemo() {
+  // Mock data for comprehensive demo
+  const mockArticles = [
+    {
+      id: "1",
+      title: "The Science Behind Dark Chocolate's Health Benefits",
+      description: "New research reveals how flavonoids in dark chocolate can improve cardiovascular health and cognitive function.",
+      url: "https://example.com/article-1",
+      source: {
+        name: "Healthline",
+        logo: "https://picsum.photos/seed/healthline/40/40",
+      },
+      thumbnail: "https://picsum.photos/seed/choc1/400/225",
+      relevanceScore: 92,
+      publishedDate: "2024-10-15",
+    },
+    {
+      id: "2",
+      title: "How Much Dark Chocolate Should You Eat Daily?",
+      description: "Nutritionists weigh in on the optimal amount of dark chocolate to consume for maximum health benefits.",
+      url: "https://example.com/article-2",
+      source: {
+        name: "Medical News Today",
+        logo: "https://picsum.photos/seed/medicalnews/40/40",
+      },
+      thumbnail: "https://picsum.photos/seed/choc2/400/225",
+      relevanceScore: 88,
+      publishedDate: "2024-10-12",
+    },
+    {
+      id: "3",
+      title: "Dark Chocolate vs Milk Chocolate: Nutrition Comparison",
+      description: "Understanding the key differences in nutritional content and health impacts between dark and milk chocolate.",
+      url: "https://example.com/article-3",
+      source: {
+        name: "WebMD",
+        logo: "https://picsum.photos/seed/webmd/40/40",
+      },
+      thumbnail: "https://picsum.photos/seed/choc3/400/225",
+      relevanceScore: 85,
+      publishedDate: "2024-10-10",
+    },
+  ];
+
+  const mockCitations = [
+    {
+      id: "citation-1",
+      number: 1,
+      title: "The Science Behind Dark Chocolate's Health Benefits",
+      url: "https://healthline.com/nutrition/dark-chocolate-benefits",
+      domain: "healthline.com",
+      publishedDate: "2024-10-15",
+    },
+    {
+      id: "citation-2",
+      number: 2,
+      title: "Dark Chocolate and Heart Health: What Research Says",
+      url: "https://medicalnewstoday.com/articles/dark-chocolate-heart",
+      domain: "medicalnewstoday.com",
+      publishedDate: "2024-10-12",
+    },
+    {
+      id: "citation-3",
+      number: 3,
+      title: "Flavonoids in Dark Chocolate: Cognitive Benefits",
+      url: "https://webmd.com/diet/dark-chocolate-flavonoids",
+      domain: "webmd.com",
+      publishedDate: "2024-10-10",
+    },
+  ];
+
+  const mockRelatedQuestions = [
+    "Is 90% dark chocolate better than 70%?",
+    "Can dark chocolate help with weight loss?",
+    "What are the side effects of eating too much dark chocolate?",
+    "How does dark chocolate compare to other antioxidant foods?",
+  ];
+
+  const mockSources = [
+    { name: "Healthline", percentage: 26, color: "#E60001" },
+    { name: "Medical News Today", percentage: 20, color: "#FF6B6B" },
+    { name: "WebMD", percentage: 18, color: "#4ECDC4" },
+    { name: "Mayo Clinic", percentage: 16, color: "#45B7D1" },
+    { name: "Others", percentage: 20, color: "#96CEB4" },
+  ];
+
+  const answerTextWithCitations = `Dark chocolate contains powerful antioxidants and minerals that can significantly benefit your health when consumed in moderation.[1] Studies show it may help improve heart health by lowering blood pressure and reducing the risk of cardiovascular disease.[2]
+
+Rich in flavonoids, dark chocolate can enhance brain function, improve mood, and provide anti-inflammatory properties.[3] The key is choosing chocolate with at least 70% cocoa content for maximum benefits.
+
+Research indicates that regular consumption of dark chocolate can improve blood flow, reduce inflammation, and even help protect your skin from sun damage.[1] Additionally, the minerals found in quality dark chocolate—including iron, magnesium, and zinc—support various bodily functions.`;
+
+  return (
+    <div className="flex items-center justify-center p-8 min-h-[600px] bg-gray-50">
+      <AnswerWidgetContainer>
+        <AnswerWidgetHeader>
+          <SourceDistributionBar sources={mockSources} className="mb-4" />
+          <QueryDisplay query="What are the health benefits of dark chocolate?" />
+          <p className="text-sm text-gray-600 mt-2">Based on 12 sources • Updated 2 hours ago</p>
+        </AnswerWidgetHeader>
+
+        <AnswerWidgetContent>
+          <div className="space-y-6 py-4">
+            {/* Main Answer with Citations */}
+            <AnswerContent
+              answerText={answerTextWithCitations}
+              isComplete={true}
+              citations={mockCitations}
+              onCitationClick={(citationId) => {
+                console.log(`Citation clicked: ${citationId}`);
+              }}
+            />
+
+            {/* Disclaimer Banner */}
+            <DisclaimerBanner
+              text="AI-generated content may contain errors. Always verify health information with qualified healthcare providers."
+              variant="default"
+            />
+
+            {/* Sponsored Content */}
+            <SponsoredContent
+              title={
+                <>
+                  <span className="font-bold">Premium Dark Chocolate</span>{" "}
+                  <span className="font-normal">Collection</span>
+                </>
+              }
+              body="Discover our curated selection of organic dark chocolate bars, sourced from sustainable farms worldwide. 70-90% cocoa options available."
+              cta={{
+                text: "Shop Now",
+                url: "https://example.com/shop",
+              }}
+            />
+
+            {/* Recommended Articles */}
+            <RecommendedArticles
+              articles={mockArticles}
+              onArticleClick={(articleId, articleUrl) => {
+                console.log(`Article clicked: ${articleId} - ${articleUrl}`);
+              }}
+            />
+
+            {/* Feedback Buttons */}
+            <div className="flex items-center justify-center gap-4 py-4">
+              <FeedbackButtons
+                onThumbsUp={() => console.log("Thumbs up!")}
+                onThumbsDown={() => console.log("Thumbs down!")}
+              />
+            </div>
+
+            {/* Related Questions */}
+            <RelatedQuestions
+              questions={mockRelatedQuestions}
+              onQuestionClick={(question) => {
+                console.log(`Related question clicked: ${question}`);
+              }}
+            />
+          </div>
+        </AnswerWidgetContent>
+
+        <AnswerWidgetFooter>
+          <div className="mt-4">
+            <PromptInput
+              variant="default"
+              onSubmit={(message) => {
+                console.log("New search query:", message);
+              }}
+            >
+              <PromptInputBody>
+                <PromptInputTextarea placeholder="Ask about health & nutrition..." />
+                <PromptInputToolbar>
+                  <PromptInputSubmit />
+                </PromptInputToolbar>
+              </PromptInputBody>
+            </PromptInput>
+          </div>
+
+          <div className="flex items-center justify-between pt-4 mt-4 border-t">
+            <p className="text-xs text-gray-500">Generated with AI • Verify with healthcare provider</p>
+            <button className="text-sm text-blue-600 hover:underline">View All Sources</button>
+          </div>
+        </AnswerWidgetFooter>
+      </AnswerWidgetContainer>
     </div>
   );
 }
@@ -537,6 +734,7 @@ export const WIDGET_DEMOS: Record<string, (props?: any) => React.ReactElement> =
   "seed-questions-carousel": SeedQuestionsCarouselDemo,
   "search-input-section": SearchInputSectionDemo,
   "glass-widget-container": GlassWidgetContainerDemo,
+  "answer-widget-container": AnswerWidgetContainerDemo,
   "gif-housing": GifHousingDemo,
   "success-phase": SuccessPhaseDemo,
   "prompt-input": PromptInputDemo,

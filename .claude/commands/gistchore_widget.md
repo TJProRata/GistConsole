@@ -5,7 +5,9 @@ Create a new plan in specs/*.md to resolve the `Widget Chore` using the exact sp
 ## Instructions
 
 - You're writing a plan to resolve a widget maintenance chore - refactoring, optimization, reorganization, or technical debt reduction.
-- Create the plan in the `specs/*.md` file. Name it appropriately based on the `Widget Chore`.
+- Create the plan in the `specs/active/YYYY-MM-DD-HHMM-{widget-chore-name}.md` file. Name it appropriately based on the `Widget Chore`.
+- Use today's date and time in YYYY-MM-DD-HHMM format (24-hour time) as the filename prefix.
+- Example: For a widget chore 'refactor carousel animation' created on Oct 29, 2025 at 10:20 AM, the filename would be: `specs/active/2025-10-29-1020-refactor-carousel-animation.md`
 - Use the plan format below to create the plan.
 - Research the codebase and existing widget patterns to accomplish the chore.
 - IMPORTANT: Replace every <placeholder> in the `Plan Format` with the requested value. Add as much detail as needed to accomplish the chore.

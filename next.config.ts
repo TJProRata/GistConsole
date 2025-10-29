@@ -13,6 +13,20 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
 
+  // Configure external image domains for Next.js Image component
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+    ],
+  },
+
   // Optional: Enable Cache Components (opt-in explicit caching)
   // Uncomment when ready to use "use cache" directives
   // cacheComponents: true,

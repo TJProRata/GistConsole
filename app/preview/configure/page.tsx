@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 const steps = [
@@ -49,7 +50,7 @@ export default function ConfigurePage() {
     gradientEnd: "#8b5cf6",
   });
   const [placement, setPlacement] = useState<
-    "bottom-right" | "bottom-left" | "top-right" | "top-left"
+    "bottom-right" | "bottom-left" | "top-right" | "top-left" | "bottom-center"
   >("bottom-right");
   const [width, setWidth] = useState([400]);
   const [height, setHeight] = useState([500]);
@@ -75,7 +76,10 @@ export default function ConfigurePage() {
     ],
     autoScrollInterval: 3000,
     brandingText: "Powered by Gist.ai",
+    enableStreaming: true,
   });
+  const [womensWorldVariant, setWomensWorldVariant] = useState<"inline" | "floating">("floating");
+  const [openByDefault, setOpenByDefault] = useState(false);
 
   useEffect(() => {
     if (!sessionLoading && previewConfig) {
@@ -117,6 +121,8 @@ export default function ConfigurePage() {
           autoScrollInterval: config.autoScrollInterval ?? 3000,
           brandingText: config.brandingText ?? "Powered by Gist.ai",
         });
+        setWomensWorldVariant(config.womensWorldVariant ?? "floating");
+        setOpenByDefault(config.openByDefault ?? false);
       }
     }
   }, [previewConfig, sessionLoading, router]);
@@ -135,6 +141,8 @@ export default function ConfigurePage() {
             width: width[0],
             height: height[0],
             textColor: "#ffffff",
+            womensWorldVariant,
+            openByDefault,
             ...(previewConfig.widgetType === "floating" ? nytConfig : womensWorldConfig),
           },
         });
@@ -144,7 +152,7 @@ export default function ConfigurePage() {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [sessionId, colorConfig, placement, width, height, nytConfig, womensWorldConfig, previewConfig, updateConfig]);
+  }, [sessionId, colorConfig, placement, width, height, nytConfig, womensWorldConfig, womensWorldVariant, openByDefault, previewConfig, updateConfig]);
 
   const handleContinue = () => {
     router.push("/preview/demo");
@@ -199,34 +207,6 @@ export default function ConfigurePage() {
                   value={colorConfig}
                   onChange={setColorConfig}
                 />
-
-                <Card className="p-4">
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Width: {width[0]}px</Label>
-                      <Slider
-                        value={width}
-                        onValueChange={setWidth}
-                        min={300}
-                        max={600}
-                        step={10}
-                        className="mt-2"
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Height: {height[0]}px</Label>
-                      <Slider
-                        value={height}
-                        onValueChange={setHeight}
-                        min={300}
-                        max={700}
-                        step={10}
-                        className="mt-2"
-                      />
-                    </div>
-                  </div>
-                </Card>
               </TabsContent>
 
               <TabsContent value="behavior">
@@ -235,24 +215,105 @@ export default function ConfigurePage() {
                     <div>
                       <Label className="mb-3 block">Widget Placement</Label>
                       <RadioGroup value={placement} onValueChange={(v: any) => setPlacement(v)}>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="bottom-right" id="bottom-right" />
-                          <Label htmlFor="bottom-right">Bottom Right</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="bottom-left" id="bottom-left" />
-                          <Label htmlFor="bottom-left">Bottom Left</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="top-right" id="top-right" />
-                          <Label htmlFor="top-right">Top Right</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="top-left" id="top-left" />
-                          <Label htmlFor="top-left">Top Left</Label>
-                        </div>
+                        {/* Women's World Widget: Only bottom positions */}
+                        {previewConfig.widgetType === "womensWorld" ? (
+                          <>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="bottom-left" id="bottom-left" />
+                              <Label htmlFor="bottom-left">Bottom Left</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="bottom-center" id="bottom-center" />
+                              <Label htmlFor="bottom-center">Bottom Center</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="bottom-right" id="bottom-right" />
+                              <Label htmlFor="bottom-right">Bottom Right</Label>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            {/* Other widgets: All 4 corner positions */}
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="bottom-right" id="bottom-right" />
+                              <Label htmlFor="bottom-right">Bottom Right</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="bottom-left" id="bottom-left" />
+                              <Label htmlFor="bottom-left">Bottom Left</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="top-right" id="top-right" />
+                              <Label htmlFor="top-right">Top Right</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="top-left" id="top-left" />
+                              <Label htmlFor="top-left">Top Left</Label>
+                            </div>
+                          </>
+                        )}
                       </RadioGroup>
                     </div>
+
+                    {/* Dimensions: Variant-Specific Controls */}
+                    {previewConfig.widgetType === "womensWorld" && (
+                      <div className="pt-4 border-t">
+                        <h4 className="font-semibold mb-3">Dimensions</h4>
+
+                        {/* Floating Variant: Width + Height */}
+                        {womensWorldVariant === "floating" && (
+                          <>
+                            <div className="mb-4">
+                              <Label>Widget Width: {width[0]}px</Label>
+                              <Slider
+                                value={width}
+                                onValueChange={setWidth}
+                                min={300}
+                                max={500}
+                                step={10}
+                                className="mt-2"
+                              />
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Width of the expanded widget (floating variant)
+                              </p>
+                            </div>
+
+                            <div>
+                              <Label>Widget Height: {height[0]}px</Label>
+                              <Slider
+                                value={height}
+                                onValueChange={setHeight}
+                                min={400}
+                                max={700}
+                                step={10}
+                                className="mt-2"
+                              />
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Height of the expanded widget (floating variant)
+                              </p>
+                            </div>
+                          </>
+                        )}
+
+                        {/* Inline Variant: Max Width Only */}
+                        {womensWorldVariant === "inline" && (
+                          <div>
+                            <Label>Max Width: {width[0]}px</Label>
+                            <Slider
+                              value={width}
+                              onValueChange={setWidth}
+                              min={400}
+                              max={800}
+                              step={20}
+                              className="mt-2"
+                            />
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Maximum width constraint for inline widget (responsive within container)
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     <div>
                       <Label className="mb-3 block">Preview Theme</Label>
@@ -271,6 +332,21 @@ export default function ConfigurePage() {
                         >
                           🌙 Dark
                         </Button>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t">
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">Open by Default</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Widget will be expanded when page loads
+                          </p>
+                        </div>
+                        <Switch
+                          checked={openByDefault}
+                          onCheckedChange={setOpenByDefault}
+                        />
                       </div>
                     </div>
                   </div>
@@ -393,22 +469,73 @@ export default function ConfigurePage() {
                 {previewConfig.widgetType === "womensWorld" && (
                   <Card className="p-4">
                     <h3 className="font-semibold mb-4">Women's World Widget Customization</h3>
+
+                    {/* Variant Selector */}
+                    <div className="mb-6 pb-6 border-b">
+                      <Label className="mb-3 block">Widget Variant</Label>
+                      <RadioGroup
+                        value={womensWorldVariant}
+                        onValueChange={(value) => setWomensWorldVariant(value as "inline" | "floating")}
+                      >
+                        <div className="grid gap-4 md:grid-cols-2">
+                          <Card
+                            className={cn(
+                              "cursor-pointer border-2 p-4 transition-all hover:border-primary",
+                              womensWorldVariant === "floating" ? "border-primary bg-primary/5" : ""
+                            )}
+                            onClick={() => setWomensWorldVariant("floating")}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <RadioGroupItem value="floating" id="floating" />
+                              <Label htmlFor="floating" className="cursor-pointer font-semibold">
+                                Floating Widget
+                              </Label>
+                            </div>
+                            <p className="text-xs text-muted-foreground ml-6">
+                              Collapsible bottom-corner widget. Perfect for persistent availability without disrupting content.
+                            </p>
+                          </Card>
+
+                          <Card
+                            className={cn(
+                              "cursor-pointer border-2 p-4 transition-all hover:border-primary",
+                              womensWorldVariant === "inline" ? "border-primary bg-primary/5" : ""
+                            )}
+                            onClick={() => setWomensWorldVariant("inline")}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <RadioGroupItem value="inline" id="inline" />
+                              <Label htmlFor="inline" className="cursor-pointer font-semibold">
+                                Inline Widget
+                              </Label>
+                            </div>
+                            <p className="text-xs text-muted-foreground ml-6">
+                              Always-expanded embedded widget. Ideal for in-article placement and content integration.
+                            </p>
+                          </Card>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
                     <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="ww-collapsedText">Collapsed Button Text</Label>
-                        <Input
-                          id="ww-collapsedText"
-                          value={womensWorldConfig.collapsedText}
-                          onChange={(e) =>
-                            setWomensWorldConfig({ ...womensWorldConfig, collapsedText: e.target.value })
-                          }
-                          placeholder="Ask AI"
-                          className="mt-2"
-                        />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Text shown on the collapsed button
-                        </p>
-                      </div>
+                      {/* Collapsed Text Input - Only for Floating Variant */}
+                      {womensWorldVariant === "floating" && (
+                        <div>
+                          <Label htmlFor="ww-collapsedText">Collapsed Button Text</Label>
+                          <Input
+                            id="ww-collapsedText"
+                            value={womensWorldConfig.collapsedText}
+                            onChange={(e) =>
+                              setWomensWorldConfig({ ...womensWorldConfig, collapsedText: e.target.value })
+                            }
+                            placeholder="Ask AI"
+                            className="mt-2"
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Text shown on the collapsed button (floating variant only)
+                          </p>
+                        </div>
+                      )}
 
                       <div>
                         <Label htmlFor="ww-title">Widget Title</Label>
@@ -497,6 +624,23 @@ export default function ConfigurePage() {
                           How often the carousel auto-scrolls (1-10 seconds)
                         </p>
                       </div>
+
+                      <div className="pt-4 border-t">
+                        <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                          <div className="space-y-0.5">
+                            <Label className="text-base">OpenAI Streaming Answers</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Enable real-time AI-powered answers using OpenAI (requires OPENAI_API_KEY)
+                            </p>
+                          </div>
+                          <Switch
+                            checked={womensWorldConfig.enableStreaming}
+                            onCheckedChange={(checked) =>
+                              setWomensWorldConfig({ ...womensWorldConfig, enableStreaming: checked })
+                            }
+                          />
+                        </div>
+                      </div>
                     </div>
                   </Card>
                 )}
@@ -547,6 +691,8 @@ export default function ConfigurePage() {
                       width: width[0],
                       height: height[0],
                       textColor: "#ffffff",
+                      womensWorldVariant,
+                      openByDefault,
                       ...(previewConfig.widgetType === "floating" ? nytConfig : womensWorldConfig),
                     }}
                   />

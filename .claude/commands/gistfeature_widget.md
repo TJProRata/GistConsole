@@ -5,7 +5,9 @@ Create a new plan in specs/*.md to implement the `Widget Feature` using the exac
 ## Instructions
 
 - You're writing a plan to implement a new widget or widget feature using React 19.2 and modern component patterns.
-- Create the plan in the `specs/*.md` file. Name it appropriately based on the `Widget Feature`.
+- Create the plan in the `specs/active/YYYY-MM-DD-HHMM-{widget-feature-name}.md` file. Name it appropriately based on the `Widget Feature`.
+- Use today's date and time in YYYY-MM-DD-HHMM format (24-hour time) as the filename prefix.
+- Example: For a widget feature 'add carousel widget' created on Oct 29, 2025 at 3:45 PM, the filename would be: `specs/active/2025-10-29-1545-add-carousel-widget.md`
 - Use the `Plan Format` below to create the plan.
 - Research the codebase to understand existing widget patterns, architecture, and conventions before planning the feature.
 - IMPORTANT: Replace every <placeholder> in the `Plan Format` with the requested value. Add as much detail as needed to implement the widget successfully.

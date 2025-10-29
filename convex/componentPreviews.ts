@@ -723,6 +723,50 @@ export function GlassWidgetContainerDemo() {
 }`,
   },
   {
+    name: "answer-widget-container",
+    description: "Inline container for full-page answer displays (760px fixed width, red outline)",
+    category: "ai-elements",
+    code: `import { AnswerWidgetContainer, AnswerWidgetHeader, AnswerWidgetContent, AnswerWidgetFooter } from "@/components/widget_components/ai-elements/answer_widget_container"
+
+export function AnswerWidgetContainerDemo() {
+  return (
+    <div className="flex items-center justify-center p-8 min-h-[600px] bg-gray-50">
+      <AnswerWidgetContainer>
+        <AnswerWidgetHeader>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-gray-900">What are the health benefits of dark chocolate?</h2>
+            <p className="text-sm text-gray-600">Based on 12 sources • Updated 2 hours ago</p>
+          </div>
+        </AnswerWidgetHeader>
+        <AnswerWidgetContent>
+          <div className="space-y-4 py-4">
+            <p className="text-gray-800 leading-relaxed">
+              Dark chocolate contains powerful antioxidants and minerals. Studies suggest it may improve heart health,
+              brain function, and reduce inflammation when consumed in moderation (1-2 ounces per day).
+            </p>
+            <p className="text-gray-800 leading-relaxed">
+              The flavonoids in dark chocolate can help lower blood pressure and improve blood flow to the brain and heart.
+              Choose chocolate with at least 70% cocoa content for maximum benefits.
+            </p>
+            <div className="flex gap-2 mt-6">
+              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Heart Health</span>
+              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Antioxidants</span>
+              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Brain Function</span>
+            </div>
+          </div>
+        </AnswerWidgetContent>
+        <AnswerWidgetFooter>
+          <div className="flex items-center justify-between pt-4 border-t">
+            <p className="text-xs text-gray-500">Generated with AI • Verify with healthcare provider</p>
+            <button className="text-sm text-blue-600 hover:underline">View Sources</button>
+          </div>
+        </AnswerWidgetFooter>
+      </AnswerWidgetContainer>
+    </div>
+  )
+}`,
+  },
+  {
     name: "gif-housing",
     description: "Container for animated GIF content",
     category: "ai-elements",
@@ -1200,6 +1244,50 @@ export function WomensWorldWidgetDemo() {
           "Natural remedies for stress relief?",
         ]}
         autoScrollInterval={15000}
+      />
+    </div>
+  );
+}`,
+  },
+  {
+    name: "new-page-answer-widget",
+    description: "Full-page AI-powered Q&A widget with OpenAI streaming, citations, source attribution, article recommendations, and user feedback",
+    category: "widgets",
+    phases: 5,
+    componentCount: 9,
+    dependencies: [
+      "GlassWidgetContainer",
+      "LoadingState",
+      "QueryDisplay",
+      "AnswerContent",
+      "DisclaimerBanner",
+      "FeedbackButtons",
+      "RelatedQuestions",
+      "RecommendedArticles",
+      "NewSearchButton"
+    ],
+    code: `"use client";
+
+import { NewPageAnswerWidget } from "@/components/widget_components/complete/new-page-answer-widget";
+
+export function NewPageAnswerWidgetDemo() {
+  return (
+    <div className="flex items-center justify-center min-h-screen p-8 bg-gray-50">
+      <NewPageAnswerWidget
+        initialQuery="What are the health benefits of green tea?"
+        brandConfig={{
+          name: "Women's World",
+          primaryColor: "#FF6B6B",
+          secondaryColor: "#4ECDC4",
+          fonts: {
+            heading: "system-ui, sans-serif",
+            body: "system-ui, sans-serif"
+          }
+        }}
+        onClose={() => console.log("Widget closed")}
+        onNewSearch={(query) => console.log("New search:", query)}
+        onArticleClick={(articleId, url) => window.open(url, "_blank")}
+        onCitationClick={(citationId) => console.log("Citation clicked:", citationId)}
       />
     </div>
   );

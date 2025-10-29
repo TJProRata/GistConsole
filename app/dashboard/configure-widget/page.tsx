@@ -50,7 +50,7 @@ const formSchema = z.object({
   widgetType: z.enum(["floating", "rufus", "womensWorld"], {
     message: "Please select a widget type",
   }),
-  placement: z.enum(["bottom-right", "bottom-left", "top-right", "top-left"]),
+  placement: z.enum(["bottom-right", "bottom-left", "bottom-center", "top-right", "top-left"]),
   useGradient: z.boolean(),
   primaryColor: z.string().optional(),
   gradientStart: z.string().optional(),
@@ -472,6 +472,7 @@ export default function ConfigureWidgetPage() {
                             {[
                               { value: "bottom-right", label: "Bottom Right" },
                               { value: "bottom-left", label: "Bottom Left" },
+                              { value: "bottom-center", label: "Bottom Center" },
                               { value: "top-right", label: "Top Right" },
                               { value: "top-left", label: "Top Left" },
                             ].map((option) => (

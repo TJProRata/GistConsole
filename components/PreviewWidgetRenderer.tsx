@@ -9,6 +9,7 @@ import {
   RufusWidget,
   NYTChatWidget,
   WomensWorldWidget,
+  WomensWorldInlineWidget,
 } from "@/components/widget_components";
 
 interface WidgetConfiguration {
@@ -21,7 +22,7 @@ interface WidgetConfiguration {
   gradientEnd?: string;
   width?: number;
   height?: number;
-  placement?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
+  placement?: "bottom-right" | "bottom-left" | "bottom-center" | "top-right" | "top-left";
   openByDefault?: boolean;
   iconUrl?: string;
   // NYT Chat Widget Configuration
@@ -35,6 +36,8 @@ interface WidgetConfiguration {
   // Women's World Widget Configuration
   seedQuestions?: string[];
   autoScrollInterval?: number;
+  womensWorldVariant?: "inline" | "floating";
+  enableStreaming?: boolean;
 }
 
 interface PreviewWidgetRendererProps {
@@ -164,11 +167,9 @@ export function PreviewWidgetRenderer({
     );
   }
 
-  // Women's World Widget (bottom-right position)
+  // Women's World Widget (inline or floating based on variant)
   if (widgetType === "womensWorld") {
-    const positionClasses = isDemo
-      ? "fixed bottom-4 right-4 z-50"
-      : "absolute bottom-4 right-4";
+    const variant = configuration.womensWorldVariant ?? "floating";
 
     // Inject CSS variable override for gradient colors
     const gradientOverride =
@@ -177,6 +178,57 @@ export function PreviewWidgetRenderer({
       configuration.gradientEnd
         ? `--gradient-womens-world: linear-gradient(180deg, ${configuration.gradientStart}, ${configuration.gradientEnd});`
         : "";
+
+    // Inline Variant (embedded, always-expanded)
+    if (variant === "inline") {
+      return (
+        <>
+          {gradientOverride && (
+            <style>{`
+              :root {
+                ${gradientOverride}
+              }
+            `}</style>
+          )}
+          <div className={cn("mx-auto", className)}>
+            <WomensWorldInlineWidget
+              title={configuration.title || "✨ Woman's World Answers"}
+              placeholder={
+                configuration.placeholder || "Ask us your health questions"
+              }
+              seedQuestionsRow1={configuration.seedQuestions?.slice(0, 3)}
+              seedQuestionsRow2={configuration.seedQuestions?.slice(3, 6)}
+              autoScrollInterval={configuration.autoScrollInterval || 3000}
+              brandingText={configuration.brandingText || "Powered by Gist.ai"}
+              maxWidth={configuration.width || 640}
+              enableStreaming={configuration.enableStreaming}
+              onSubmit={(question) =>
+                console.log("Preview: Question submitted:", question)
+              }
+              onAnswerComplete={(answer) =>
+                console.log("Preview: Answer complete:", answer)
+              }
+              onAnswerError={(error) =>
+                console.error("Preview: Answer error:", error)
+              }
+            />
+          </div>
+        </>
+      );
+    }
+
+    // Floating Variant (bottom-corner, collapsible)
+    // Filter placement to only bottom positions (Women's World widget only supports bottom)
+    const validPlacements: Array<"bottom-left" | "bottom-center" | "bottom-right"> = [
+      "bottom-left",
+      "bottom-center",
+      "bottom-right",
+    ];
+    const womensWorldPlacement = validPlacements.includes(
+      configuration.placement as any
+    )
+      ? (configuration.placement as "bottom-left" | "bottom-center" | "bottom-right")
+      : "bottom-right";
 
     return (
       <>
@@ -187,23 +239,29 @@ export function PreviewWidgetRenderer({
             }
           `}</style>
         )}
-        <div className={cn(positionClasses, className)}>
-          <WomensWorldWidget
-            collapsedText={configuration.collapsedText || "Ask AI"}
-            title={configuration.title || "✨ Woman's World Answers"}
-            placeholder={
-              configuration.placeholder || "Ask us your health questions"
-            }
-            seedQuestions={configuration.seedQuestions}
-            autoScrollInterval={configuration.autoScrollInterval || 3000}
-            brandingText={configuration.brandingText || "Powered by Gist.ai"}
-            width={configuration.width || 392}
-            height={configuration.height}
-            onSubmit={(question) =>
-              console.log("Preview: Question submitted:", question)
-            }
-          />
-        </div>
+        <WomensWorldWidget
+          collapsedText={configuration.collapsedText || "Ask AI"}
+          title={configuration.title || "✨ Woman's World Answers"}
+          placeholder={
+            configuration.placeholder || "Ask us your health questions"
+          }
+          seedQuestions={configuration.seedQuestions}
+          autoScrollInterval={configuration.autoScrollInterval || 3000}
+          brandingText={configuration.brandingText || "Powered by Gist.ai"}
+          width={configuration.width || 392}
+          height={configuration.height}
+          placement={womensWorldPlacement}
+          enableStreaming={configuration.enableStreaming}
+          onSubmit={(question) =>
+            console.log("Preview: Question submitted:", question)
+          }
+          onAnswerComplete={(answer) =>
+            console.log("Preview: Answer complete:", answer)
+          }
+          onAnswerError={(error) =>
+            console.error("Preview: Answer error:", error)
+          }
+        />
       </>
     );
   }

@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
+import { WomensWorldAnswerDisplay } from "@/components/widget_components/ai-elements/womens-world-answer-display";
+import { useStreamingAnswer } from "@/lib/hooks/useStreamingAnswer";
 import { cn } from "@/lib/utils";
 import type { WomensWorldInlineWidgetProps } from "@/components/widget_components/types";
 
@@ -63,15 +67,53 @@ export function WomensWorldInlineWidget({
   maxWidth = 640,
   variant = "light",
   className,
+  enableStreaming = false,
+  onAnswerComplete,
+  onAnswerError,
 }: WomensWorldInlineWidgetProps) {
   const router = useRouter();
 
-  const handleSubmit = (question: string) => {
-    // Navigate to answers page with query parameter
-    router.push(`/admin/components/widgets/complete/answers?q=${encodeURIComponent(question)}`);
+  // Streaming state management
+  const { answerState, streamedText, error, startStreaming, resetAnswer } =
+    useStreamingAnswer();
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [lastQuery, setLastQuery] = useState("");
 
-    // Optional: call parent onSubmit if provided
+  const handleSubmit = async (question: string) => {
+    // Always call the onSubmit callback for backward compatibility
     onSubmit?.(question);
+
+    // If streaming is enabled, start streaming the answer inline
+    if (enableStreaming) {
+      setLastQuery(question);
+      setShowAnswer(true);
+
+      try {
+        await startStreaming(question);
+        // Call onAnswerComplete callback if provided
+        if (streamedText && answerState === "complete") {
+          onAnswerComplete?.(streamedText);
+        }
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to generate answer";
+        onAnswerError?.(errorMessage);
+      }
+    } else {
+      // Original behavior: Navigate to answers page
+      router.push(`/admin/components/widgets/complete/answers?q=${encodeURIComponent(question)}`);
+    }
+  };
+
+  const handleNewSearch = () => {
+    setShowAnswer(false);
+    resetAnswer();
+  };
+
+  const handleRetry = () => {
+    if (lastQuery) {
+      startStreaming(lastQuery);
+    }
   };
 
   // Variant-specific background gradients
@@ -96,20 +138,59 @@ export function WomensWorldInlineWidget({
     >
       {/* Header */}
       <div className="px-6 py-4 border-b border-white/20">
-        <h2 className="womens-world-title text-white text-center text-lg font-semibold">
-          {title}
-        </h2>
+        <AnimatePresence mode="wait">
+          {!showAnswer && (
+            <motion.h2
+              key="title"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="womens-world-title text-white text-center text-lg font-semibold"
+            >
+              {title}
+            </motion.h2>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Content */}
       <div className="px-6 py-6">
-        <SearchInputSection
-          placeholder={placeholder}
-          onSubmit={handleSubmit}
-          seedQuestionsRow1={seedQuestionsRow1}
-          seedQuestionsRow2={seedQuestionsRow2}
-          autoScrollInterval={autoScrollInterval}
-        />
+        <AnimatePresence mode="wait">
+          {!showAnswer ? (
+            <motion.div
+              key="search"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <SearchInputSection
+                placeholder={placeholder}
+                onSubmit={handleSubmit}
+                seedQuestionsRow1={seedQuestionsRow1}
+                seedQuestionsRow2={seedQuestionsRow2}
+                autoScrollInterval={autoScrollInterval}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="answer"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <WomensWorldAnswerDisplay
+                answerState={answerState}
+                text={streamedText}
+                error={error}
+                onNewSearch={handleNewSearch}
+                onRetry={handleRetry}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Footer */}

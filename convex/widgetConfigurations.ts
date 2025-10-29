@@ -16,6 +16,7 @@ const configurationSchema = v.object({
     v.union(
       v.literal("bottom-right"),
       v.literal("bottom-left"),
+      v.literal("bottom-center"),
       v.literal("top-right"),
       v.literal("top-left")
     )

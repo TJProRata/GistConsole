@@ -281,9 +281,9 @@ export function EaterWidget({
   const handleSubmit = () => {
     if (!canSubmit) return;
 
-    // Navigate to Women's World Answer Page with query parameter
+    // Navigate to Eater Answer Page with query parameter
     const encodedQuery = encodeURIComponent(inputValue);
-    router.push(`/womens-world/answers?q=${encodedQuery}`);
+    router.push(`/admin/components/widgets/complete/eater-answers?q=${encodedQuery}`);
 
     // Note: Don't clear input - user may want to reference their question
     // Note: Don't call onSubmit callback - navigation replaces this behavior

@@ -48,6 +48,12 @@
     /* Placeholder Colors */
     --color-placeholder: rgba(0, 0, 0, 0.40);
 
+    /* New Page Answer Widget Brand Theming */
+    --brand-primary: #6F61EF;
+    --brand-secondary: #E19736;
+    --font-heading: system-ui, -apple-system, sans-serif;
+    --font-body: system-ui, -apple-system, sans-serif;
+
     /* Background Colors */
     --color-bg-white: #FFFFFF;
     --color-bg-light: rgba(255, 255, 255, 0.8);
