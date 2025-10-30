@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PreviewFlowStepper } from "@/components/PreviewFlowStepper";
 import { ColorGradientPicker } from "@/components/ColorGradientPicker";
-import { PreviewWidgetRenderer } from "@/components/PreviewWidgetRenderer";
+import { IframeWidgetPreview } from "@/components/IframeWidgetPreview";
 import { usePreviewSession } from "@/lib/hooks/usePreviewSession";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -49,11 +49,6 @@ export default function ConfigurePage() {
     gradientStart: "#3b82f6",
     gradientEnd: "#8b5cf6",
   });
-  const [placement, setPlacement] = useState<
-    "bottom-right" | "bottom-left" | "top-right" | "top-left" | "bottom-center"
-  >("bottom-right");
-  const [width, setWidth] = useState([400]);
-  const [height, setHeight] = useState([500]);
   const [nytConfig, setNytConfig] = useState({
     collapsedText: "Ask",
     title: "Ask Anything!",
@@ -66,19 +61,21 @@ export default function ConfigurePage() {
     collapsedText: "Ask AI",
     title: "✨ Woman's World Answers",
     placeholder: "Ask us your health questions",
-    seedQuestions: [
+    seedQuestionsRow1: [
       "What's the best bread for weight loss?",
-      "How can I make Hamburger Helper healthier?",
       "Can I prevent dementia?",
       "Is there a link between trauma and autoimmune symptoms?",
+    ],
+    seedQuestionsRow2: [
+      "How can I make Hamburger Helper healthier?",
       "What are natural ways to boost energy?",
       "How do I improve my gut health?",
     ],
-    autoScrollInterval: 3000,
+    autoScroll: true,
     brandingText: "Powered by Gist.ai",
     enableStreaming: true,
   });
-  const [womensWorldVariant, setWomensWorldVariant] = useState<"inline" | "floating">("floating");
+  const [variant, setVariant] = useState<"inline" | "floating">("floating");
   const [openByDefault, setOpenByDefault] = useState(false);
 
   useEffect(() => {
@@ -95,9 +92,6 @@ export default function ConfigurePage() {
           gradientStart: config.gradientStart ?? "#3b82f6",
           gradientEnd: config.gradientEnd ?? "#8b5cf6",
         });
-        setPlacement(config.placement ?? "bottom-right");
-        setWidth([config.width ?? 400]);
-        setHeight([config.height ?? 500]);
         setNytConfig({
           collapsedText: config.collapsedText ?? "Ask",
           title: config.title ?? "Ask Anything!",
@@ -106,23 +100,30 @@ export default function ConfigurePage() {
           suggestionCategories: config.suggestionCategories ?? ["Top Stories", "Breaking News", "Sports", "Technology"],
           brandingText: config.brandingText ?? "Powered by Gist Answers",
         });
+
+        const configAny = config as any;
+        const row1 = configAny.seedQuestionsRow1 ?? [
+          "What's the best bread for weight loss?",
+          "Can I prevent dementia?",
+          "Is there a link between trauma and autoimmune symptoms?",
+        ];
+        const row2 = configAny.seedQuestionsRow2 ?? [
+          "How can I make Hamburger Helper healthier?",
+          "What are natural ways to boost energy?",
+          "How do I improve my gut health?",
+        ];
+
         setWomensWorldConfig({
           collapsedText: config.collapsedText ?? "Ask AI",
           title: config.title ?? "✨ Woman's World Answers",
           placeholder: config.placeholder ?? "Ask us your health questions",
-          seedQuestions: config.seedQuestions ?? [
-            "What's the best bread for weight loss?",
-            "How can I make Hamburger Helper healthier?",
-            "Can I prevent dementia?",
-            "Is there a link between trauma and autoimmune symptoms?",
-            "What are natural ways to boost energy?",
-            "How do I improve my gut health?",
-          ],
-          autoScrollInterval: config.autoScrollInterval ?? 3000,
+          seedQuestionsRow1: row1,
+          seedQuestionsRow2: row2,
+          autoScroll: configAny.autoScroll ?? true,
           brandingText: config.brandingText ?? "Powered by Gist.ai",
-          enableStreaming: (config as any).enableStreaming ?? true,
+          enableStreaming: configAny.enableStreaming ?? true,
         });
-        setWomensWorldVariant(config.womensWorldVariant ?? "floating");
+        setVariant(configAny.variant ?? "floating");
         setOpenByDefault(config.openByDefault ?? false);
       }
     }
@@ -138,13 +139,11 @@ export default function ConfigurePage() {
           sessionId,
           configuration: {
             ...colorConfig,
-            placement,
-            width: width[0],
-            height: height[0],
+            placement: "bottom-center",
             textColor: "#ffffff",
-            womensWorldVariant,
+            variant,
             openByDefault,
-            ...(previewConfig.widgetType === "floating" ? nytConfig : womensWorldConfig),
+            ...(previewConfig.widgetType === "womensWorld" ? womensWorldConfig : nytConfig),
           },
         });
       } catch (err) {
@@ -153,7 +152,7 @@ export default function ConfigurePage() {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [sessionId, colorConfig, placement, width, height, nytConfig, womensWorldConfig, womensWorldVariant, openByDefault, previewConfig, updateConfig]);
+  }, [sessionId, colorConfig, nytConfig, womensWorldConfig, variant, openByDefault, previewConfig, updateConfig]);
 
   const handleContinue = () => {
     router.push("/preview/demo");
@@ -214,109 +213,6 @@ export default function ConfigurePage() {
                 <Card className="p-4">
                   <div className="space-y-4">
                     <div>
-                      <Label className="mb-3 block">Widget Placement</Label>
-                      <RadioGroup value={placement} onValueChange={(v: any) => setPlacement(v)}>
-                        {/* Women's World Widget: Only bottom positions */}
-                        {previewConfig.widgetType === "womensWorld" ? (
-                          <>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="bottom-left" id="bottom-left" />
-                              <Label htmlFor="bottom-left">Bottom Left</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="bottom-center" id="bottom-center" />
-                              <Label htmlFor="bottom-center">Bottom Center</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="bottom-right" id="bottom-right" />
-                              <Label htmlFor="bottom-right">Bottom Right</Label>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            {/* Other widgets: All 4 corner positions */}
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="bottom-right" id="bottom-right" />
-                              <Label htmlFor="bottom-right">Bottom Right</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="bottom-left" id="bottom-left" />
-                              <Label htmlFor="bottom-left">Bottom Left</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="top-right" id="top-right" />
-                              <Label htmlFor="top-right">Top Right</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="top-left" id="top-left" />
-                              <Label htmlFor="top-left">Top Left</Label>
-                            </div>
-                          </>
-                        )}
-                      </RadioGroup>
-                    </div>
-
-                    {/* Dimensions: Variant-Specific Controls */}
-                    {previewConfig.widgetType === "womensWorld" && (
-                      <div className="pt-4 border-t">
-                        <h4 className="font-semibold mb-3">Dimensions</h4>
-
-                        {/* Floating Variant: Width + Height */}
-                        {womensWorldVariant === "floating" && (
-                          <>
-                            <div className="mb-4">
-                              <Label>Widget Width: {width[0]}px</Label>
-                              <Slider
-                                value={width}
-                                onValueChange={setWidth}
-                                min={300}
-                                max={500}
-                                step={10}
-                                className="mt-2"
-                              />
-                              <p className="text-xs text-muted-foreground mt-1">
-                                Width of the expanded widget (floating variant)
-                              </p>
-                            </div>
-
-                            <div>
-                              <Label>Widget Height: {height[0]}px</Label>
-                              <Slider
-                                value={height}
-                                onValueChange={setHeight}
-                                min={400}
-                                max={700}
-                                step={10}
-                                className="mt-2"
-                              />
-                              <p className="text-xs text-muted-foreground mt-1">
-                                Height of the expanded widget (floating variant)
-                              </p>
-                            </div>
-                          </>
-                        )}
-
-                        {/* Inline Variant: Max Width Only */}
-                        {womensWorldVariant === "inline" && (
-                          <div>
-                            <Label>Max Width: {width[0]}px</Label>
-                            <Slider
-                              value={width}
-                              onValueChange={setWidth}
-                              min={400}
-                              max={800}
-                              step={20}
-                              className="mt-2"
-                            />
-                            <p className="text-xs text-muted-foreground mt-1">
-                              Maximum width constraint for inline widget (responsive within container)
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    <div>
                       <Label className="mb-3 block">Preview Theme</Label>
                       <div className="flex gap-2">
                         <Button
@@ -336,20 +232,22 @@ export default function ConfigurePage() {
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t">
-                      <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-                        <div className="space-y-0.5">
-                          <Label className="text-base">Open by Default</Label>
-                          <p className="text-sm text-muted-foreground">
-                            Widget will be expanded when page loads
-                          </p>
+                    {variant === "floating" && (
+                      <div className="pt-4 border-t">
+                        <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                          <div className="space-y-0.5">
+                            <Label className="text-base">Open by Default</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Widget will be expanded when page loads
+                            </p>
+                          </div>
+                          <Switch
+                            checked={openByDefault}
+                            onCheckedChange={setOpenByDefault}
+                          />
                         </div>
-                        <Switch
-                          checked={openByDefault}
-                          onCheckedChange={setOpenByDefault}
-                        />
                       </div>
-                    </div>
+                    )}
                   </div>
                 </Card>
               </TabsContent>
@@ -475,16 +373,16 @@ export default function ConfigurePage() {
                     <div className="mb-6 pb-6 border-b">
                       <Label className="mb-3 block">Widget Variant</Label>
                       <RadioGroup
-                        value={womensWorldVariant}
-                        onValueChange={(value) => setWomensWorldVariant(value as "inline" | "floating")}
+                        value={variant}
+                        onValueChange={(value) => setVariant(value as "inline" | "floating")}
                       >
                         <div className="grid gap-4 md:grid-cols-2">
                           <Card
                             className={cn(
                               "cursor-pointer border-2 p-4 transition-all hover:border-primary",
-                              womensWorldVariant === "floating" ? "border-primary bg-primary/5" : ""
+                              variant === "floating" ? "border-primary bg-primary/5" : ""
                             )}
-                            onClick={() => setWomensWorldVariant("floating")}
+                            onClick={() => setVariant("floating")}
                           >
                             <div className="flex items-center gap-2 mb-2">
                               <RadioGroupItem value="floating" id="floating" />
@@ -500,9 +398,9 @@ export default function ConfigurePage() {
                           <Card
                             className={cn(
                               "cursor-pointer border-2 p-4 transition-all hover:border-primary",
-                              womensWorldVariant === "inline" ? "border-primary bg-primary/5" : ""
+                              variant === "inline" ? "border-primary bg-primary/5" : ""
                             )}
-                            onClick={() => setWomensWorldVariant("inline")}
+                            onClick={() => setVariant("inline")}
                           >
                             <div className="flex items-center gap-2 mb-2">
                               <RadioGroupItem value="inline" id="inline" />
@@ -520,7 +418,7 @@ export default function ConfigurePage() {
 
                     <div className="space-y-4">
                       {/* Collapsed Text Input - Only for Floating Variant */}
-                      {womensWorldVariant === "floating" && (
+                      {variant === "floating" && (
                         <div>
                           <Label htmlFor="ww-collapsedText">Collapsed Button Text</Label>
                           <Input
@@ -587,14 +485,16 @@ export default function ConfigurePage() {
                       </div>
 
                       <div>
-                        <Label htmlFor="ww-seedQuestions">Seed Questions</Label>
+                        <Label htmlFor="ww-seedQuestionsRow1">
+                          Seed Questions - Row 1
+                        </Label>
                         <Textarea
-                          id="ww-seedQuestions"
-                          value={womensWorldConfig.seedQuestions.join("\n")}
+                          id="ww-seedQuestionsRow1"
+                          value={womensWorldConfig.seedQuestionsRow1.join("\n")}
                           onChange={(e) =>
                             setWomensWorldConfig({
                               ...womensWorldConfig,
-                              seedQuestions: e.target.value
+                              seedQuestionsRow1: e.target.value
                                 .split("\n")
                                 .map((q) => q.trim())
                                 .filter(Boolean),
@@ -602,45 +502,66 @@ export default function ConfigurePage() {
                           }
                           placeholder="One question per line"
                           className="mt-2"
-                          rows={6}
+                          rows={3}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Enter one seed question per line for the carousel
+                          First carousel row (one question per line). Health/medical focus recommended.
                         </p>
                       </div>
 
                       <div>
-                        <Label>Auto-scroll Interval: {womensWorldConfig.autoScrollInterval}ms</Label>
-                        <Slider
-                          value={[womensWorldConfig.autoScrollInterval]}
-                          onValueChange={([value]) =>
-                            setWomensWorldConfig({ ...womensWorldConfig, autoScrollInterval: value })
+                        <Label htmlFor="ww-seedQuestionsRow2">
+                          Seed Questions - Row 2
+                        </Label>
+                        <Textarea
+                          id="ww-seedQuestionsRow2"
+                          value={womensWorldConfig.seedQuestionsRow2.join("\n")}
+                          onChange={(e) =>
+                            setWomensWorldConfig({
+                              ...womensWorldConfig,
+                              seedQuestionsRow2: e.target.value
+                                .split("\n")
+                                .map((q) => q.trim())
+                                .filter(Boolean),
+                            })
                           }
-                          min={1000}
-                          max={10000}
-                          step={500}
+                          placeholder="One question per line"
                           className="mt-2"
+                          rows={3}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          How often the carousel auto-scrolls (1-10 seconds)
+                          Second carousel row (one question per line). Wellness/lifestyle focus recommended.
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t">
-                        <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <Label className="text-base">OpenAI Streaming Answers</Label>
-                            <p className="text-sm text-muted-foreground">
-                              Enable real-time AI-powered answers using OpenAI (requires OPENAI_API_KEY)
-                            </p>
-                          </div>
-                          <Switch
-                            checked={womensWorldConfig.enableStreaming}
-                            onCheckedChange={(checked) =>
-                              setWomensWorldConfig({ ...womensWorldConfig, enableStreaming: checked })
-                            }
-                          />
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">Auto-scroll Seed Questions</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically scroll through seed questions
+                          </p>
                         </div>
+                        <Switch
+                          checked={womensWorldConfig.autoScroll}
+                          onCheckedChange={(checked) =>
+                            setWomensWorldConfig({ ...womensWorldConfig, autoScroll: checked })
+                          }
+                        />
+                      </div>
+
+                      <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">OpenAI Streaming Answers</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Enable real-time AI-powered answers using OpenAI (requires OPENAI_API_KEY)
+                          </p>
+                        </div>
+                        <Switch
+                          checked={womensWorldConfig.enableStreaming}
+                          onCheckedChange={(checked) =>
+                            setWomensWorldConfig({ ...womensWorldConfig, enableStreaming: checked })
+                          }
+                        />
                       </div>
                     </div>
                   </Card>
@@ -684,17 +605,15 @@ export default function ConfigurePage() {
                 </div>
 
                 {previewConfig.widgetType && (
-                  <PreviewWidgetRenderer
+                  <IframeWidgetPreview
                     widgetType={previewConfig.widgetType}
                     configuration={{
                       ...colorConfig,
-                      placement,
-                      width: width[0],
-                      height: height[0],
+                      placement: "bottom-center",
                       textColor: "#ffffff",
-                      womensWorldVariant,
+                      variant,
                       openByDefault,
-                      ...(previewConfig.widgetType === "floating" ? nytConfig : womensWorldConfig),
+                      ...(previewConfig.widgetType === "womensWorld" ? womensWorldConfig : nytConfig),
                     }}
                   />
                 )}

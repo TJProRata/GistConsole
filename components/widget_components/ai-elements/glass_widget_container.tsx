@@ -77,11 +77,18 @@ interface GlassWidgetContainerProps {
 
   /** Disable animations */
   disableAnimation?: boolean;
+
+  /** Custom background for expanded state (default: glassmorphism white) */
+  customBackground?: string;
+
+  /** Custom gradient for collapsed button border (default: var(--gradient-brand)) */
+  customGradientBorder?: string;
 }
 
 interface GlassWidgetSubComponentProps {
   children: React.ReactNode;
   className?: string;
+  disableOverflow?: boolean;
 }
 
 // ============================================================================
@@ -124,38 +131,33 @@ export function GlassWidgetContainer({
   expandedHeight, // Not used - kept for backward compatibility
   positioning = 'absolute',
   className,
-  disableAnimation: _disableAnimation = false
+  disableAnimation: _disableAnimation = false,
+  customBackground,
+  customGradientBorder
 }: GlassWidgetContainerProps) {
   // Controlled/Uncontrolled state pattern
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
-  const [showIntermediateExpansion, setShowIntermediateExpansion] = useState(false);
   const [allowDynamicHeight, setAllowDynamicHeight] = useState(false);
   const isExpanded = controlledIsExpanded ?? internalExpanded;
 
   const handleToggle = () => {
-    if (!isExpanded && !showIntermediateExpansion) {
-      // First click: show intermediate state
-      setShowIntermediateExpansion(true);
-    } else if (!isExpanded && showIntermediateExpansion) {
-      // Second click: fully expand
+    if (!isExpanded) {
+      // Expand
       if (controlledIsExpanded === undefined) {
         setInternalExpanded(true);
       }
       onExpandChange?.(true);
-      setShowIntermediateExpansion(false);
     } else {
       // Collapse
       if (controlledIsExpanded === undefined) {
         setInternalExpanded(false);
       }
       onExpandChange?.(false);
-      setShowIntermediateExpansion(false);
     }
   };
 
   const getContainerWidth = () => {
     if (isExpanded) return expandedWidth;
-    if (showIntermediateExpansion) return 234;
     return collapsedWidth;
   };
 
@@ -171,13 +173,44 @@ export function GlassWidgetContainer({
     return height;
   };
 
+  // Generate custom gradient border styles if needed
+  const customGradientStyles = customGradientBorder ? `
+    .gradient-border-collapsed-custom {
+      position: relative;
+      isolation: isolate;
+    }
+    .gradient-border-collapsed-custom::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      padding: 2px;
+      background: ${customGradientBorder};
+      border-radius: inherit;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
+    .gradient-border-collapsed-custom::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      inset: 2px;
+      background: white;
+      border-radius: calc(var(--radius-pill) - 2px);
+    }
+  ` : '';
+
+  const gradientClass = customGradientBorder ? 'gradient-border-collapsed-custom' : 'gradient-border-collapsed';
+
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: gradientBorderStyles }} />
+      <style dangerouslySetInnerHTML={{ __html: gradientBorderStyles + customGradientStyles }} />
       <motion.div
         className={cn(
           positioning === 'absolute' ? "absolute" : positioning === 'fixed' ? "fixed" : "relative",
-          !isExpanded && "cursor-pointer flex items-center justify-center gap-2 gradient-border-collapsed",
+          !isExpanded && `cursor-pointer flex items-center justify-center gap-2 ${gradientClass}`,
           "font-sans",
           className
         )}
@@ -197,8 +230,8 @@ export function GlassWidgetContainer({
         style={{
           position: positioning === 'relative' ? 'relative' : positioning,
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-          background: isExpanded ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-          backdropFilter: isExpanded ? 'blur(20px)' : undefined,
+          background: isExpanded ? (customBackground || 'rgba(255, 255, 255, 0.95)') : 'transparent',
+          backdropFilter: isExpanded && !customBackground ? 'blur(20px)' : undefined,
           border: isExpanded ? '1px solid rgba(255, 255, 255, 0.3)' : 'none',
           overflow: 'hidden',
           // Only constrain max, let content determine height
@@ -282,7 +315,7 @@ export function GlassWidgetContainer({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {collapsedContent || <DefaultCollapsedButton isAnimating={showIntermediateExpansion} />}
+            {collapsedContent || <DefaultCollapsedButton isAnimating={false} />}
           </motion.div>
         ) : (
           /* Expanded Widget Content */
@@ -321,10 +354,11 @@ export function GlassWidgetHeader({
 
 export function GlassWidgetContent({
   children,
-  className
+  className,
+  disableOverflow = false
 }: GlassWidgetSubComponentProps) {
   return (
-    <motion.div layout className={cn("overflow-y-auto px-4 py-2", className)}>
+    <motion.div layout className={cn("px-4 py-2", !disableOverflow && "overflow-y-auto", className)}>
       {children}
     </motion.div>
   );

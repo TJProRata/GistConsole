@@ -179,10 +179,6 @@ export default defineSchema(
     gradientStart: v.optional(v.string()),
     gradientEnd: v.optional(v.string()),
 
-    // Dimensions
-    width: v.optional(v.number()),
-    height: v.optional(v.number()),
-
     // Behavior
     placement: v.optional(
       v.union(
@@ -195,9 +191,15 @@ export default defineSchema(
     ),
     openByDefault: v.optional(v.boolean()),
 
+    // Deprecated: Legacy dimension controls (no longer used in UI)
+    // Kept for backward compatibility with existing widget records
+    width: v.optional(v.number()),
+    height: v.optional(v.number()),
+
     // Icons
     iconUrl: v.optional(v.string()),
     iconStorageId: v.optional(v.id("_storage")),
+    logoUrl: v.optional(v.string()),
 
     // NYT Chat Widget Configuration
     collapsedText: v.optional(v.string()),
@@ -206,6 +208,19 @@ export default defineSchema(
     followUpPlaceholder: v.optional(v.string()),
     suggestionCategories: v.optional(v.array(v.string())),
     brandingText: v.optional(v.string()),
+
+    // Women's World Widget Configuration
+    seedQuestionsRow1: v.optional(v.array(v.string())),
+    seedQuestionsRow2: v.optional(v.array(v.string())),
+    autoScroll: v.optional(v.boolean()),
+    variant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
+    enableStreaming: v.optional(v.boolean()),
+
+    // Deprecated: Old Women's World Widget fields (replaced by new equivalents)
+    // Maintained for backward compatibility only
+    seedQuestions: v.optional(v.array(v.string())),
+    autoScrollInterval: v.optional(v.number()),
+    womensWorldVariant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
 
     // Timestamps
     createdAt: v.number(),
@@ -242,10 +257,6 @@ export default defineSchema(
         gradientStart: v.optional(v.string()),
         gradientEnd: v.optional(v.string()),
 
-        // Dimensions
-        width: v.optional(v.number()),
-        height: v.optional(v.number()),
-
         // Behavior
         placement: v.optional(
           v.union(
@@ -258,9 +269,15 @@ export default defineSchema(
         ),
         openByDefault: v.optional(v.boolean()),
 
+        // Deprecated: Legacy dimension controls (no longer used in UI)
+        // Kept for backward compatibility with existing preview records
+        width: v.optional(v.number()),
+        height: v.optional(v.number()),
+
         // Icons
         iconUrl: v.optional(v.string()),
         iconStorageId: v.optional(v.id("_storage")),
+        logoUrl: v.optional(v.string()),
 
         // NYT Chat Widget Configuration
         collapsedText: v.optional(v.string()),
@@ -271,6 +288,14 @@ export default defineSchema(
         brandingText: v.optional(v.string()),
 
         // Women's World Widget Configuration
+        seedQuestionsRow1: v.optional(v.array(v.string())),
+        seedQuestionsRow2: v.optional(v.array(v.string())),
+        autoScroll: v.optional(v.boolean()),
+        variant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
+        enableStreaming: v.optional(v.boolean()),
+
+        // Deprecated: Old Women's World Widget fields (replaced by new equivalents)
+        // Maintained for backward compatibility only
         seedQuestions: v.optional(v.array(v.string())),
         autoScrollInterval: v.optional(v.number()),
         womensWorldVariant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),

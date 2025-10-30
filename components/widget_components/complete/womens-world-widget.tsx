@@ -2,14 +2,20 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
-import { ProfileBlank } from "@/components/widget_components/icons/profile-blank";
 import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
 import { WomensWorldAnswerDisplay } from "@/components/widget_components/ai-elements/womens-world-answer-display";
+import {
+  GlassWidgetContainer,
+  GlassWidgetHeader,
+  GlassWidgetContent,
+  GlassWidgetFooter,
+} from "@/components/widget_components/ai-elements/glass_widget_container";
 import { useStreamingAnswer } from "@/lib/hooks/useStreamingAnswer";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import type {
   WomensWorldWidgetProps,
 } from "@/components/widget_components/types";
@@ -45,6 +51,22 @@ const DEFAULT_SEED_QUESTIONS_ROW_2 = [
 ];
 
 // ============================================================================
+// Collapsed Button Component
+// ============================================================================
+
+/**
+ * Custom collapsed button for Women's World Widget.
+ * Displays gradient text only (icons are rendered by GlassWidgetContainer).
+ */
+function WomensWorldCollapsedButton({ collapsedText }: { collapsedText: string }) {
+  return (
+    <span className="font-sans font-normal text-sm text-transparent bg-clip-text bg-gradient-to-r from-[#FB9649] to-[#A361E9]">
+      {collapsedText}
+    </span>
+  );
+}
+
+// ============================================================================
 // WomensWorldWidget Component
 // ============================================================================
 
@@ -58,7 +80,7 @@ export function WomensWorldWidget({
   seedQuestions,
   seedQuestionsRow1,
   seedQuestionsRow2,
-  autoScrollInterval = 35000,
+  autoScrollInterval = 40000,
   brandingText = "Powered by Gist.ai",
   onSubmit,
   width = 392,
@@ -66,6 +88,7 @@ export function WomensWorldWidget({
   placement = "bottom-right",
   className,
   enableStreaming = false,
+  apiUrl,
   onAnswerComplete,
   onAnswerError,
 }: WomensWorldWidgetProps) {
@@ -79,20 +102,11 @@ export function WomensWorldWidget({
     seedQuestions?.slice(6, 12) ??
     DEFAULT_SEED_QUESTIONS_ROW_2;
 
-  // Controlled/uncontrolled pattern
-  const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
-  const isExpanded = controlledIsExpanded ?? internalExpanded;
-
   // Streaming state management
   const { answerState, streamedText, error, startStreaming, resetAnswer } =
-    useStreamingAnswer();
+    useStreamingAnswer(apiUrl);
   const [showAnswer, setShowAnswer] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
-
-  const handleExpandChange = (expanded: boolean) => {
-    setInternalExpanded(expanded);
-    onExpandChange?.(expanded);
-  };
 
   const handleSubmit = async (question: string) => {
     // Always call the onSubmit callback for backward compatibility
@@ -128,6 +142,10 @@ export function WomensWorldWidget({
     }
   };
 
+  const handleClose = () => {
+    onExpandChange?.(false);
+  };
+
   // Get placement classes based on placement prop
   const getPlacementClasses = () => {
     switch (placement) {
@@ -142,153 +160,112 @@ export function WomensWorldWidget({
     }
   };
 
-  return (
-    <>
-      {/* Inject gradient border styles */}
-      <style>{`
-        .gradient-border-collapsed {
-          position: relative;
-          isolation: isolate;
-        }
-        .gradient-border-collapsed::before {
-          content: "";
-          position: absolute;
-          z-index: 0;
-          inset: 0;
-          padding: 2px;
-          background: linear-gradient(90deg, #FB9649 0%, #A361E9 100%);
-          border-radius: inherit;
-          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          mask-composite: exclude;
-          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-        }
-        .gradient-border-collapsed::after {
-          content: "";
-          position: absolute;
-          z-index: 1;
-          inset: 2px;
-          background: white;
-          border-radius: 40px;
-        }
-      `}</style>
+  // Determine positioning strategy
+  const positioning = placement ? "relative" : "fixed";
 
-      {/* Widget Container */}
-      <div className={cn(getPlacementClasses(), className)}>
-        {/* Collapsed State */}
-        {!isExpanded && (
-          <motion.button
-            onClick={() => handleExpandChange(true)}
-            className="gradient-border-collapsed rounded-[40px] cursor-pointer"
-            style={{
-              width: "140px",
-              height: "48px",
-            }}
-            initial={false}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <div className="relative z-10 flex items-center justify-center gap-2 h-full px-4">
-              <Sparkles className="w-4 h-4 text-[#FB9649]" />
-              <span className="font-sans font-normal text-sm text-transparent bg-clip-text bg-gradient-to-r from-[#FB9649] to-[#A361E9]">
-                {collapsedText}
-              </span>
-              <ProfileBlank className="w-4 h-4 text-gray-600" />
-            </div>
-          </motion.button>
-        )}
+  // Set fixed height when showing answer to prevent expansion/contraction during streaming
+  // Use undefined for search view to allow dynamic height that fits content
+  const containerHeight = showAnswer ? 600 : undefined;
 
-        {/* Expanded State */}
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="rounded-3xl overflow-hidden shadow-xl"
-            style={{
-              background: "var(--gradient-womens-world)",
-              width: `${width}px`,
-              height: height ? `${height}px` : "auto",
-              display: height ? "flex" : "block",
-              flexDirection: "column",
-            }}
-          >
-            {/* Header */}
-            <div className="relative flex items-center justify-center px-6 py-4 flex-shrink-0">
-              <AnimatePresence mode="wait">
-                {!showAnswer && (
-                  <motion.h2
-                    key="title"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="womens-world-title text-white"
-                  >
-                    {title}
-                  </motion.h2>
-                )}
-              </AnimatePresence>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleExpandChange(false)}
-                className="absolute right-6 top-4 hover:bg-white/20 rounded-full"
-                aria-label="Close widget"
+  // Widget content
+  const widgetContent = (
+    <GlassWidgetContainer
+      collapsedContent={<WomensWorldCollapsedButton collapsedText={collapsedText} />}
+      isExpanded={controlledIsExpanded}
+      defaultExpanded={defaultExpanded}
+      onExpandChange={onExpandChange}
+      collapsedWidth={140}
+      collapsedHeight={48}
+      expandedWidth={width}
+      expandedHeight={containerHeight}
+      positioning={positioning}
+      className={className}
+      customBackground="var(--gradient-womens-world)"
+      customGradientBorder="linear-gradient(90deg, #FB9649 0%, #A361E9 100%)"
+    >
+      {/* Header */}
+      <GlassWidgetHeader className="relative flex items-center justify-center px-6 py-4 flex-shrink-0">
+        <AnimatePresence mode="wait">
+          {!showAnswer && (
+            <motion.h2
+              key="title"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="womens-world-title text-white"
+            >
+              {title}
+            </motion.h2>
+          )}
+        </AnimatePresence>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleClose}
+          className="absolute right-6 top-4 hover:bg-white/20 rounded-full"
+          aria-label="Close widget"
+        >
+          <X className="w-5 h-5 text-white" />
+        </Button>
+      </GlassWidgetHeader>
+
+      {/* Content */}
+      <GlassWidgetContent className="px-6 py-4 flex-1" disableOverflow={showAnswer}>
+        <AnimatePresence mode="wait">
+          {!showAnswer ? (
+            <motion.div
+              key="search"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <SearchInputSection
+                placeholder={placeholder}
+                onSubmit={handleSubmit}
+                seedQuestionsRow1={row1Questions}
+                seedQuestionsRow2={row2Questions}
+                autoScrollInterval={autoScrollInterval}
+              />
+            </motion.div>
+          ) : (
+            <ScrollArea className="h-[480px]">
+              <motion.div
+                key="answer"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3 }}
               >
-                <X className="w-5 h-5 text-white" />
-              </Button>
-            </div>
+                <WomensWorldAnswerDisplay
+                  answerState={answerState}
+                  text={streamedText}
+                  error={error}
+                  onNewSearch={handleNewSearch}
+                  onRetry={handleRetry}
+                />
+              </motion.div>
+            </ScrollArea>
+          )}
+        </AnimatePresence>
+      </GlassWidgetContent>
 
-            {/* Content */}
-            <div className="px-6 py-4 flex-1 overflow-y-auto">
-              <AnimatePresence mode="wait">
-                {!showAnswer ? (
-                  <motion.div
-                    key="search"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <SearchInputSection
-                      placeholder={placeholder}
-                      onSubmit={handleSubmit}
-                      seedQuestionsRow1={row1Questions}
-                      seedQuestionsRow2={row2Questions}
-                      autoScrollInterval={autoScrollInterval}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="answer"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <WomensWorldAnswerDisplay
-                      answerState={answerState}
-                      text={streamedText}
-                      error={error}
-                      onNewSearch={handleNewSearch}
-                      onRetry={handleRetry}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Footer */}
-            <div className="flex justify-end px-6 py-4 flex-shrink-0">
-              <PoweredByButton />
-            </div>
-          </motion.div>
-        )}
-      </div>
-    </>
+      {/* Footer */}
+      <GlassWidgetFooter className="flex justify-end px-6 py-4 flex-shrink-0">
+        <PoweredByButton />
+      </GlassWidgetFooter>
+    </GlassWidgetContainer>
   );
+
+  // Wrap in placement div if placement is specified
+  if (placement) {
+    return (
+      <div className={getPlacementClasses()}>
+        {widgetContent}
+      </div>
+    );
+  }
+
+  return widgetContent;
 }

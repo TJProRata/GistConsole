@@ -17,7 +17,7 @@ import {
   AnswerWidgetContainer,
   AnswerWidgetHeader,
   AnswerWidgetContent,
-  AnswerWidgetFooter
+  AnswerWidgetFooter,
 } from "../ai-elements/answer_widget_container";
 import { LoadingState } from "../ai-elements/loading-state";
 import { QueryDisplay } from "../ai-elements/query-display";
@@ -42,7 +42,10 @@ import type {
   ArticleRecommendation,
 } from "../types";
 
-const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidgetProps>(
+const NewPageAnswerWidget = React.forwardRef<
+  HTMLDivElement,
+  NewPageAnswerWidgetProps
+>(
   (
     {
       initialQuery,
@@ -58,10 +61,13 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
     ref
   ) => {
     // State management
-    const [widgetState, setWidgetState] = useState<AnswerPageWidgetState>("input");
+    const [widgetState, setWidgetState] =
+      useState<AnswerPageWidgetState>("input");
     const [currentQuery, setCurrentQuery] = useState(initialQuery || "");
     const [streamedText, setStreamedText] = useState("");
-    const [answerData, setAnswerData] = useState<NewPageAnswerData | null>(null);
+    const [answerData, setAnswerData] = useState<NewPageAnswerData | null>(
+      null
+    );
     const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -103,7 +109,9 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
         });
 
         if (!response.ok) {
-          throw new Error(`API error: ${response.status} ${response.statusText}`);
+          throw new Error(
+            `API error: ${response.status} ${response.statusText}`
+          );
         }
 
         // Transition to streaming state
@@ -299,7 +307,8 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
     const brandStyles = brandConfig
       ? {
           "--brand-primary": brandConfig.primaryColor,
-          "--brand-secondary": brandConfig.secondaryColor || brandConfig.primaryColor,
+          "--brand-secondary":
+            brandConfig.secondaryColor || brandConfig.primaryColor,
           "--font-heading": brandConfig.fonts?.heading || "system-ui",
           "--font-body": brandConfig.fonts?.body || "system-ui",
         }
@@ -307,7 +316,8 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
 
     // Derived values
     const showLoadingState = widgetState === "loading";
-    const showStreamingText = widgetState === "streaming" || widgetState === "complete";
+    const showStreamingText =
+      widgetState === "streaming" || widgetState === "complete";
     const showAnswer = widgetState === "complete";
     const showInput = widgetState === "input";
 
@@ -351,7 +361,13 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
                     Ask any question and get AI-powered answers with sources.
                   </p>
                 </div>
-                <form onSubmit={(e) => { e.preventDefault(); handleSubmitQuery(currentQuery); }} className="w-full">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmitQuery(currentQuery);
+                  }}
+                  className="w-full"
+                >
                   <div className="flex gap-2">
                     <Input
                       variant="default"
@@ -360,7 +376,11 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
                       placeholder={`Ask ${brandConfig?.name || "us"} anything...`}
                       className="flex-1"
                     />
-                    <Button variant="default" type="submit" disabled={!currentQuery.trim()}>
+                    <Button
+                      variant="default"
+                      type="submit"
+                      disabled={!currentQuery.trim()}
+                    >
                       Search
                     </Button>
                   </div>
@@ -448,9 +468,7 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
             {widgetState === "error" && error && (
               <div className="flex flex-col items-center justify-center py-12 space-y-4">
                 <div className="text-center space-y-2">
-                  <h3 className="text-lg font-semibold text-red-600">
-                    Error
-                  </h3>
+                  <h3 className="text-lg font-semibold text-red-600">Error</h3>
                   <p className="text-sm text-gray-600">{error}</p>
                 </div>
                 <Button onClick={handleNewSearch} variant="outline">
@@ -463,25 +481,25 @@ const NewPageAnswerWidget = React.forwardRef<HTMLDivElement, NewPageAnswerWidget
           {/* Footer Input (shown in answer state) */}
           {showAnswer && (
             <AnswerWidgetFooter>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.currentTarget);
-                const query = formData.get("followup") as string;
-                if (query?.trim()) {
-                  handleSubmitQuery(query);
-                  e.currentTarget.reset();
-                }
-              }} className="w-full">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const query = formData.get("followup") as string;
+                  if (query?.trim()) {
+                    handleSubmitQuery(query);
+                    e.currentTarget.reset();
+                  }
+                }}
+                className="w-full"
+              >
                 <div className="flex gap-2">
                   <Input
-                    variant="default"
                     name="followup"
                     placeholder="Ask a follow-up question..."
                     className="flex-1"
                   />
-                  <Button variant="default" type="submit">
-                    Search
-                  </Button>
+                  <Button type="submit">Search</Button>
                 </div>
               </form>
             </AnswerWidgetFooter>

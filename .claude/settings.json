@@ -27,17 +27,7 @@
     "shadcn"
   ],
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "uv run /Users/tjmcgovern/.claude/hooks/notification.py --notify"
-          }
-        ]
-      }
-    ],
+    
     "Stop": [
       {
         "matcher": "",

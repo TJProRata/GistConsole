@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women's World Widget - Test Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #FB9649;
+      background: linear-gradient(135deg, #FB9649 0%, #A361E9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 1.5rem 0;
+    }
+
+    .feature-list li {
+      padding: 0.75rem 0;
+      padding-left: 2rem;
+      position: relative;
+      color: #555;
+    }
+
+    .feature-list li:before {
+      content: "✨";
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #FB9649 0%, #A361E9 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #f0f0f0;
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      color: #A361E9;
+    }
+
+    .info-box {
+      background: #f9f9f9;
+      border-left: 4px solid #FB9649;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 4px;
+    }
+
+    .info-box strong {
+      color: #FB9649;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Woman's World Answers</h1>
+    <span class="badge">AI-Powered Health Q&A</span>
+
+    <p>
+      Welcome to the Women's World Answers widget demo! This page demonstrates
+      the floating widget embedded on a real webpage. The widget appears as a
+      button in the bottom-right corner of your screen.
+    </p>
+
+    <h2>How It Works</h2>
+    <ul class="feature-list">
+      <li>Click the floating button in the bottom-right corner</li>
+      <li>Browse seed questions or type your own health question</li>
+      <li>Get instant answers powered by AI</li>
+      <li>Explore related health topics and wellness tips</li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Pro Tip:</strong> Try clicking one of the seed question pills
+      to auto-populate the search input with common health questions!
+    </div>
+
+    <h2>Widget Features</h2>
+    <p>
+      The Women's World widget is designed for health and wellness publishers
+      who want to provide instant answers to their readers' questions:
+    </p>
+    <ul class="feature-list">
+      <li>Glassmorphism design with smooth animations</li>
+      <li>Dual-carousel seed questions (health + wellness topics)</li>
+      <li>Auto-scroll with hover-to-pause functionality</li>
+      <li>Responsive design optimized for mobile and desktop</li>
+      <li>Customizable colors, placement, and branding</li>
+      <li>Optional OpenAI streaming for real-time answers</li>
+    </ul>
+
+    <h2>Integration</h2>
+    <p>
+      Embedding this widget on your site is as simple as adding three lines of code:
+    </p>
+    <div class="info-box">
+      <code>&lt;script src="https://wwwidget.vercel.app/womens-world-floating.js"&gt;&lt;/script&gt;</code><br/>
+      <code>&lt;div id="womens-world-widget"&gt;&lt;/div&gt;</code><br/>
+      <code>&lt;script&gt;GistWidget.init({...});&lt;/script&gt;</code>
+    </div>
+
+    <h2>Use Cases</h2>
+    <p>
+      Perfect for health publishers, wellness blogs, medical information sites,
+      and lifestyle magazines. Provide instant value to your readers without
+      leaving the page.
+    </p>
+
+    <div class="footer">
+      <p>Women's World Widget Demo | Powered by Gist.ai</p>
+      <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+        CDN: <code>https://wwwidget.vercel.app</code>
+      </p>
+    </div>
+  </div>
+
+  <!-- Women's World Floating Widget -->
+  <script src="https://wwwidget.vercel.app/womens-world-floating.js"></script>
+  <div id="womens-world-widget"></div>
+  <script>
+    GistWidget.init({
+      containerId: "womens-world-widget",
+      title: "✨ Woman's World Answers",
+      placeholder: "Ask your health questions...",
+      seedQuestionsRow1: [
+        "What are the early signs of menopause?",
+        "How can I improve my bone health?",
+        "What vitamins should I take daily?"
+      ],
+      seedQuestionsRow2: [
+        "How to manage stress naturally?",
+        "What are good exercises for flexibility?",
+        "How can I improve my sleep quality?"
+      ],
+      enableStreaming: true,
+      // API URL required for external embeds to enable streaming
+      // Use http://localhost:3000 for local development
+      // Use https://gist-console.vercel.app for production
+      apiUrl: "http://localhost:3000",
+      placement: "bottom-center"
+    });
+  </script>
+</body>
+</html>

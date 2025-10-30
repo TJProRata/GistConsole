@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:widgets": "bun run scripts/build-widgets.ts",
+    "deploy:widgets": "bun run scripts/build-widgets.ts --deploy",
+    "build:prod": "bun run build:widgets && bun run build",
     "start": "next start",
     "lint": "next lint"
   },

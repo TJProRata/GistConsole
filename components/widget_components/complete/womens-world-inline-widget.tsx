@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { PoweredByButton } from "@/components/widget_components/icons/powered-by-button";
 import { SearchInputSection } from "@/components/widget_components/ai-elements/search-input-section";
@@ -68,19 +67,18 @@ export function WomensWorldInlineWidget({
   variant = "light",
   className,
   enableStreaming = false,
+  apiUrl,
   onAnswerComplete,
   onAnswerError,
 }: WomensWorldInlineWidgetProps) {
-  const router = useRouter();
-
   // Streaming state management
   const { answerState, streamedText, error, startStreaming, resetAnswer } =
-    useStreamingAnswer();
+    useStreamingAnswer(apiUrl);
   const [showAnswer, setShowAnswer] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
 
   const handleSubmit = async (question: string) => {
-    // Always call the onSubmit callback for backward compatibility
+    // Always call the onSubmit callback
     onSubmit?.(question);
 
     // If streaming is enabled, start streaming the answer inline
@@ -99,10 +97,9 @@ export function WomensWorldInlineWidget({
           err instanceof Error ? err.message : "Failed to generate answer";
         onAnswerError?.(errorMessage);
       }
-    } else {
-      // Original behavior: Navigate to answers page
-      router.push(`/admin/components/widgets/complete/answers?q=${encodeURIComponent(question)}`);
     }
+    // Note: For non-streaming mode, widget just calls onSubmit callback
+    // Parent application handles navigation/display logic
   };
 
   const handleNewSearch = () => {

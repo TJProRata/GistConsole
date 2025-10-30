@@ -148,7 +148,7 @@ export interface WomensWorldWidgetProps {
    */
   seedQuestions?: string[];
 
-  /** Auto-scroll interval in milliseconds */
+  /** Auto-scroll interval in milliseconds (default: 40000) */
   autoScrollInterval?: number;
 
   /** Branding text for footer */
@@ -177,6 +177,13 @@ export interface WomensWorldWidgetProps {
 
   /** Enable inline OpenAI streaming answers (default: false) */
   enableStreaming?: boolean;
+
+  /**
+   * Optional API server URL for streaming functionality.
+   * Required for external embeds to enable OpenAI streaming.
+   * Example: "https://gist-console.vercel.app"
+   */
+  apiUrl?: string;
 
   /** Callback when streaming answer completes successfully */
   onAnswerComplete?: (answer: string) => void;
@@ -816,6 +823,13 @@ export interface WomensWorldInlineWidgetProps {
 
   /** Enable inline OpenAI streaming answers (default: false) */
   enableStreaming?: boolean;
+
+  /**
+   * Optional API server URL for streaming functionality.
+   * Required for external embeds to enable OpenAI streaming.
+   * Example: "https://gist-console.vercel.app"
+   */
+  apiUrl?: string;
 
   /** Callback when streaming answer completes successfully */
   onAnswerComplete?: (answer: string) => void;

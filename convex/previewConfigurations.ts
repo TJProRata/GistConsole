@@ -10,8 +10,6 @@ const configurationSchema = v.object({
   useGradient: v.optional(v.boolean()),
   gradientStart: v.optional(v.string()),
   gradientEnd: v.optional(v.string()),
-  width: v.optional(v.number()),
-  height: v.optional(v.number()),
   placement: v.optional(
     v.union(
       v.literal("bottom-right"),
@@ -22,8 +20,15 @@ const configurationSchema = v.object({
     )
   ),
   openByDefault: v.optional(v.boolean()),
+
+  // Deprecated: Legacy dimension controls (no longer used)
+  // Maintained for backward compatibility only
+  width: v.optional(v.number()),
+  height: v.optional(v.number()),
+
   iconUrl: v.optional(v.string()),
   iconStorageId: v.optional(v.id("_storage")),
+  logoUrl: v.optional(v.string()),
   // NYT Chat Widget Configuration
   collapsedText: v.optional(v.string()),
   title: v.optional(v.string()),
@@ -33,10 +38,17 @@ const configurationSchema = v.object({
   brandingText: v.optional(v.string()),
 
   // Women's World Widget Configuration
+  seedQuestionsRow1: v.optional(v.array(v.string())),
+  seedQuestionsRow2: v.optional(v.array(v.string())),
+  autoScroll: v.optional(v.boolean()),
+  variant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
+  enableStreaming: v.optional(v.boolean()),
+
+  // Deprecated: Old Women's World Widget fields (replaced by new equivalents)
+  // Maintained for backward compatibility only
   seedQuestions: v.optional(v.array(v.string())),
   autoScrollInterval: v.optional(v.number()),
   womensWorldVariant: v.optional(v.union(v.literal("inline"), v.literal("floating"))),
-  enableStreaming: v.optional(v.boolean()),
 });
 
 // Create new preview configuration

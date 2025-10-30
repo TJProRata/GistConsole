@@ -64,7 +64,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const defaultValues: FormValues = {
   widgetType: "floating",
-  placement: "bottom-right",
+  placement: "bottom-center",
   useGradient: true,
   gradientStart: "#3B82F6",
   gradientEnd: "#8B5CF6",
@@ -113,13 +113,13 @@ export default function ConfigureWidgetPage() {
     if (widgetConfig) {
       form.reset({
         widgetType: widgetConfig.widgetType,
-        placement: widgetConfig.placement || "bottom-right",
+        placement: widgetConfig.placement || "bottom-center",
         useGradient: widgetConfig.useGradient || false,
         primaryColor: widgetConfig.primaryColor,
         gradientStart: widgetConfig.gradientStart,
         gradientEnd: widgetConfig.gradientEnd,
-        width: widgetConfig.width || 400,
-        height: widgetConfig.height || 600,
+        width: 400,
+        height: 600,
         openByDefault: widgetConfig.openByDefault || false,
       });
     } else {
@@ -149,8 +149,6 @@ export default function ConfigureWidgetPage() {
             gradientStart: values.gradientStart,
             gradientEnd: values.gradientEnd,
             useGradient: values.useGradient,
-            width: values.width,
-            height: values.height,
             placement: values.placement,
             openByDefault: values.openByDefault,
           },
@@ -169,8 +167,6 @@ export default function ConfigureWidgetPage() {
             gradientStart: values.gradientStart,
             gradientEnd: values.gradientEnd,
             useGradient: values.useGradient,
-            width: values.width,
-            height: values.height,
             placement: values.placement,
             openByDefault: values.openByDefault,
           },
@@ -556,7 +552,7 @@ export default function ConfigureWidgetPage() {
                           <Badge variant="secondary" className="mr-2">
                             {config.widgetType}
                           </Badge>
-                          {config.placement} · {config.width}x{config.height}px
+                          {config.placement}
                         </div>
                       </div>
                       <Button

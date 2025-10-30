@@ -34,7 +34,9 @@ interface WidgetConfiguration {
   brandingText?: string;
 
   // Women's World Widget Configuration
-  seedQuestions?: string[];
+  seedQuestions?: string[]; // Backward compatibility - old format
+  seedQuestionsRow1?: string[]; // New format - Row 1
+  seedQuestionsRow2?: string[]; // New format - Row 2
   autoScrollInterval?: number;
   womensWorldVariant?: "inline" | "floating";
   enableStreaming?: boolean;
@@ -181,6 +183,20 @@ export function PreviewWidgetRenderer({
 
     // Inline Variant (embedded, always-expanded)
     if (variant === "inline") {
+      // Handle both old format (seedQuestions array) and new format (seedQuestionsRow1/Row2)
+      let row1: string[] | undefined;
+      let row2: string[] | undefined;
+
+      if (configuration.seedQuestionsRow1 && configuration.seedQuestionsRow2) {
+        // New format - use directly
+        row1 = configuration.seedQuestionsRow1;
+        row2 = configuration.seedQuestionsRow2;
+      } else if (configuration.seedQuestions) {
+        // Old format - split for backward compatibility
+        row1 = configuration.seedQuestions.slice(0, 3);
+        row2 = configuration.seedQuestions.slice(3, 6);
+      }
+
       return (
         <>
           {gradientOverride && (
@@ -196,9 +212,9 @@ export function PreviewWidgetRenderer({
               placeholder={
                 configuration.placeholder || "Ask us your health questions"
               }
-              seedQuestionsRow1={configuration.seedQuestions?.slice(0, 3)}
-              seedQuestionsRow2={configuration.seedQuestions?.slice(3, 6)}
-              autoScrollInterval={configuration.autoScrollInterval || 3000}
+              seedQuestionsRow1={row1}
+              seedQuestionsRow2={row2}
+              autoScrollInterval={configuration.autoScrollInterval || 35000}
               brandingText={configuration.brandingText || "Powered by Gist.ai"}
               maxWidth={configuration.width || 640}
               enableStreaming={configuration.enableStreaming}
@@ -230,6 +246,18 @@ export function PreviewWidgetRenderer({
       ? (configuration.placement as "bottom-left" | "bottom-center" | "bottom-right")
       : "bottom-right";
 
+    // Handle both old format (seedQuestions array) and new format (seedQuestionsRow1/Row2)
+    // WomensWorldWidget expects a single array, so combine if using new format
+    let seedQuestions: string[] | undefined;
+
+    if (configuration.seedQuestionsRow1 && configuration.seedQuestionsRow2) {
+      // New format - combine both rows into single array
+      seedQuestions = [...configuration.seedQuestionsRow1, ...configuration.seedQuestionsRow2];
+    } else if (configuration.seedQuestions) {
+      // Old format - use directly
+      seedQuestions = configuration.seedQuestions;
+    }
+
     return (
       <>
         {gradientOverride && (
@@ -245,8 +273,8 @@ export function PreviewWidgetRenderer({
           placeholder={
             configuration.placeholder || "Ask us your health questions"
           }
-          seedQuestions={configuration.seedQuestions}
-          autoScrollInterval={configuration.autoScrollInterval || 3000}
+          seedQuestions={seedQuestions}
+          autoScrollInterval={configuration.autoScrollInterval || 35000}
           brandingText={configuration.brandingText || "Powered by Gist.ai"}
           width={configuration.width || 392}
           height={configuration.height}

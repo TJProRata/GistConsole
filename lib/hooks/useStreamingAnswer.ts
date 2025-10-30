@@ -19,8 +19,10 @@ export interface UseStreamingAnswerReturn {
 /**
  * Custom hook for managing OpenAI streaming answers.
  * Handles fetch to /api/openai/stream, text accumulation, and state transitions.
+ *
+ * @param apiUrl - Optional API server URL for external embeds (e.g., "https://gist-console.vercel.app")
  */
-export function useStreamingAnswer(): UseStreamingAnswerReturn {
+export function useStreamingAnswer(apiUrl?: string): UseStreamingAnswerReturn {
   const [answerState, setAnswerState] = useState<AnswerState>("idle");
   const [streamedText, setStreamedText] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -41,9 +43,15 @@ export function useStreamingAnswer(): UseStreamingAnswerReturn {
     setAnswerState("loading");
 
     try {
-      console.log("[useStreamingAnswer] Starting stream for query:", query);
+      // Construct endpoint URL (absolute if apiUrl provided, relative otherwise)
+      const endpoint = apiUrl
+        ? `${apiUrl.replace(/\/$/, '')}/api/openai/stream`
+        : "/api/openai/stream";
 
-      const response = await fetch("/api/openai/stream", {
+      console.log("[useStreamingAnswer] Starting stream for query:", query);
+      console.log("[useStreamingAnswer] API endpoint:", endpoint);
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

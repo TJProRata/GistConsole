@@ -6,12 +6,12 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/webhook(.*)", // For Clerk webhooks
+  "/api/openai(.*)", // OpenAI streaming API for widget preview
   "/preview(.*)", // Widget preview flow for unauthenticated users
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
   // Protect all routes except public ones
-  // Note: API routes like /api/openai/stream are accessible to authenticated users
   if (!isPublicRoute(request)) {
     await auth.protect();
   }
