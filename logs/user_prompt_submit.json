@@ -542,5 +542,21 @@
     "permission_mode": "bypassPermissions",
     "hook_event_name": "UserPromptSubmit",
     "prompt": "git add . and push to github"
+  },
+  {
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "i pushed to github but it didnt autoredeploy"
+  },
+  {
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "git add . and push to github"
   }
 ]

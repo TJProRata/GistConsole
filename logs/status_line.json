@@ -56,5 +56,266 @@
       "exceeds_200k_tokens": false
     },
     "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~24 +16\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:35:25.660174",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 1.9527355999999996,
+        "total_duration_ms": 660997,
+        "total_api_duration_ms": 276745,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~24 +30\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:35:25.660483",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 1.9527355999999996,
+        "total_duration_ms": 660990,
+        "total_api_duration_ms": 276745,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~24 +30\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:35:30.118995",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 1.9944198999999994,
+        "total_duration_ms": 665447,
+        "total_api_duration_ms": 282877,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~3\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:35:30.120063",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 1.9944198999999994,
+        "total_duration_ms": 665453,
+        "total_api_duration_ms": 282877,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~3\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:35:40.737677",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 2.0320155999999994,
+        "total_duration_ms": 676081,
+        "total_api_duration_ms": 291049,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~5\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:41:34.956466",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 2.4459068499999996,
+        "total_duration_ms": 1030286,
+        "total_api_duration_ms": 303841,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~7\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:43:23.811317",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 2.6000726,
+        "total_duration_ms": 1139147,
+        "total_api_duration_ms": 313429,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~7\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:43:24.106255",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 2.6000726,
+        "total_duration_ms": 1139447,
+        "total_api_duration_ms": 313429,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~7\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
+  },
+  {
+    "timestamp": "2025-11-07T14:43:24.107341",
+    "input_data": {
+      "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+      "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+      "cwd": "/Users/tjmcgovern/gist-console",
+      "model": {
+        "id": "claude-sonnet-4-5-20250929",
+        "display_name": "Sonnet 4.5"
+      },
+      "workspace": {
+        "current_dir": "/Users/tjmcgovern/gist-console",
+        "project_dir": "/Users/tjmcgovern/gist-console"
+      },
+      "version": "2.0.36",
+      "output_style": {
+        "name": "Ultra Concise"
+      },
+      "cost": {
+        "total_cost_usd": 2.6000726,
+        "total_duration_ms": 1139455,
+        "total_api_duration_ms": 313429,
+        "total_lines_added": 8,
+        "total_lines_removed": 0
+      },
+      "exceeds_200k_tokens": false
+    },
+    "status_line_output": "\u001b[36mSonnet 4.5\u001b[0m | \u001b[35m[Ultra Concise]\u001b[0m | \u001b[34m\ud83d\udcc1 gist-console\u001b[0m | \u001b[33m\u26a1 Next.js\u001b[0m | \u001b[90m15 files\u001b[0m | \u001b[32m\ud83c\udf3f master ~7\u001b[0m | \u001b[90m#9a738ba7\u001b[0m"
   }
 ]

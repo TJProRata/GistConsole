@@ -3534,5 +3534,13 @@
     "permission_mode": "bypassPermissions",
     "hook_event_name": "Stop",
     "stop_hook_active": false
+  },
+  {
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "Stop",
+    "stop_hook_active": false
   }
 ]
