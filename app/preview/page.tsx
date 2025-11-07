@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PreviewFlowStepper } from "@/components/PreviewFlowStepper";
 import { usePreviewSession } from "@/lib/hooks/usePreviewSession";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 
 const steps = [
   { id: "api-key", name: "API Key", href: "/preview" },
@@ -23,12 +24,22 @@ const steps = [
 
 export default function PreviewPage() {
   const router = useRouter();
-  const { sessionId, isLoading: sessionLoading } = usePreviewSession();
+  const { sessionId, isLoading: sessionLoading, setPreviewMode } = usePreviewSession();
+  const { isSignedIn, isLoaded: userLoaded } = useUser();
   const [apiKey, setApiKey] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const createPreview = useMutation(api.previewConfigurations.createPreviewConfig);
+
+  // Set preview mode for authenticated users
+  useEffect(() => {
+    if (userLoaded && isSignedIn) {
+      setPreviewMode("authenticated_preview");
+    } else if (userLoaded && !isSignedIn) {
+      setPreviewMode("guest");
+    }
+  }, [userLoaded, isSignedIn, setPreviewMode]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,10 +98,19 @@ export default function PreviewPage() {
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Preview Your Widget</h1>
             <p className="text-muted-foreground">
-              Enter your Gist API key to start building your custom chat widget.
-              No account required.
+              {isSignedIn
+                ? "Test widget configurations without saving to your account."
+                : "Enter your Gist API key to start building your custom chat widget. No account required."}
             </p>
           </div>
+
+          {isSignedIn && (
+            <Alert className="mb-6">
+              <AlertDescription>
+                <strong>Test Mode:</strong> You're signed in. This preview won't create a saved configuration.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {error && (
             <Alert variant="destructive" className="mb-6">

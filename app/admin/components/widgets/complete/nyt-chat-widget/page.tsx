@@ -1,18 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, Code2, Eye } from "lucide-react";
+import { useState, useRef } from "react";
+import { ArrowLeft, Code2, Eye, Upload, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { NYTChatWidget } from "@/components/widget_components";
 import { CodeBlock } from "@/components/CodeBlock";
+import { ExampleIconSelector } from "@/components/ExampleIconSelector";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 
 export default function NYTChatWidgetPreview() {
   // Demo state
@@ -24,6 +29,29 @@ export default function NYTChatWidgetPreview() {
   const [followUpPlaceholder, setFollowUpPlaceholder] = useState("Ask a follow up...");
   const [categories, setCategories] = useState("Top Stories,Breaking News,Generate a new Wordle,Election Coverage,Climate News");
   const [brandingText, setBrandingText] = useState("Powered by Gist Answers");
+  const [customIconSvg, setCustomIconSvg] = useState("");
+
+  // Gradient configuration state
+  const [useGradient, setUseGradient] = useState(false);
+  const [gradientStart, setGradientStart] = useState("#3b82f6");
+  const [gradientEnd, setGradientEnd] = useState("#8b5cf6");
+  const [colorMode, setColorMode] = useState<"border" | "fill">("border");
+
+  // Custom icon file upload state
+  const [customIconFile, setCustomIconFile] = useState<File | null>(null);
+  const [customIconPreview, setCustomIconPreview] = useState<string | null>(null);
+  const [customIconStorageId, setCustomIconStorageId] = useState<Id<"_storage"> | null>(null);
+  const [customIconPath, setCustomIconPath] = useState<string | null>(null);
+  const [customIconError, setCustomIconError] = useState<string | null>(null);
+  const [isUploadingCustomIcon, setIsUploadingCustomIcon] = useState(false);
+  const customIconInputRef = useRef<HTMLInputElement>(null);
+
+  // Convex mutation and query
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const customIconUrl = useQuery(
+    api.files.getUrl,
+    customIconStorageId ? { storageId: customIconStorageId } : "skip"
+  );
 
   const categoryArray = categories.split(",").map((c) => c.trim()).filter(Boolean);
 
@@ -37,6 +65,94 @@ export default function NYTChatWidgetPreview() {
 
   const handleCitationClick = (citation: string) => {
     console.log("Citation clicked:", citation);
+  };
+
+  // Handle custom icon file selection
+  const handleCustomIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setCustomIconError(null);
+
+    if (!file) return;
+
+    // Validate file type (SVG only)
+    if (file.type !== "image/svg+xml") {
+      setCustomIconError("Please upload an SVG file");
+      return;
+    }
+
+    // Validate file size (max 1MB)
+    const maxSize = 1048576; // 1MB in bytes
+    if (file.size > maxSize) {
+      setCustomIconError("File size must be less than 1MB");
+      return;
+    }
+
+    // Set file and generate preview
+    setCustomIconFile(file);
+    const previewUrl = URL.createObjectURL(file);
+
+    // Revoke previous preview URL to prevent memory leaks
+    if (customIconPreview) {
+      URL.revokeObjectURL(customIconPreview);
+    }
+
+    setCustomIconPreview(previewUrl);
+
+    // Auto-upload the file
+    uploadCustomIcon(file);
+  };
+
+  // Upload custom icon to Convex storage
+  const uploadCustomIcon = async (file: File) => {
+    setIsUploadingCustomIcon(true);
+    try {
+      // Step 1: Generate upload URL
+      const uploadUrl = await generateUploadUrl();
+
+      // Step 2: Upload file
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!result.ok) {
+        throw new Error("Failed to upload custom icon");
+      }
+
+      const { storageId } = await result.json();
+      setCustomIconStorageId(storageId as Id<"_storage">);
+    } catch (error) {
+      setCustomIconError("Failed to upload custom icon. Please try again.");
+      throw error;
+    } finally {
+      setIsUploadingCustomIcon(false);
+    }
+  };
+
+  // Clear custom icon selection
+  const clearCustomIcon = () => {
+    if (customIconPreview) {
+      URL.revokeObjectURL(customIconPreview);
+    }
+    setCustomIconFile(null);
+    setCustomIconPreview(null);
+    setCustomIconStorageId(null);
+    setCustomIconPath(null);
+    setCustomIconError(null);
+    if (customIconInputRef.current) {
+      customIconInputRef.current.value = "";
+    }
+  };
+
+  // Handle example icon selection
+  const handleSelectExample = (path: string) => {
+    // Clear uploaded file state
+    clearCustomIcon();
+
+    // Set the example path
+    setCustomIconPath(path);
+    setCustomIconError(null);
   };
 
   const codeExample = `import { NYTChatWidget } from "@/components/widget_components";
@@ -217,6 +333,188 @@ function App() {
                         onChange={(e) => setBrandingText(e.target.value)}
                       />
                     </div>
+
+                    {/* Gradient Configuration */}
+                    <div className="space-y-3 border-t pt-4">
+                      <Label>Gradient Configuration</Label>
+
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          id="useGradient"
+                          checked={useGradient}
+                          onChange={(e) => setUseGradient(e.target.checked)}
+                          className="h-4 w-4"
+                        />
+                        <Label htmlFor="useGradient" className="cursor-pointer">
+                          Use Gradient
+                        </Label>
+                      </div>
+
+                      {useGradient && (
+                        <>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label htmlFor="gradientStart" className="text-xs">
+                                Start Color
+                              </Label>
+                              <Input
+                                id="gradientStart"
+                                type="color"
+                                value={gradientStart}
+                                onChange={(e) => setGradientStart(e.target.value)}
+                                className="h-10"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="gradientEnd" className="text-xs">
+                                End Color
+                              </Label>
+                              <Input
+                                id="gradientEnd"
+                                type="color"
+                                value={gradientEnd}
+                                onChange={(e) => setGradientEnd(e.target.value)}
+                                className="h-10"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <Label className="text-xs mb-2 block">Color Mode</Label>
+                            <div className="flex gap-2">
+                              <Button
+                                type="button"
+                                variant={colorMode === "border" ? "default" : "outline"}
+                                onClick={() => setColorMode("border")}
+                                className="flex-1"
+                                size="sm"
+                              >
+                                border
+                              </Button>
+                              <Button
+                                type="button"
+                                variant={colorMode === "fill" ? "default" : "outline"}
+                                onClick={() => setColorMode("fill")}
+                                className="flex-1"
+                                size="sm"
+                              >
+                                fill
+                              </Button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="customIconSvg">Custom Icon SVG (Optional)</Label>
+
+                      {/* File input (hidden) */}
+                      <input
+                        ref={customIconInputRef}
+                        type="file"
+                        accept=".svg,image/svg+xml"
+                        onChange={handleCustomIconChange}
+                        className="hidden"
+                        id="custom-icon-upload"
+                      />
+
+                      {/* Upload button or preview */}
+                      {!customIconFile ? (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => customIconInputRef.current?.click()}
+                          className="w-full"
+                          disabled={isUploadingCustomIcon}
+                        >
+                          <Upload className="mr-2 h-4 w-4" />
+                          {isUploadingCustomIcon ? "Uploading..." : "Upload SVG Icon"}
+                        </Button>
+                      ) : (
+                        <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
+                          {customIconPreview && (
+                            <img
+                              src={customIconPreview}
+                              alt="Custom icon preview"
+                              className="w-9 h-9"
+                            />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">
+                              {customIconFile.name}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {(customIconFile.size / 1024).toFixed(1)} KB
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={clearCustomIcon}
+                            disabled={isUploadingCustomIcon}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* Example Icon Selector - only show when no file and no example selected */}
+                      {!customIconFile && !customIconPath && (
+                        <>
+                          <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                              <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                              <span className="bg-background px-2 text-muted-foreground">
+                                Or browse examples
+                              </span>
+                            </div>
+                          </div>
+
+                          <ExampleIconSelector
+                            onSelect={handleSelectExample}
+                            selectedPath={customIconPath}
+                          />
+                        </>
+                      )}
+
+                      {/* Show preview of selected example icon */}
+                      {customIconPath && !customIconFile && (
+                        <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
+                          <img
+                            src={customIconPath}
+                            alt="Selected example icon"
+                            className="w-9 h-9 flex-shrink-0"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium">Example Icon</p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {customIconPath.split('/').pop()}
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={clearCustomIcon}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+
+                      {customIconError && (
+                        <p className="text-xs text-destructive">{customIconError}</p>
+                      )}
+
+                      <p className="text-xs text-muted-foreground">
+                        Upload an SVG file (max 1MB), choose an example icon, or leave empty for default profile icon
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -246,6 +544,14 @@ function App() {
                         placeholder={placeholder}
                         followUpPlaceholder={followUpPlaceholder}
                         brandingText={brandingText}
+                        customIconStorageId={customIconStorageId || undefined}
+                        customIconUrl={customIconUrl || undefined}
+                        customIconPath={customIconPath || undefined}
+                        customIconSvg={customIconSvg}
+                        useGradient={useGradient}
+                        gradientStart={gradientStart}
+                        gradientEnd={gradientEnd}
+                        colorMode={colorMode}
                         onSubmit={handleSubmit}
                         onCategoryClick={handleCategoryClick}
                         onCitationClick={handleCitationClick}

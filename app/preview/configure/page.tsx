@@ -1,18 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PreviewFlowStepper } from "@/components/PreviewFlowStepper";
 import { ColorGradientPicker } from "@/components/ColorGradientPicker";
-import { IframeWidgetPreview } from "@/components/IframeWidgetPreview";
+import { PreviewWidgetRenderer } from "@/components/PreviewWidgetRenderer";
+import { ExampleIconSelector } from "@/components/ExampleIconSelector";
 import { usePreviewSession } from "@/lib/hooks/usePreviewSession";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { useAppearanceConfig } from "@/lib/hooks/useAppearanceConfig";
+import AppearanceSection from "@/components/AppearanceSection";
+import SortableCategoryList from "@/components/SortableCategoryList";
+import { ArrowRight, Loader2, Upload, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +25,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 const steps = [
@@ -48,15 +60,21 @@ export default function ConfigurePage() {
     primaryColor: "#3b82f6",
     gradientStart: "#3b82f6",
     gradientEnd: "#8b5cf6",
+    colorMode: "border" as "border" | "fill",
   });
   const [nytConfig, setNytConfig] = useState({
     collapsedText: "Ask",
     title: "Ask Anything!",
     placeholder: "Ask anything",
     followUpPlaceholder: "Ask a follow up...",
-    suggestionCategories: ["Top Stories", "Breaking News", "Sports", "Technology"],
-    brandingText: "Powered by Gist Answers",
+    customIconSvg: "",
   });
+  const [suggestionCategories, setSuggestionCategories] = useState<string[]>([
+    "Top Stories",
+    "Breaking News",
+    "Sports",
+    "Technology",
+  ]);
   const [womensWorldConfig, setWomensWorldConfig] = useState({
     collapsedText: "Ask AI",
     title: "✨ Woman's World Answers",
@@ -76,7 +94,27 @@ export default function ConfigurePage() {
     enableStreaming: true,
   });
   const [variant, setVariant] = useState<"inline" | "floating">("floating");
+  const [placement, setPlacement] = useState<"bottom-right" | "bottom-left" | "bottom-center" | "top-right" | "top-left">("bottom-right");
   const [openByDefault, setOpenByDefault] = useState(false);
+
+  // New appearance configuration hook
+  const { border, background, text, aiStars, setBorder, setBackground, setText, setAiStars, merged } = useAppearanceConfig();
+
+  // Custom Icon File Upload State
+  const [customIconFile, setCustomIconFile] = useState<File | null>(null);
+  const [customIconPreview, setCustomIconPreview] = useState<string | null>(null);
+  const [customIconStorageId, setCustomIconStorageId] = useState<Id<"_storage"> | null>(null);
+  const [customIconPath, setCustomIconPath] = useState<string | null>(null);
+  const [customIconError, setCustomIconError] = useState<string | null>(null);
+  const [isUploadingCustomIcon, setIsUploadingCustomIcon] = useState(false);
+  const customIconInputRef = useRef<HTMLInputElement>(null);
+
+  // Convex hooks for custom icon file upload
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const customIconUrl = useQuery(
+    api.files.getUrl,
+    customIconStorageId ? { storageId: customIconStorageId } : "skip"
+  );
 
   useEffect(() => {
     if (!sessionLoading && previewConfig) {
@@ -91,15 +129,23 @@ export default function ConfigurePage() {
           primaryColor: config.primaryColor ?? "#3b82f6",
           gradientStart: config.gradientStart ?? "#3b82f6",
           gradientEnd: config.gradientEnd ?? "#8b5cf6",
+          colorMode: config.colorMode ?? "border",
         });
         setNytConfig({
           collapsedText: config.collapsedText ?? "Ask",
           title: config.title ?? "Ask Anything!",
           placeholder: config.placeholder ?? "Ask anything",
           followUpPlaceholder: config.followUpPlaceholder ?? "Ask a follow up...",
-          suggestionCategories: config.suggestionCategories ?? ["Top Stories", "Breaking News", "Sports", "Technology"],
-          brandingText: config.brandingText ?? "Powered by Gist Answers",
+          customIconSvg: (config as any).customIconSvg ?? "",
         });
+
+        // Load suggestion categories into separate state
+        setSuggestionCategories(config.suggestionCategories ?? ["Top Stories", "Breaking News", "Sports", "Technology"]);
+
+        // Load custom icon storage ID into separate state for file upload management
+        if ((config as any).customIconStorageId) {
+          setCustomIconStorageId((config as any).customIconStorageId);
+        }
 
         const configAny = config as any;
         const row1 = configAny.seedQuestionsRow1 ?? [
@@ -135,16 +181,36 @@ export default function ConfigurePage() {
 
     const timeout = setTimeout(async () => {
       try {
+        const baseConfig = {
+          ...colorConfig,
+          placement: "bottom-center" as const,
+          variant,
+          openByDefault,
+          ...(previewConfig.widgetType === "womensWorld" ? womensWorldConfig : {
+            ...nytConfig,
+            suggestionCategories, // Add suggestionCategories array
+          }),
+          ...merged, // New appearance configuration (spread last to take precedence)
+        };
+
+        // Remove null customIconStorageId from nytConfig spread
+        if ((baseConfig as any).customIconStorageId === null) {
+          delete (baseConfig as any).customIconStorageId;
+        }
+
+        // Add customIconStorageId if it exists
+        if (customIconStorageId) {
+          (baseConfig as any).customIconStorageId = customIconStorageId;
+        }
+
+        // Add customIconPath if it exists
+        if (customIconPath) {
+          (baseConfig as any).customIconPath = customIconPath;
+        }
+
         await updateConfig({
           sessionId,
-          configuration: {
-            ...colorConfig,
-            placement: "bottom-center",
-            textColor: "#ffffff",
-            variant,
-            openByDefault,
-            ...(previewConfig.widgetType === "womensWorld" ? womensWorldConfig : nytConfig),
-          },
+          configuration: baseConfig as any,
         });
       } catch (err) {
         console.error("Error saving configuration:", err);
@@ -152,10 +218,101 @@ export default function ConfigurePage() {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [sessionId, colorConfig, nytConfig, womensWorldConfig, variant, openByDefault, previewConfig, updateConfig]);
+  }, [sessionId, colorConfig, nytConfig, womensWorldConfig, suggestionCategories, variant, openByDefault, customIconStorageId, customIconPath, previewConfig, updateConfig, merged]);
 
   const handleContinue = () => {
     router.push("/preview/demo");
+  };
+
+  // Custom Icon File Upload Handlers
+  const handleCustomIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.includes("svg")) {
+      setCustomIconError("Please upload an SVG file");
+      return;
+    }
+
+    // Validate file size (max 1MB)
+    if (file.size > 1024 * 1024) {
+      setCustomIconError("File size must be less than 1MB");
+      return;
+    }
+
+    setCustomIconError(null);
+    setCustomIconFile(file);
+
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    setCustomIconPreview(previewUrl);
+
+    // Auto-upload the file
+    uploadCustomIcon(file);
+  };
+
+  const uploadCustomIcon = async (file: File) => {
+    setIsUploadingCustomIcon(true);
+    setCustomIconError(null);
+
+    try {
+      // Get upload URL from Convex
+      const uploadUrl = await generateUploadUrl();
+
+      // Upload the file
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!result.ok) {
+        throw new Error("Failed to upload file");
+      }
+
+      const { storageId } = await result.json();
+      setCustomIconStorageId(storageId);
+
+      // Update nytConfig with the new storageId
+      setNytConfig((prev) => ({
+        ...prev,
+        customIconSvg: "", // Clear deprecated field
+      }));
+    } catch (error) {
+      console.error("Error uploading custom icon:", error);
+      setCustomIconError("Failed to upload icon. Please try again.");
+      clearCustomIcon();
+    } finally {
+      setIsUploadingCustomIcon(false);
+    }
+  };
+
+  const clearCustomIcon = () => {
+    if (customIconPreview) {
+      URL.revokeObjectURL(customIconPreview);
+    }
+    setCustomIconFile(null);
+    setCustomIconPreview(null);
+    setCustomIconStorageId(null);
+    setCustomIconPath(null);
+    setCustomIconError(null);
+    setNytConfig((prev) => ({
+      ...prev,
+      customIconSvg: "",
+    }));
+    if (customIconInputRef.current) {
+      customIconInputRef.current.value = "";
+    }
+  };
+
+  const handleSelectExample = (path: string) => {
+    // Clear uploaded file state
+    clearCustomIcon();
+
+    // Set the example path
+    setCustomIconPath(path);
+    setCustomIconError(null);
   };
 
   if (sessionLoading || !previewConfig) {
@@ -203,49 +360,57 @@ export default function ConfigurePage() {
               </TabsList>
 
               <TabsContent value="appearance" className="space-y-6">
-                <ColorGradientPicker
-                  value={colorConfig}
-                  onChange={setColorConfig}
+                {/* Three independent appearance sections */}
+                <AppearanceSection
+                  title="Button Border"
+                  value={border}
+                  onChange={setBorder}
+                  showNoneOption={false}
+                />
+
+                <AppearanceSection
+                  title="Button Background"
+                  value={background}
+                  onChange={setBackground}
+                  showNoneOption={false}
+                />
+
+                <AppearanceSection
+                  title="Button Text"
+                  value={text}
+                  onChange={setText}
+                  showNoneOption={false}
+                />
+
+                <AppearanceSection
+                  title="AI Stars Icon"
+                  value={aiStars}
+                  onChange={setAiStars}
+                  showNoneOption={false}
                 />
               </TabsContent>
 
               <TabsContent value="behavior">
                 <Card className="p-4">
                   <div className="space-y-4">
-                    <div>
-                      <Label className="mb-3 block">Preview Theme</Label>
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => setPreviewTheme("light")}
-                          variant={previewTheme === "light" ? "default" : "outline"}
-                          className="flex-1"
-                        >
-                          ☀️ Light
-                        </Button>
-                        <Button
-                          onClick={() => setPreviewTheme("dark")}
-                          variant={previewTheme === "dark" ? "default" : "outline"}
-                          className="flex-1"
-                        >
-                          🌙 Dark
-                        </Button>
-                      </div>
-                    </div>
-
-                    {variant === "floating" && (
-                      <div className="pt-4 border-t">
-                        <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-                          <div className="space-y-0.5">
-                            <Label className="text-base">Open by Default</Label>
-                            <p className="text-sm text-muted-foreground">
-                              Widget will be expanded when page loads
-                            </p>
-                          </div>
-                          <Switch
-                            checked={openByDefault}
-                            onCheckedChange={setOpenByDefault}
-                          />
-                        </div>
+                    {previewConfig.widgetType === "floating" && (
+                      <div>
+                        <Label htmlFor="placement">Widget Placement</Label>
+                        <Select value={placement} onValueChange={(value: typeof placement) => setPlacement(value)}>
+                          <SelectTrigger className="mt-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                            <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                            <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                            <SelectItem value="top-right">Top Right</SelectItem>
+                            <SelectItem value="top-left">Top Left</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Position of the widget on the page
+                        </p>
                       </div>
                     )}
                   </div>
@@ -323,42 +488,121 @@ export default function ConfigurePage() {
                       </div>
 
                       <div>
-                        <Label htmlFor="brandingText">Branding Text</Label>
-                        <Input
-                          id="brandingText"
-                          value={nytConfig.brandingText}
-                          onChange={(e) =>
-                            setNytConfig({ ...nytConfig, brandingText: e.target.value })
-                          }
-                          placeholder="Powered by Gist Answers"
-                          className="mt-2"
+                        <Label htmlFor="suggestionCategories">Suggestion Categories</Label>
+                        <SortableCategoryList
+                          categories={suggestionCategories}
+                          onChange={setSuggestionCategories}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Footer branding text
+                          Categories shown as quick suggestions (drag to reorder)
                         </p>
                       </div>
 
                       <div>
-                        <Label htmlFor="suggestionCategories">Suggestion Categories</Label>
-                        <Textarea
-                          id="suggestionCategories"
-                          value={nytConfig.suggestionCategories.join(", ")}
-                          onChange={(e) =>
-                            setNytConfig({
-                              ...nytConfig,
-                              suggestionCategories: e.target.value
-                                .split(",")
-                                .map((c) => c.trim())
-                                .filter(Boolean),
-                            })
-                          }
-                          placeholder="Top Stories, Breaking News, Sports, Technology"
-                          className="mt-2"
-                          rows={3}
+                        <Label htmlFor="custom-icon-upload">Custom Icon SVG (Optional)</Label>
+
+                        <input
+                          ref={customIconInputRef}
+                          type="file"
+                          accept=".svg,image/svg+xml"
+                          onChange={handleCustomIconChange}
+                          className="hidden"
+                          id="custom-icon-upload"
                         />
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Comma-separated list of suggestion categories
-                        </p>
+
+                        <div className="mt-2 space-y-3">
+                          {!customIconFile ? (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => customIconInputRef.current?.click()}
+                              disabled={isUploadingCustomIcon}
+                              className="w-full"
+                            >
+                              <Upload className="mr-2 h-4 w-4" />
+                              {isUploadingCustomIcon ? "Uploading..." : "Upload SVG Icon"}
+                            </Button>
+                          ) : (
+                            <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
+                              {customIconPreview && (
+                                <img
+                                  src={customIconPreview}
+                                  alt="Custom icon preview"
+                                  className="w-9 h-9 flex-shrink-0"
+                                />
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{customIconFile.name}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {(customIconFile.size / 1024).toFixed(1)} KB
+                                </p>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={clearCustomIcon}
+                                disabled={isUploadingCustomIcon}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+
+                          {/* Example Icon Selector - only show when no file and no example selected */}
+                          {!customIconFile && !customIconPath && (
+                            <>
+                              <div className="relative">
+                                <div className="absolute inset-0 flex items-center">
+                                  <span className="w-full border-t" />
+                                </div>
+                                <div className="relative flex justify-center text-xs uppercase">
+                                  <span className="bg-background px-2 text-muted-foreground">
+                                    Or browse examples
+                                  </span>
+                                </div>
+                              </div>
+
+                              <ExampleIconSelector
+                                onSelect={handleSelectExample}
+                                selectedPath={customIconPath}
+                              />
+                            </>
+                          )}
+
+                          {/* Show preview of selected example icon */}
+                          {customIconPath && !customIconFile && (
+                            <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
+                              <img
+                                src={customIconPath}
+                                alt="Selected example icon"
+                                className="w-9 h-9 flex-shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium">Example Icon</p>
+                                <p className="text-xs text-muted-foreground truncate">
+                                  {customIconPath.split('/').pop()}
+                                </p>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={clearCustomIcon}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+
+                          {customIconError && (
+                            <p className="text-xs text-destructive">{customIconError}</p>
+                          )}
+
+                          <p className="text-xs text-muted-foreground">
+                            Upload an SVG file (max 1MB), choose an example icon, or leave empty for default profile icon
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </Card>
@@ -605,16 +849,23 @@ export default function ConfigurePage() {
                 </div>
 
                 {previewConfig.widgetType && (
-                  <IframeWidgetPreview
+                  <PreviewWidgetRenderer
                     widgetType={previewConfig.widgetType}
                     configuration={{
                       ...colorConfig,
                       placement: "bottom-center",
-                      textColor: "#ffffff",
-                      variant,
+                      womensWorldVariant: variant,
                       openByDefault,
-                      ...(previewConfig.widgetType === "womensWorld" ? womensWorldConfig : nytConfig),
+                      ...(previewConfig.widgetType === "womensWorld" ? womensWorldConfig : {
+                        ...nytConfig,
+                        suggestionCategories,
+                      }),
+                      customIconStorageId: customIconStorageId || undefined,
+                      customIconUrl: customIconUrl || undefined,
+                      customIconPath: customIconPath || undefined,
+                      ...merged,
                     }}
+                    isDemo={false}
                   />
                 )}
               </div>

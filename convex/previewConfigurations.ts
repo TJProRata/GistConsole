@@ -3,6 +3,7 @@ import { v } from "convex/values";
 
 // Configuration object schema for reuse
 const configurationSchema = v.object({
+  // Deprecated color fields (kept for backward compatibility)
   primaryColor: v.optional(v.string()),
   secondaryColor: v.optional(v.string()),
   backgroundColor: v.optional(v.string()),
@@ -10,6 +11,26 @@ const configurationSchema = v.object({
   useGradient: v.optional(v.boolean()),
   gradientStart: v.optional(v.string()),
   gradientEnd: v.optional(v.string()),
+  colorMode: v.optional(v.union(v.literal("border"), v.literal("fill"))),
+
+  // New appearance fields (Button Border, Background, Text)
+  borderType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+  borderSolidColor: v.optional(v.string()),
+  borderGradientStart: v.optional(v.string()),
+  borderGradientEnd: v.optional(v.string()),
+  backgroundType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+  backgroundSolidColor: v.optional(v.string()),
+  backgroundGradientStart: v.optional(v.string()),
+  backgroundGradientEnd: v.optional(v.string()),
+  textType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+  textSolidColor: v.optional(v.string()),
+  textGradientStart: v.optional(v.string()),
+  textGradientEnd: v.optional(v.string()),
+  aiStarsType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+  aiStarsSolidColor: v.optional(v.string()),
+  aiStarsGradientStart: v.optional(v.string()),
+  aiStarsGradientEnd: v.optional(v.string()),
+
   placement: v.optional(
     v.union(
       v.literal("bottom-right"),
@@ -29,6 +50,9 @@ const configurationSchema = v.object({
   iconUrl: v.optional(v.string()),
   iconStorageId: v.optional(v.id("_storage")),
   logoUrl: v.optional(v.string()),
+  customIconStorageId: v.optional(v.id("_storage")),
+  customIconPath: v.optional(v.string()),
+  customIconSvg: v.optional(v.string()), // Deprecated, kept for backward compatibility
   // NYT Chat Widget Configuration
   collapsedText: v.optional(v.string()),
   title: v.optional(v.string()),
@@ -182,7 +206,22 @@ export const convertPreviewToUserConfig = mutation({
       throw new Error("User not authenticated");
     }
 
-    // Get preview configuration
+    // Check if already converted (idempotent check first)
+    const mapping = await ctx.db
+      .query("previewToUserMapping")
+      .withIndex("by_session_id", (q) => q.eq("sessionId", args.sessionId))
+      .first();
+
+    if (mapping?.converted) {
+      // Already converted - return success (idempotent behavior)
+      return {
+        success: true,
+        alreadyConverted: true,
+        message: "Preview already converted"
+      };
+    }
+
+    // Get preview configuration (only if not already converted)
     const preview = await ctx.db
       .query("previewConfigurations")
       .withIndex("by_session_id", (q) => q.eq("sessionId", args.sessionId))
@@ -190,16 +229,6 @@ export const convertPreviewToUserConfig = mutation({
 
     if (!preview) {
       throw new Error("Preview configuration not found");
-    }
-
-    // Check if already converted
-    const mapping = await ctx.db
-      .query("previewToUserMapping")
-      .withIndex("by_session_id", (q) => q.eq("sessionId", args.sessionId))
-      .first();
-
-    if (mapping?.converted) {
-      throw new Error("Preview already converted");
     }
 
     // Create user configuration

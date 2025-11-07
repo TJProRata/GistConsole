@@ -6,14 +6,15 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { PreviewWidgetRenderer } from "@/components/PreviewWidgetRenderer";
 import { usePreviewSession } from "@/lib/hooks/usePreviewSession";
-import { Loader2, Sparkles } from "lucide-react";
-import { SignUpButton } from "@clerk/nextjs";
+import { Loader2, Sparkles, Plus } from "lucide-react";
+import { SignUpButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function DemoPage() {
   const router = useRouter();
   const { sessionId, isLoading: sessionLoading } = usePreviewSession();
+  const { isSignedIn, isLoaded: userLoaded } = useUser();
 
   const previewConfig = useQuery(
     api.previewConfigurations.getPreviewConfig,
@@ -71,26 +72,45 @@ export default function DemoPage() {
 
             <div className="rounded-lg bg-white dark:bg-gray-800 p-8 shadow-lg">
               <h3 className="text-xl font-semibold mb-4">
-                Ready to Get Started?
+                {isSignedIn ? "Test Complete!" : "Ready to Get Started?"}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Create an account to save your configuration and integrate this
-                widget into your website.
+                {isSignedIn
+                  ? "This was a test preview. To create a real widget configuration, go to your dashboard."
+                  : "Create an account to save your configuration and integrate this widget into your website."}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
-                  <Button size="lg" className="w-full flex-1">
-                    <Sparkles className="mr-2 h-5 w-5" />
-                    Create Account & Save
-                  </Button>
-                </SignUpButton>
+                {isSignedIn ? (
+                  <>
+                    <Link href="/dashboard/configure-widget" className="flex-1">
+                      <Button size="lg" className="w-full">
+                        <Plus className="mr-2 h-5 w-5" />
+                        Create Real Configuration
+                      </Button>
+                    </Link>
+                    <Link href="/preview/configure" className="flex-1">
+                      <Button size="lg" variant="outline" className="w-full">
+                        Edit Test Preview
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
+                      <Button size="lg" className="w-full flex-1">
+                        <Sparkles className="mr-2 h-5 w-5" />
+                        Create Account & Save
+                      </Button>
+                    </SignUpButton>
 
-                <Link href="/preview/configure" className="flex-1">
-                  <Button size="lg" variant="outline" className="w-full">
-                    Edit Configuration
-                  </Button>
-                </Link>
+                    <Link href="/preview/configure" className="flex-1">
+                      <Button size="lg" variant="outline" className="w-full">
+                        Edit Configuration
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 
@@ -98,27 +118,50 @@ export default function DemoPage() {
               <h3 className="text-xl font-semibold mb-3">
                 What Happens Next?
               </h3>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">1.</span>
-                  <span>
-                    Create your account - your preview configuration will be
-                    saved automatically
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">2.</span>
-                  <span>
-                    Get your widget embed code from the dashboard
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="font-bold">3.</span>
-                  <span>
-                    Add the code to your website and you're live!
-                  </span>
-                </li>
-              </ul>
+              {isSignedIn ? (
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">1.</span>
+                    <span>
+                      Go to your dashboard to create a real widget configuration
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">2.</span>
+                    <span>
+                      Configure your widget with your actual settings
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">3.</span>
+                    <span>
+                      Get your embed code and add it to your website
+                    </span>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">1.</span>
+                    <span>
+                      Create your account - your preview configuration will be
+                      saved automatically
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">2.</span>
+                    <span>
+                      Get your widget embed code from the dashboard
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">3.</span>
+                    <span>
+                      Add the code to your website and you're live!
+                    </span>
+                  </li>
+                </ul>
+              )}
             </div>
           </div>
         </div>

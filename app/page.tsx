@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
 
 export default function Home() {
   const isAdmin = useQuery(api.admin.isAdmin);
@@ -51,6 +52,15 @@ export default function Home() {
                   </Button>
                 </Link>
               )}
+              <Link href="/preview">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Eye className="h-4 w-4" />
+                  Preview Widget
+                </Button>
+              </Link>
+              <p className="text-sm text-gray-500">
+                Test widget configurations without saving
+              </p>
             </div>
           </div>
         </SignedIn>

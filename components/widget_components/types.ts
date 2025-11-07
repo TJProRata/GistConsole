@@ -580,17 +580,59 @@ export interface NYTChatWidgetProps {
   /** Enable color mode responsiveness (default: true) */
   colorModeResponsive?: boolean;
 
-  /** Primary accent color (default: "#9333ea" purple) */
+  /** @deprecated Use borderType, backgroundType, textType instead */
   primaryColor?: string;
 
-  /** Use gradient for borders and styling (default: false) */
+  /** @deprecated Use borderType, backgroundType, textType instead */
   useGradient?: boolean;
 
-  /** Gradient start color (used when useGradient=true) */
+  /** @deprecated Use borderType, backgroundType, textType instead */
   gradientStart?: string;
 
-  /** Gradient end color (used when useGradient=true) */
+  /** @deprecated Use borderType, backgroundType, textType instead */
   gradientEnd?: string;
+
+  /** @deprecated Use borderType, backgroundType, textType instead */
+  colorMode?: "border" | "fill";
+
+  /** New appearance fields - Button Border */
+  borderType?: "solid" | "gradient" | "none";
+  borderSolidColor?: string;
+  borderGradientStart?: string;
+  borderGradientEnd?: string;
+
+  /** New appearance fields - Button Background */
+  backgroundType?: "solid" | "gradient" | "none";
+  backgroundSolidColor?: string;
+  backgroundGradientStart?: string;
+  backgroundGradientEnd?: string;
+
+  /** New appearance fields - Button Text */
+  textType?: "solid" | "gradient" | "none";
+  textSolidColor?: string;
+  textGradientStart?: string;
+  textGradientEnd?: string;
+
+  /** AI Stars icon color configuration */
+  aiStarsType?: "solid" | "gradient" | "none";
+  aiStarsSolidColor?: string;
+  aiStarsGradientStart?: string;
+  aiStarsGradientEnd?: string;
+
+  /** Positioning strategy for the widget (default: "relative" for preview contexts) */
+  positioning?: "absolute" | "relative" | "fixed";
+
+  /** Storage ID for custom icon SVG file */
+  customIconStorageId?: string;
+
+  /** URL for custom icon SVG (fetched from storage) */
+  customIconUrl?: string;
+
+  /** Path to example icon SVG (e.g., "/svg_examples/filename.svg") */
+  customIconPath?: string;
+
+  /** @deprecated Use customIconStorageId and customIconUrl instead. Kept for backward compatibility. */
+  customIconSvg?: string;
 
   /** Additional CSS classes */
   className?: string;

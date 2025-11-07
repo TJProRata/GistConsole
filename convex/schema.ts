@@ -170,14 +170,32 @@ export default defineSchema(
       v.literal("womensWorld")
     ),
 
-    // Colors
+    // Colors (Deprecated - use new appearance fields below)
+    /** @deprecated Use borderType, backgroundType, textType instead */
     primaryColor: v.optional(v.string()),
     secondaryColor: v.optional(v.string()),
     backgroundColor: v.optional(v.string()),
     textColor: v.optional(v.string()),
+    /** @deprecated Use borderType, backgroundType, textType instead */
     useGradient: v.optional(v.boolean()),
     gradientStart: v.optional(v.string()),
     gradientEnd: v.optional(v.string()),
+    /** @deprecated Use borderType, backgroundType, textType instead */
+    colorMode: v.optional(v.union(v.literal("border"), v.literal("fill"))),
+
+    // New Appearance Configuration (Button Border, Background, Text)
+    borderType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+    borderSolidColor: v.optional(v.string()),
+    borderGradientStart: v.optional(v.string()),
+    borderGradientEnd: v.optional(v.string()),
+    backgroundType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+    backgroundSolidColor: v.optional(v.string()),
+    backgroundGradientStart: v.optional(v.string()),
+    backgroundGradientEnd: v.optional(v.string()),
+    textType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+    textSolidColor: v.optional(v.string()),
+    textGradientStart: v.optional(v.string()),
+    textGradientEnd: v.optional(v.string()),
 
     // Behavior
     placement: v.optional(
@@ -208,6 +226,10 @@ export default defineSchema(
     followUpPlaceholder: v.optional(v.string()),
     suggestionCategories: v.optional(v.array(v.string())),
     brandingText: v.optional(v.string()),
+    customIconStorageId: v.optional(v.id("_storage")), // Custom icon SVG file storage ID
+    customIconPath: v.optional(v.string()), // Path to example icon SVG (e.g., "/svg_examples/filename.svg")
+    /** @deprecated Use customIconStorageId instead. Kept for backward compatibility. */
+    customIconSvg: v.optional(v.string()),
 
     // Women's World Widget Configuration
     seedQuestionsRow1: v.optional(v.array(v.string())),
@@ -248,14 +270,40 @@ export default defineSchema(
     // Appearance Configuration
     configuration: v.optional(
       v.object({
-        // Colors
+        // Colors (Deprecated - use new appearance fields below)
+        /** @deprecated Use borderType, backgroundType, textType instead */
         primaryColor: v.optional(v.string()),
         secondaryColor: v.optional(v.string()),
         backgroundColor: v.optional(v.string()),
         textColor: v.optional(v.string()),
+        /** @deprecated Use borderType, backgroundType, textType instead */
         useGradient: v.optional(v.boolean()),
         gradientStart: v.optional(v.string()),
         gradientEnd: v.optional(v.string()),
+        /** @deprecated Use borderType, backgroundType, textType instead */
+        colorMode: v.optional(v.union(v.literal("border"), v.literal("fill"))),
+
+        // New Appearance Configuration (Button Border, Background, Text)
+        borderType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+        borderSolidColor: v.optional(v.string()),
+        borderGradientStart: v.optional(v.string()),
+        borderGradientEnd: v.optional(v.string()),
+        backgroundType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+        backgroundSolidColor: v.optional(v.string()),
+        backgroundGradientStart: v.optional(v.string()),
+        backgroundGradientEnd: v.optional(v.string()),
+        textType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+        textSolidColor: v.optional(v.string()),
+        textGradientStart: v.optional(v.string()),
+        textGradientEnd: v.optional(v.string()),
+        aiStarsType: v.optional(v.union(v.literal("solid"), v.literal("gradient"), v.literal("none"))),
+        aiStarsSolidColor: v.optional(v.string()),
+        aiStarsGradientStart: v.optional(v.string()),
+        aiStarsGradientEnd: v.optional(v.string()),
+        customIconStorageId: v.optional(v.id("_storage")), // Custom icon SVG file storage ID
+        customIconPath: v.optional(v.string()), // Path to example icon SVG (e.g., "/svg_examples/filename.svg")
+        /** @deprecated Use customIconStorageId instead. Kept for backward compatibility. */
+        customIconSvg: v.optional(v.string()),
 
         // Behavior
         placement: v.optional(

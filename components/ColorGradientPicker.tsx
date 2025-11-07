@@ -12,12 +12,14 @@ interface ColorGradientPickerProps {
     primaryColor: string;
     gradientStart: string;
     gradientEnd: string;
+    colorMode: "border" | "fill";
   };
   onChange?: (value: {
     useGradient: boolean;
     primaryColor: string;
     gradientStart: string;
     gradientEnd: string;
+    colorMode: "border" | "fill";
   }) => void;
   className?: string;
 }
@@ -28,6 +30,7 @@ export function ColorGradientPicker({
     primaryColor: "#3b82f6",
     gradientStart: "#3b82f6",
     gradientEnd: "#8b5cf6",
+    colorMode: "border" as "border" | "fill",
   },
   onChange,
   className,

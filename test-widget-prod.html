@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women's World Widget - Production Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #FB9649;
+      background: linear-gradient(135deg, #FB9649 0%, #A361E9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #FB9649 0%, #A361E9 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .status {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 4px;
+    }
+
+    .status-title {
+      font-weight: 600;
+      color: #0284c7;
+      margin-bottom: 0.5rem;
+    }
+
+    .status-list {
+      list-style: none;
+      margin: 0.5rem 0;
+    }
+
+    .status-list li {
+      padding: 0.25rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .status-list li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      color: #A361E9;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #f0f0f0;
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Production Streaming Test</h1>
+    <span class="badge">🚀 Live Deployment</span>
+
+    <div class="status">
+      <div class="status-title">Production Configuration</div>
+      <ul class="status-list">
+        <li>Widget CDN: <code>https://wwwidget.vercel.app</code></li>
+        <li>API Server: <code>https://gist-console.vercel.app</code></li>
+        <li>Streaming: <strong>Enabled</strong></li>
+        <li>OpenAI Model: <strong>GPT-4</strong></li>
+      </ul>
+    </div>
+
+    <p>
+      This page loads the Women's World widget from the production CDN and streams
+      answers from the deployed API server. All components are running in production mode.
+    </p>
+
+    <div class="status">
+      <div class="status-title">Testing Checklist</div>
+      <ul class="status-list">
+        <li>Widget initializes without errors</li>
+        <li>Seed questions display and auto-scroll</li>
+        <li>Search input accepts custom questions</li>
+        <li>Streaming starts when question submitted</li>
+        <li>Answer appears character-by-character</li>
+        <li>Stream completes successfully</li>
+        <li>New search button works</li>
+        <li>No CORS errors in console</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <p>Women's World Widget Production Test</p>
+      <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+        Widget: <code>https://wwwidget.vercel.app</code> |
+        API: <code>https://gist-console.vercel.app</code>
+      </p>
+    </div>
+  </div>
+
+  <!-- Women's World Floating Widget (Production) -->
+  <script src="https://wwwidget.vercel.app/womens-world-floating.js"></script>
+  <div id="womens-world-widget"></div>
+  <script>
+    GistWidget.init({
+      containerId: "womens-world-widget",
+      title: "✨ Woman's World Answers",
+      placeholder: "Ask your health questions...",
+      seedQuestionsRow1: [
+        "What are the early signs of menopause?",
+        "How can I improve my bone health?",
+        "What vitamins should I take daily?"
+      ],
+      seedQuestionsRow2: [
+        "How to manage stress naturally?",
+        "What are good exercises for flexibility?",
+        "How can I improve my sleep quality?"
+      ],
+      enableStreaming: true,
+      // Production API URL
+      apiUrl: "https://gist-console.vercel.app",
+      placement: "bottom-center"
+    });
+  </script>
+</body>
+</html>

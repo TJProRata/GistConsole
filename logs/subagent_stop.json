@@ -1,897 +1,137 @@
 [
   {
-    "session_id": "164c83e7-d14c-46b0-b379-48f02a09f978",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-GistConsole/164c83e7-d14c-46b0-b379-48f02a09f978.jsonl",
-    "cwd": "/Users/tjmcgovern/GistConsole",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "c31097c9-57b1-4b7b-a9da-c5ce68feacf2",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-GistConsole/c31097c9-57b1-4b7b-a9da-c5ce68feacf2.jsonl",
-    "cwd": "/Users/tjmcgovern/GistConsole",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "85e402e3-aa8b-4cae-b76b-a3d9345e1b40",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-GistConsole/85e402e3-aa8b-4cae-b76b-a3d9345e1b40.jsonl",
-    "cwd": "/Users/tjmcgovern/GistConsole",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "5e87d474-578b-4110-8983-bcec1d7ad8d3",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-GistConsole/5e87d474-578b-4110-8983-bcec1d7ad8d3.jsonl",
-    "cwd": "/Users/tjmcgovern/GistConsole",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "d6421221-4111-4954-a742-42ffdca76393",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d6421221-4111-4954-a742-42ffdca76393.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "default",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "d7c9cf1a-8c8f-4092-9565-b9ed1c3497f3",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d7c9cf1a-8c8f-4092-9565-b9ed1c3497f3.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "3b73c9b1-6c93-4974-9bcc-56a32e53a403",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/3b73c9b1-6c93-4974-9bcc-56a32e53a403.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "dc48f85b-9519-4f53-9742-21c1979d0047",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/dc48f85b-9519-4f53-9742-21c1979d0047.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "7e4df352-2a67-42d7-bfa6-be99ed820bd5",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/7e4df352-2a67-42d7-bfa6-be99ed820bd5.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "d7000d39-5f80-4914-b078-f3c05db39714",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d7000d39-5f80-4914-b078-f3c05db39714.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "af447602-9c19-43a4-b069-c88fe525aebf",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/af447602-9c19-43a4-b069-c88fe525aebf.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "feec90b1-5c76-4a11-932e-86ab84b2335d",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/feec90b1-5c76-4a11-932e-86ab84b2335d.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "2591e31c-27c2-4a68-b6f8-f6796be475c8",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/2591e31c-27c2-4a68-b6f8-f6796be475c8.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "1a62b5f9-3264-4b84-9b71-d285fdcb26b6",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/1a62b5f9-3264-4b84-9b71-d285fdcb26b6.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "0122a1fd-ff4a-4ac7-a3f5-4717235f1c3f",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0122a1fd-ff4a-4ac7-a3f5-4717235f1c3f.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "e84c35d5-dec9-4b4d-a8f0-19029aec5146",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e84c35d5-dec9-4b4d-a8f0-19029aec5146.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "068d18af-b83d-4f8b-9520-000792fc8b10",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/068d18af-b83d-4f8b-9520-000792fc8b10.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "e7bc61d8-909b-4258-a37f-f9e070ce1e22",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e7bc61d8-909b-4258-a37f-f9e070ce1e22.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "1c066541-29c3-455b-b9c8-2c2d9d7f4a42",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/1c066541-29c3-455b-b9c8-2c2d9d7f4a42.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "487c6862-f3f2-4db3-a3c7-40e9cd0a6ffe",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/487c6862-f3f2-4db3-a3c7-40e9cd0a6ffe.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "56dbb5d9-eed1-4c17-a99f-a97b12f3df1e",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/56dbb5d9-eed1-4c17-a99f-a97b12f3df1e.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "7f7d6019-9f5a-413a-8099-d792360a2535",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/7f7d6019-9f5a-413a-8099-d792360a2535.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "d4be3872-c240-4fef-aa29-edd45fe230e7",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d4be3872-c240-4fef-aa29-edd45fe230e7.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "c68ab82d-4b18-472a-a051-00218212e877",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c68ab82d-4b18-472a-a051-00218212e877.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "a5ef1441-b57f-46a1-8b9e-21c813da9088",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a5ef1441-b57f-46a1-8b9e-21c813da9088.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "00682b98-b3bb-4a88-ad26-52dc3d60c839",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/00682b98-b3bb-4a88-ad26-52dc3d60c839.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "199d94b4-5609-4f1a-ad89-5c57625488cf",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/199d94b4-5609-4f1a-ad89-5c57625488cf.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "a56a0459-82c5-45be-9ee6-c8324ade4f9f",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a56a0459-82c5-45be-9ee6-c8324ade4f9f.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "513c5f60-ac06-4e94-97d4-f449dc442b17",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/513c5f60-ac06-4e94-97d4-f449dc442b17.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "8da3c6be-6846-4b91-a0e4-e45b65d80a1e",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/8da3c6be-6846-4b91-a0e4-e45b65d80a1e.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "e61ad1b7-6e4d-426c-afc2-32baea41b3f5",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e61ad1b7-6e4d-426c-afc2-32baea41b3f5.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "28d85df6-e5f3-4153-b287-4d4b95d7c72c",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/28d85df6-e5f3-4153-b287-4d4b95d7c72c.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "a3f622fc-504b-4cee-b572-9b20c6a11d93",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a3f622fc-504b-4cee-b572-9b20c6a11d93.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "45f12066-57ba-4789-8f44-f4a7e1c51902",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/45f12066-57ba-4789-8f44-f4a7e1c51902.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "e7e3a181-516a-4ffe-9eed-a0208a9511ac",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e7e3a181-516a-4ffe-9eed-a0208a9511ac.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "325c1cfe-b7ea-47dd-b39f-3550cf87c3b0",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/325c1cfe-b7ea-47dd-b39f-3550cf87c3b0.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "794eff4d-825d-4c49-b1db-7fc79aa3a06c",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/794eff4d-825d-4c49-b1db-7fc79aa3a06c.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "c367e8f5-3510-437c-aa83-b3781b7e62f4",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c367e8f5-3510-437c-aa83-b3781b7e62f4.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "8ac3e2bd-fbac-4b78-b731-3af4c11bd2f8",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/8ac3e2bd-fbac-4b78-b731-3af4c11bd2f8.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "cf137def-8e21-4c0c-ac58-9d81ec28d879",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cf137def-8e21-4c0c-ac58-9d81ec28d879.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "388c6fcb-f304-4dcf-80cf-a6006135c87a",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/388c6fcb-f304-4dcf-80cf-a6006135c87a.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "64cbc740-495d-4ed3-8f29-31a9ca6044c0",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/64cbc740-495d-4ed3-8f29-31a9ca6044c0.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "bdd483c0-ef08-4c1f-b65e-a31d4f980294",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bdd483c0-ef08-4c1f-b65e-a31d4f980294.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ad40ff31-050a-4821-9732-64637d12d37d",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ad40ff31-050a-4821-9732-64637d12d37d.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "cb923ff7-8dce-48a8-956c-362a600d69fd",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cb923ff7-8dce-48a8-956c-362a600d69fd.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "49d485f2-382d-4cc6-967f-b0536ac458bb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/49d485f2-382d-4cc6-967f-b0536ac458bb.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "a316c301-2e4e-4fed-85b6-b0f05a0438d6",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a316c301-2e4e-4fed-85b6-b0f05a0438d6.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "34878d85-5d01-4ce8-aac0-d4dd4765deec",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/34878d85-5d01-4ce8-aac0-d4dd4765deec.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "0f076793-2610-4e72-ad18-094532e79015",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f076793-2610-4e72-ad18-094532e79015.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "a61e9bcd-2394-439e-8e57-54e5256eca3f",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/a61e9bcd-2394-439e-8e57-54e5256eca3f.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "5c11c4d6-aee3-4f0c-9d3d-281888b89157",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/5c11c4d6-aee3-4f0c-9d3d-281888b89157.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "cbac015f-fd14-44b4-bc78-611116440d91",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cbac015f-fd14-44b4-bc78-611116440d91.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "cbac015f-fd14-44b4-bc78-611116440d91",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/cbac015f-fd14-44b4-bc78-611116440d91.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "29fb6fc7-5cf8-4d21-8f61-5be0b9668582",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/29fb6fc7-5cf8-4d21-8f61-5be0b9668582.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "29fb6fc7-5cf8-4d21-8f61-5be0b9668582",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/29fb6fc7-5cf8-4d21-8f61-5be0b9668582.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "574c018e-13dd-408d-b6e1-0383e156d451",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/574c018e-13dd-408d-b6e1-0383e156d451.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ea86f68f-31ef-432a-b29c-9704803e1a2e",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ea86f68f-31ef-432a-b29c-9704803e1a2e.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ea86f68f-31ef-432a-b29c-9704803e1a2e",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ea86f68f-31ef-432a-b29c-9704803e1a2e.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "574c018e-13dd-408d-b6e1-0383e156d451",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/574c018e-13dd-408d-b6e1-0383e156d451.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "0c5c4524-7c0b-4b46-b159-b82566c3d4e0",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0c5c4524-7c0b-4b46-b159-b82566c3d4e0.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "0c5c4524-7c0b-4b46-b159-b82566c3d4e0",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0c5c4524-7c0b-4b46-b159-b82566c3d4e0.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "7f73992c-12ff-46d2-8bc6-74ec0f4fc743",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/7f73992c-12ff-46d2-8bc6-74ec0f4fc743.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "7f73992c-12ff-46d2-8bc6-74ec0f4fc743",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/7f73992c-12ff-46d2-8bc6-74ec0f4fc743.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "574c018e-13dd-408d-b6e1-0383e156d451",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/574c018e-13dd-408d-b6e1-0383e156d451.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "492c2c7e-930f-46a1-9eff-954622110b20",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/492c2c7e-930f-46a1-9eff-954622110b20.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "492c2c7e-930f-46a1-9eff-954622110b20",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/492c2c7e-930f-46a1-9eff-954622110b20.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "1e6a317b-7cfd-4212-b891-d5e1068804cc",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/1e6a317b-7cfd-4212-b891-d5e1068804cc.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "1e6a317b-7cfd-4212-b891-d5e1068804cc",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/1e6a317b-7cfd-4212-b891-d5e1068804cc.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "c63b1e44-2d97-4d0d-8d6b-1486e3f35785",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c63b1e44-2d97-4d0d-8d6b-1486e3f35785.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "c63b1e44-2d97-4d0d-8d6b-1486e3f35785",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c63b1e44-2d97-4d0d-8d6b-1486e3f35785.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "c63b1e44-2d97-4d0d-8d6b-1486e3f35785",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c63b1e44-2d97-4d0d-8d6b-1486e3f35785.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "c63b1e44-2d97-4d0d-8d6b-1486e3f35785",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c63b1e44-2d97-4d0d-8d6b-1486e3f35785.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
+    "permission_mode": "bypassPermissions",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "c63b1e44-2d97-4d0d-8d6b-1486e3f35785",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/c63b1e44-2d97-4d0d-8d6b-1486e3f35785.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "5d3b1cd3-576d-4977-8227-5aa744ec64df",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/5d3b1cd3-576d-4977-8227-5aa744ec64df.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "5d3b1cd3-576d-4977-8227-5aa744ec64df",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/5d3b1cd3-576d-4977-8227-5aa744ec64df.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "82ba03e0-c574-44bb-b93b-8ca0426caed2",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/82ba03e0-c574-44bb-b93b-8ca0426caed2.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "82ba03e0-c574-44bb-b93b-8ca0426caed2",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/82ba03e0-c574-44bb-b93b-8ca0426caed2.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "d9b5298c-3db3-4618-91fe-f01bdf602b82",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d9b5298c-3db3-4618-91fe-f01bdf602b82.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "d9b5298c-3db3-4618-91fe-f01bdf602b82",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/d9b5298c-3db3-4618-91fe-f01bdf602b82.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "f33dd3ff-7b22-429d-8d69-6e977a15560a",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/f33dd3ff-7b22-429d-8d69-6e977a15560a.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "f33dd3ff-7b22-429d-8d69-6e977a15560a",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/f33dd3ff-7b22-429d-8d69-6e977a15560a.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "2ec235d3-23e6-4a2b-90da-016b3d3366d1",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/2ec235d3-23e6-4a2b-90da-016b3d3366d1.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "2ec235d3-23e6-4a2b-90da-016b3d3366d1",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/2ec235d3-23e6-4a2b-90da-016b3d3366d1.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "0e4d9711-adfa-4f26-bd75-d4b6d216ef89",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0e4d9711-adfa-4f26-bd75-d4b6d216ef89.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "0e4d9711-adfa-4f26-bd75-d4b6d216ef89",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0e4d9711-adfa-4f26-bd75-d4b6d216ef89.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ce91129c-ec90-4e9f-bdb9-2d89d1f861eb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ce91129c-ec90-4e9f-bdb9-2d89d1f861eb.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ce91129c-ec90-4e9f-bdb9-2d89d1f861eb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ce91129c-ec90-4e9f-bdb9-2d89d1f861eb.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ce91129c-ec90-4e9f-bdb9-2d89d1f861eb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ce91129c-ec90-4e9f-bdb9-2d89d1f861eb.jsonl",
+    "session_id": "4f264c36-156d-4b3c-a138-89bcf63eefa5",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/4f264c36-156d-4b3c-a138-89bcf63eefa5.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "ce91129c-ec90-4e9f-bdb9-2d89d1f861eb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ce91129c-ec90-4e9f-bdb9-2d89d1f861eb.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "ce91129c-ec90-4e9f-bdb9-2d89d1f861eb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ce91129c-ec90-4e9f-bdb9-2d89d1f861eb.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "ce91129c-ec90-4e9f-bdb9-2d89d1f861eb",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ce91129c-ec90-4e9f-bdb9-2d89d1f861eb.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "ba208b37-037f-4a19-a8e8-b88fd014e95b",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ba208b37-037f-4a19-a8e8-b88fd014e95b.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "ba208b37-037f-4a19-a8e8-b88fd014e95b",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ba208b37-037f-4a19-a8e8-b88fd014e95b.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "b3d075db-b81e-447e-b437-99062eabe0f1",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/b3d075db-b81e-447e-b437-99062eabe0f1.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "b3d075db-b81e-447e-b437-99062eabe0f1",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/b3d075db-b81e-447e-b437-99062eabe0f1.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "83848a1d-a0a0-4b6c-b178-56c268ad9dd7",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/83848a1d-a0a0-4b6c-b178-56c268ad9dd7.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "83848a1d-a0a0-4b6c-b178-56c268ad9dd7",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/83848a1d-a0a0-4b6c-b178-56c268ad9dd7.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "e5537d4c-6f7d-417d-81ba-b10dff900d42",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e5537d4c-6f7d-417d-81ba-b10dff900d42.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "e5537d4c-6f7d-417d-81ba-b10dff900d42",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e5537d4c-6f7d-417d-81ba-b10dff900d42.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "df048256-1c48-4d51-872d-24995479fd26",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/df048256-1c48-4d51-872d-24995479fd26.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "df048256-1c48-4d51-872d-24995479fd26",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/df048256-1c48-4d51-872d-24995479fd26.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "89f1dea2-bf8a-44da-8cb7-d25f08515c50",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/89f1dea2-bf8a-44da-8cb7-d25f08515c50.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "89f1dea2-bf8a-44da-8cb7-d25f08515c50",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/89f1dea2-bf8a-44da-8cb7-d25f08515c50.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "be4080db-a54f-440a-aa42-f3815ae32803",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/be4080db-a54f-440a-aa42-f3815ae32803.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "be4080db-a54f-440a-aa42-f3815ae32803",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/be4080db-a54f-440a-aa42-f3815ae32803.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "be4080db-a54f-440a-aa42-f3815ae32803",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/be4080db-a54f-440a-aa42-f3815ae32803.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "8dfd9b20-07f1-4ee0-a2d6-e1a8e8a437d5",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/8dfd9b20-07f1-4ee0-a2d6-e1a8e8a437d5.jsonl",
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "plan",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "plan",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "permission_mode": "plan",
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false
+  },
+  {
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "default",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "8dfd9b20-07f1-4ee0-a2d6-e1a8e8a437d5",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/8dfd9b20-07f1-4ee0-a2d6-e1a8e8a437d5.jsonl",
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
     "permission_mode": "default",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "e2945a90-c29a-4a11-9b6f-79799bba7810",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e2945a90-c29a-4a11-9b6f-79799bba7810.jsonl",
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
+    "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   },
   {
-    "session_id": "e2945a90-c29a-4a11-9b6f-79799bba7810",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/e2945a90-c29a-4a11-9b6f-79799bba7810.jsonl",
+    "session_id": "bb4f4ed2-cc3a-499b-9052-c6de9a738ba7",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/bb4f4ed2-cc3a-499b-9052-c6de9a738ba7.jsonl",
     "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "26d05ed4-5904-4eb0-a741-4f4a9ad114a8",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/26d05ed4-5904-4eb0-a741-4f4a9ad114a8.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
-    "hook_event_name": "SubagentStop",
-    "stop_hook_active": false
-  },
-  {
-    "session_id": "26d05ed4-5904-4eb0-a741-4f4a9ad114a8",
-    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/26d05ed4-5904-4eb0-a741-4f4a9ad114a8.jsonl",
-    "cwd": "/Users/tjmcgovern/gist-console",
-    "permission_mode": "default",
+    "permission_mode": "plan",
     "hook_event_name": "SubagentStop",
     "stop_hook_active": false
   }

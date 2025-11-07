@@ -10,6 +10,7 @@ import { ProfileBlank } from "@/components/widget_components/icons/profile-blank
 // ============================================================================
 
 const gradientBorderStyles = `
+  /* Border Mode - gradient border with white fill */
   .gradient-border-collapsed {
     position: relative;
     isolation: isolate;
@@ -35,6 +36,15 @@ const gradientBorderStyles = `
     background: white;
     border-radius: calc(var(--radius-pill) - 2px);
   }
+
+  /* Fill Mode - gradient background fill */
+  .gradient-fill-collapsed {
+    position: relative;
+    background: var(--gradient-brand);
+  }
+  .gradient-fill-collapsed::after {
+    display: none;
+  }
 `;
 
 // ============================================================================
@@ -44,6 +54,9 @@ const gradientBorderStyles = `
 interface GlassWidgetContainerProps {
   /** Custom content for collapsed button state. Defaults to "Ask AI" button */
   collapsedContent?: React.ReactNode;
+
+  /** Text content for collapsed button (used for auto-width calculation) */
+  collapsedText?: string;
 
   /** Content shown when widget is expanded */
   children: React.ReactNode;
@@ -83,6 +96,33 @@ interface GlassWidgetContainerProps {
 
   /** Custom gradient for collapsed button border (default: var(--gradient-brand)) */
   customGradientBorder?: string;
+
+  /** Color mode for gradient styling (default: "border") */
+  colorMode?: "border" | "fill";
+
+  /** New appearance system - Border configuration */
+  borderType?: "solid" | "gradient" | "none";
+  borderColor?: string;
+
+  /** New appearance system - Background configuration */
+  backgroundType?: "solid" | "gradient" | "none";
+  backgroundColor?: string;
+  backgroundGradient?: string;
+
+  /** AI Stars icon color configuration */
+  aiStarsType?: "solid" | "gradient" | "none";
+  aiStarsSolidColor?: string;
+  aiStarsGradientStart?: string;
+  aiStarsGradientEnd?: string;
+
+  /** URL for custom icon SVG (fetched from storage) */
+  customIconUrl?: string;
+
+  /** Path to example icon SVG (e.g., "/svg_examples/filename.svg") */
+  customIconPath?: string;
+
+  /** @deprecated Use customIconUrl instead. Kept for backward compatibility. */
+  customIconSvg?: string;
 }
 
 interface GlassWidgetSubComponentProps {
@@ -116,16 +156,74 @@ function DefaultCollapsedButton({ isAnimating }: { isAnimating?: boolean }) {
 }
 
 // ============================================================================
+// AI Stars Gradient Generator
+// ============================================================================
+
+/**
+ * Generate SVG gradient definitions based on configuration
+ * Handles both solid (single-color gradient) and gradient (two-color) modes
+ */
+function generateSparkleGradients(
+  type: "solid" | "gradient" | "none" | undefined,
+  solidColor?: string,
+  gradientStart?: string,
+  gradientEnd?: string
+) {
+  // Default colors (fallback to original hardcoded values)
+  const defaultGradient1 = { start: "#6F61EF", end: "#36E1AE" };
+  const defaultGradient2 = { start: "#E19736", end: "#6F61EF" };
+
+  if (type === "solid") {
+    // Solid color: use same color for both start and end
+    const color = solidColor || "#6F61EF";
+    return {
+      gradient0: { start: color, end: color },
+      gradient1: { start: color, end: color },
+      gradient2: { start: color, end: color },
+      gradient3: { start: color, end: color },
+      gradient4: { start: color, end: color },
+      gradient5: { start: color, end: color },
+    };
+  }
+
+  if (type === "gradient") {
+    // Two-color gradient: alternate between main gradient and reversed
+    const start = gradientStart || defaultGradient1.start;
+    const end = gradientEnd || defaultGradient2.start;
+
+    return {
+      gradient0: { start, end: "#36E1AE" }, // Original pattern
+      gradient1: { start: end, end: start }, // Reversed
+      gradient2: { start, end: "#36E1AE" },
+      gradient3: { start: end, end: start },
+      gradient4: { start, end: "#36E1AE" },
+      gradient5: { start: end, end: start },
+    };
+  }
+
+  // Default (none or undefined): use original hardcoded colors
+  return {
+    gradient0: defaultGradient1,
+    gradient1: defaultGradient2,
+    gradient2: defaultGradient1,
+    gradient3: defaultGradient2,
+    gradient4: defaultGradient1,
+    gradient5: defaultGradient2,
+  };
+}
+
+// ============================================================================
 // Main Component
 // ============================================================================
 
 export function GlassWidgetContainer({
   collapsedContent,
+  collapsedText,
   children,
   isExpanded: controlledIsExpanded,
   defaultExpanded = false,
   onExpandChange,
-  collapsedWidth = 128,
+  collapsedWidth,
   collapsedHeight = 48,
   expandedWidth = 392,
   expandedHeight, // Not used - kept for backward compatibility
@@ -133,7 +231,20 @@ export function GlassWidgetContainer({
   className,
   disableAnimation: _disableAnimation = false,
   customBackground,
-  customGradientBorder
+  customGradientBorder,
+  colorMode = "border",
+  borderType,
+  borderColor,
+  backgroundType,
+  backgroundColor,
+  backgroundGradient,
+  aiStarsType,
+  aiStarsSolidColor,
+  aiStarsGradientStart,
+  aiStarsGradientEnd,
+  customIconUrl,
+  customIconPath,
+  customIconSvg
 }: GlassWidgetContainerProps) {
   // Controlled/Uncontrolled state pattern
   const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
@@ -158,7 +269,17 @@ export function GlassWidgetContainer({
 
   const getContainerWidth = () => {
     if (isExpanded) return expandedWidth;
-    return collapsedWidth;
+
+    // Auto-calculate width based on text length if not specified
+    if (collapsedWidth === undefined && collapsedText) {
+      // Formula: icon padding (84px) + text width (~8px per char) + buffer (16px)
+      const textWidth = collapsedText.length * 8;
+      const totalWidth = 84 + textWidth + 16;
+      // Constrain between min (128px) and max (240px)
+      return Math.max(128, Math.min(totalWidth, 240));
+    }
+
+    return collapsedWidth ?? 128; // Fallback to default
   };
 
   const getContainerHeight = () => {
@@ -173,8 +294,70 @@ export function GlassWidgetContainer({
     return height;
   };
 
-  // Generate custom gradient border styles if needed
-  const customGradientStyles = customGradientBorder ? `
+  // Compute effective appearance settings (new system takes precedence)
+  const hasNewAppearance = borderType || backgroundType;
+
+  const effectiveBorderType = hasNewAppearance ? (borderType || "solid") : (customGradientBorder ? "gradient" : "solid");
+  const effectiveBorderValue = borderType === "gradient" ? customGradientBorder : borderColor;
+  const effectiveBackgroundType = hasNewAppearance ? (backgroundType || "none") : "none";
+  const effectiveBackgroundValue = backgroundType === "gradient" ? backgroundGradient : backgroundColor;
+
+  // Generate AI stars gradients based on configuration
+  const sparkleGradients = generateSparkleGradients(
+    aiStarsType,
+    aiStarsSolidColor,
+    aiStarsGradientStart,
+    aiStarsGradientEnd
+  );
+
+  // Generate custom styles based on new appearance system
+  const customAppearanceStyles = (effectiveBorderType === "solid" || effectiveBackgroundType === "solid" || effectiveBorderType === "gradient") ? `
+    /* New appearance system - solid border with custom background */
+    .appearance-collapsed-custom {
+      position: relative;
+      isolation: isolate;
+      ${effectiveBorderType === "solid" && effectiveBorderValue ? `border: 2px solid ${effectiveBorderValue};` : ''}
+      ${effectiveBorderType === "gradient" && effectiveBorderValue ? `
+        background: ${effectiveBorderValue};
+        -webkit-background-clip: border-box;
+        background-clip: border-box;
+      ` : ''}
+      ${effectiveBackgroundType === "solid" && effectiveBackgroundValue ? `background-color: ${effectiveBackgroundValue} !important;` : ''}
+      ${effectiveBackgroundType === "gradient" && effectiveBackgroundValue ? `background: ${effectiveBackgroundValue} !important;` : ''}
+      ${effectiveBackgroundType === "none" && effectiveBorderType !== "gradient" ? `background-color: white !important;` : ''}
+    }
+
+    /* Gradient border mode - gradient border with custom or white fill */
+    .appearance-gradient-border-custom {
+      position: relative;
+      isolation: isolate;
+    }
+    .appearance-gradient-border-custom::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      padding: 2px;
+      background: ${effectiveBorderValue || 'var(--gradient-brand)'};
+      border-radius: inherit;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
+    .appearance-gradient-border-custom::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      inset: 2px;
+      background: ${effectiveBackgroundType === "solid" && effectiveBackgroundValue ? effectiveBackgroundValue : (effectiveBackgroundType === "gradient" && effectiveBackgroundValue ? effectiveBackgroundValue : 'white')};
+      border-radius: calc(var(--radius-pill) - 2px);
+    }
+  ` : '';
+
+  // Fallback to legacy system if new appearance not used
+  const legacyGradientStyles = !hasNewAppearance && customGradientBorder ? `
+    /* Legacy: Border Mode - custom gradient border with white fill */
     .gradient-border-collapsed-custom {
       position: relative;
       isolation: isolate;
@@ -200,13 +383,33 @@ export function GlassWidgetContainer({
       background: white;
       border-radius: calc(var(--radius-pill) - 2px);
     }
+
+    /* Legacy: Fill Mode - custom gradient background fill */
+    .gradient-fill-collapsed-custom {
+      position: relative;
+      background: ${customGradientBorder};
+    }
+    .gradient-fill-collapsed-custom::after {
+      display: none;
+    }
   ` : '';
 
-  const gradientClass = customGradientBorder ? 'gradient-border-collapsed-custom' : 'gradient-border-collapsed';
+  // Determine which CSS class to apply
+  const gradientClass = hasNewAppearance
+    ? (effectiveBorderType === "gradient"
+        ? 'appearance-gradient-border-custom'
+        : 'appearance-collapsed-custom')
+    : (customGradientBorder
+      ? (colorMode === "fill"
+        ? 'gradient-fill-collapsed-custom'
+        : 'gradient-border-collapsed-custom')
+      : (colorMode === "fill"
+        ? 'gradient-fill-collapsed'
+        : 'gradient-border-collapsed'));
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: gradientBorderStyles + customGradientStyles }} />
+      <style dangerouslySetInnerHTML={{ __html: gradientBorderStyles + customAppearanceStyles + legacyGradientStyles }} />
       <motion.div
         className={cn(
           positioning === 'absolute' ? "absolute" : positioning === 'fixed' ? "fixed" : "relative",
@@ -232,7 +435,7 @@ export function GlassWidgetContainer({
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
           background: isExpanded ? (customBackground || 'rgba(255, 255, 255, 0.95)') : 'transparent',
           backdropFilter: isExpanded && !customBackground ? 'blur(20px)' : undefined,
-          border: isExpanded ? '1px solid rgba(255, 255, 255, 0.3)' : 'none',
+          border: isExpanded ? '1px solid rgba(255, 255, 255, 0.3)' : undefined,
           overflow: 'hidden',
           // Only constrain max, let content determine height
           maxHeight: allowDynamicHeight && isExpanded ? 810 : undefined,
@@ -269,28 +472,28 @@ export function GlassWidgetContainer({
             <path d="M15.7153 14.6663C15.7508 14.4203 16.1013 14.4203 16.1368 14.6663L16.3295 16.003C16.3416 16.0869 16.4011 16.1558 16.4817 16.1791L17.7052 16.5336C17.911 16.5932 17.911 16.8886 17.7052 16.9482L16.4817 17.3027C16.4011 17.326 16.3416 17.3949 16.3295 17.4788L16.1368 18.8155C16.1013 19.0615 15.7508 19.0615 15.7153 18.8155L15.5226 17.4788C15.5105 17.3949 15.4509 17.326 15.3704 17.3027L14.1469 16.9482C13.9411 16.8886 13.9411 16.5932 14.1469 16.5336L15.3704 16.1791C15.4509 16.1558 15.5105 16.0869 15.5226 16.003L15.7153 14.6663Z" fill="url(#paint5_linear_sparkle)"/>
             <defs>
               <linearGradient id="paint0_linear_sparkle" x1="5" y1="12.5" x2="19" y2="12.5" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#6F61EF"/>
-                <stop offset="1" stopColor="#36E1AE"/>
+                <stop stopColor={sparkleGradients.gradient0.start}/>
+                <stop offset="1" stopColor={sparkleGradients.gradient0.end}/>
               </linearGradient>
               <linearGradient id="paint1_linear_sparkle" x1="16.5792" y1="12.5" x2="5" y2="12.5" gradientUnits="userSpaceOnUse">
-                <stop offset="0.51447" stopColor="#E19736"/>
-                <stop offset="1" stopColor="#6F61EF"/>
+                <stop offset="0.51447" stopColor={sparkleGradients.gradient1.start}/>
+                <stop offset="1" stopColor={sparkleGradients.gradient1.end}/>
               </linearGradient>
               <linearGradient id="paint2_linear_sparkle" x1="5" y1="12.5" x2="19" y2="12.5" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#6F61EF"/>
-                <stop offset="1" stopColor="#36E1AE"/>
+                <stop stopColor={sparkleGradients.gradient2.start}/>
+                <stop offset="1" stopColor={sparkleGradients.gradient2.end}/>
               </linearGradient>
               <linearGradient id="paint3_linear_sparkle" x1="16.5792" y1="12.5" x2="5" y2="12.5" gradientUnits="userSpaceOnUse">
-                <stop offset="0.51447" stopColor="#E19736"/>
-                <stop offset="1" stopColor="#6F61EF"/>
+                <stop offset="0.51447" stopColor={sparkleGradients.gradient3.start}/>
+                <stop offset="1" stopColor={sparkleGradients.gradient3.end}/>
               </linearGradient>
               <linearGradient id="paint4_linear_sparkle" x1="5" y1="12.5" x2="19" y2="12.5" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#6F61EF"/>
-                <stop offset="1" stopColor="#36E1AE"/>
+                <stop stopColor={sparkleGradients.gradient4.start}/>
+                <stop offset="1" stopColor={sparkleGradients.gradient4.end}/>
               </linearGradient>
               <linearGradient id="paint5_linear_sparkle" x1="16.5792" y1="12.5" x2="5" y2="12.5" gradientUnits="userSpaceOnUse">
-                <stop offset="0.51447" stopColor="#E19736"/>
-                <stop offset="1" stopColor="#6F61EF"/>
+                <stop offset="0.51447" stopColor={sparkleGradients.gradient5.start}/>
+                <stop offset="1" stopColor={sparkleGradients.gradient5.end}/>
               </linearGradient>
             </defs>
           </svg>
@@ -300,7 +503,26 @@ export function GlassWidgetContainer({
       {/* Profile Icon - Locked to right 6px, visible only when collapsed */}
       {!isExpanded && (
         <div className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10">
-          <ProfileBlank className="w-9 h-9" />
+          {customIconPath ? (
+            <img
+              src={customIconPath}
+              alt="Custom icon"
+              className="w-9 h-9"
+            />
+          ) : customIconUrl ? (
+            <img
+              src={customIconUrl}
+              alt="Custom icon"
+              className="w-9 h-9"
+            />
+          ) : customIconSvg ? (
+            <div
+              className="w-9 h-9"
+              dangerouslySetInnerHTML={{ __html: customIconSvg }}
+            />
+          ) : (
+            <ProfileBlank className="w-9 h-9" />
+          )}
         </div>
       )}
 

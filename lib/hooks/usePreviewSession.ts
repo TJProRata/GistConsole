@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 
 const PREVIEW_SESSION_KEY = "gist_preview_session_id";
+const PREVIEW_MODE_KEY = "gist_preview_mode";
+
+export type PreviewMode = "guest" | "authenticated_preview";
 
 /**
  * Generate a UUID v4
@@ -42,6 +45,7 @@ export function usePreviewSession() {
 
   const clearSession = () => {
     localStorage.removeItem(PREVIEW_SESSION_KEY);
+    localStorage.removeItem(PREVIEW_MODE_KEY);
     setSessionId(null);
   };
 
@@ -51,10 +55,21 @@ export function usePreviewSession() {
     setSessionId(newSessionId);
   };
 
+  const setPreviewMode = (mode: PreviewMode) => {
+    localStorage.setItem(PREVIEW_MODE_KEY, mode);
+  };
+
+  const getPreviewMode = (): PreviewMode | null => {
+    const mode = localStorage.getItem(PREVIEW_MODE_KEY);
+    return mode as PreviewMode | null;
+  };
+
   return {
     sessionId,
     isLoading,
     clearSession,
     refreshSession,
+    setPreviewMode,
+    getPreviewMode,
   };
 }

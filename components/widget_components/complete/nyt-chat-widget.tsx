@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import {
+  GlassWidgetContainer,
+  GlassWidgetHeader,
+  GlassWidgetContent,
+  GlassWidgetFooter,
+} from "../ai-elements/glass_widget_container";
 import type {
   NYTChatWidgetProps,
   NYTWidgetState,
@@ -21,7 +27,9 @@ import type {
  */
 function NYTLogo({ className }: { className?: string }) {
   return (
-    <span className={cn("font-serif font-bold text-sm tracking-wide", className)}>
+    <span
+      className={cn("font-serif font-bold text-sm tracking-wide", className)}
+    >
       The New York Times
     </span>
   );
@@ -48,9 +56,9 @@ function CategoryPill({
   const pillStyle = useGradient
     ? {
         backgroundImage: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
       }
     : { color: accentColor };
 
@@ -110,7 +118,9 @@ function SuggestionCategories({
   gradientEnd: string;
 }) {
   const [showAll, setShowAll] = useState(false);
-  const displayedCategories = showAll ? categories : categories.slice(0, visibleCount);
+  const displayedCategories = showAll
+    ? categories
+    : categories.slice(0, visibleCount);
   const hasMore = categories.length > visibleCount;
 
   return (
@@ -156,7 +166,9 @@ function AutocompleteSuggestion({
       className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-lg"
     >
       <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
-      <span className="text-sm text-gray-900 dark:text-white">{suggestion}</span>
+      <span className="text-sm text-gray-900 dark:text-white">
+        {suggestion}
+      </span>
     </button>
   );
 }
@@ -164,7 +176,11 @@ function AutocompleteSuggestion({
 /**
  * Autocomplete List Component
  */
-function AutocompleteList({ query, suggestions, onSelect }: AutocompleteListProps) {
+function AutocompleteList({
+  query,
+  suggestions,
+  onSelect,
+}: AutocompleteListProps) {
   if (!query || suggestions.length === 0) return null;
 
   return (
@@ -198,7 +214,10 @@ function LoadingIndicator({ accentColor }: { accentColor: string }) {
   return (
     <div className="flex items-center gap-2 text-gray-400 text-sm">
       <div className="flex gap-1">
-        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: accentColor }} />
+        <span
+          className="w-1.5 h-1.5 rounded-full animate-bounce"
+          style={{ backgroundColor: accentColor }}
+        />
         <span
           className="w-1.5 h-1.5 rounded-full animate-bounce"
           style={{ backgroundColor: accentColor, animationDelay: "0.1s" }}
@@ -299,7 +318,9 @@ function CitationPills({
   accentColor,
 }: CitationPillsProps & { accentColor: string }) {
   const [showAll, setShowAll] = useState(false);
-  const displayedCitations = showAll ? citations : citations.slice(0, visibleCount);
+  const displayedCitations = showAll
+    ? citations
+    : citations.slice(0, visibleCount);
   const hasMore = citations.length > visibleCount;
 
   if (citations.length === 0) return null;
@@ -343,7 +364,9 @@ function AnswerDisplay({
 }: AnswerDisplayProps & { accentColor: string }) {
   return (
     <div className="space-y-4">
-      <h3 className="text-gray-900 dark:text-white font-semibold text-base">{query}</h3>
+      <h3 className="text-gray-900 dark:text-white font-semibold text-base">
+        {query}
+      </h3>
 
       {isLoading ? (
         <LoadingIndicator accentColor={accentColor} />
@@ -356,7 +379,11 @@ function AnswerDisplay({
             onToggleExpand={onToggleExpand}
             accentColor={accentColor}
           />
-          <CitationPills citations={citations} onCitationClick={onCitationClick} accentColor={accentColor} />
+          <CitationPills
+            citations={citations}
+            onCitationClick={onCitationClick}
+            accentColor={accentColor}
+          />
         </>
       )}
     </div>
@@ -364,24 +391,34 @@ function AnswerDisplay({
 }
 
 /**
- * NYT Widget Collapsed State
+ * NYT Collapsed Button Content
+ * Used inside GlassWidgetContainer's collapsedContent prop
+ * Note: Container provides sparkle icon (left) and profile icon (right)
  */
-function NYTWidgetCollapsed({
+function NYTCollapsedButton({
   collapsedText,
-  onExpand,
+  textType,
+  textColor,
+  textGradient,
 }: {
   collapsedText: string;
-  onExpand: () => void;
+  textType: "solid" | "gradient" | "none";
+  textColor: string;
+  textGradient?: string;
 }) {
+  const textStyle = textType === "gradient" && textGradient
+    ? {
+        backgroundImage: textGradient,
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+      }
+    : { color: textColor };
+
   return (
-    <Button
-      onClick={onExpand}
-      className="flex items-center gap-3 bg-white dark:bg-[rgb(var(--nyt-dark-bg))] text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-[rgb(var(--nyt-gray-900))] border border-gray-200 dark:border-gray-700 px-4 py-3 rounded-lg shadow-lg transition-all"
-    >
-      <Sparkles className="w-4 h-4" />
-      <span className="font-medium">{collapsedText}</span>
-      <NYTLogo className="text-xs opacity-70" />
-    </Button>
+    <span className="font-medium" style={textStyle}>
+      {collapsedText}
+    </span>
   );
 }
 
@@ -461,16 +498,19 @@ function NYTWidgetExpanded({
   };
 
   const showSuggestions = currentState === "search" && inputValue === "";
-  const showAutocomplete = currentState === "search" && autocompleteResults.length > 0;
+  const showAutocomplete =
+    currentState === "search" && autocompleteResults.length > 0;
   const showAnswer = currentState === "answer" && answer;
 
   return (
-    <div className="w-[400px] bg-white dark:bg-[rgb(var(--nyt-dark-bg))] rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+    <>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+      <GlassWidgetHeader className="flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5" style={{ color: accentColor }} />
-          <h2 className="text-gray-900 dark:text-white font-semibold text-lg">{title}</h2>
+          <h2 className="text-gray-900 dark:text-white font-semibold text-lg">
+            {title}
+          </h2>
         </div>
         <Button
           variant="ghost"
@@ -480,61 +520,65 @@ function NYTWidgetExpanded({
         >
           <X className="w-4 h-4" />
         </Button>
-      </div>
+      </GlassWidgetHeader>
 
       {/* Content */}
-      <ScrollArea className="max-h-[500px]">
-        <div className="p-4 space-y-4">
-          {/* Suggestion Categories (initial state) */}
-          {showSuggestions && (
-            <SuggestionCategories
-              categories={suggestionCategories}
-              onCategoryClick={(category) => {
-                setInputValue(category);
-                onCategoryClick(category);
-              }}
-              accentColor={accentColor}
-              useGradient={useGradient}
-              gradientStart={gradientStart}
-              gradientEnd={gradientEnd}
-            />
-          )}
+      <GlassWidgetContent className="px-4 py-4">
+        <ScrollArea className="max-h-[500px]">
+          <div className="space-y-4">
+            {/* Suggestion Categories (initial state) */}
+            {showSuggestions && (
+              <SuggestionCategories
+                categories={suggestionCategories}
+                onCategoryClick={(category) => {
+                  setInputValue(category);
+                  onCategoryClick(category);
+                }}
+                accentColor={accentColor}
+                useGradient={useGradient}
+                gradientStart={gradientStart}
+                gradientEnd={gradientEnd}
+              />
+            )}
 
-          {/* Autocomplete List (typing state) */}
-          {showAutocomplete && (
-            <AutocompleteList
-              query={inputValue}
-              suggestions={autocompleteResults}
-              onSelect={handleAutocompleteSelect}
-            />
-          )}
+            {/* Autocomplete List (typing state) */}
+            {showAutocomplete && (
+              <AutocompleteList
+                query={inputValue}
+                suggestions={autocompleteResults}
+                onSelect={handleAutocompleteSelect}
+              />
+            )}
 
-          {/* Answer Display (answer state) */}
-          {showAnswer && (
-            <AnswerDisplay
-              query={query || ""}
-              answer={answer}
-              citations={citations}
-              isLoading={isLoading}
-              isExpanded={isAnswerExpanded}
-              onToggleExpand={() => setIsAnswerExpanded(!isAnswerExpanded)}
-              onCitationClick={onCitationClick}
-              accentColor={accentColor}
-            />
-          )}
+            {/* Answer Display (answer state) */}
+            {showAnswer && (
+              <AnswerDisplay
+                query={query || ""}
+                answer={answer}
+                citations={citations}
+                isLoading={isLoading}
+                isExpanded={isAnswerExpanded}
+                onToggleExpand={() => setIsAnswerExpanded(!isAnswerExpanded)}
+                onCitationClick={onCitationClick}
+                accentColor={accentColor}
+              />
+            )}
 
-          {/* Loading State */}
-          {currentState === "loading" && (
-            <div className="space-y-4">
-              <h3 className="text-gray-900 dark:text-white font-semibold text-base">{query}</h3>
-              <LoadingIndicator accentColor={accentColor} />
-            </div>
-          )}
-        </div>
-      </ScrollArea>
+            {/* Loading State */}
+            {currentState === "loading" && (
+              <div className="space-y-4">
+                <h3 className="text-gray-900 dark:text-white font-semibold text-base">
+                  {query}
+                </h3>
+                <LoadingIndicator accentColor={accentColor} />
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+      </GlassWidgetContent>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
+      <GlassWidgetFooter className="px-4 py-4 space-y-3">
         {/* Search Input or Follow-up Input */}
         <div className="flex gap-2">
           <Input
@@ -555,9 +599,11 @@ function NYTWidgetExpanded({
         </div>
 
         {/* Branding */}
-        <div className="text-center text-gray-600 dark:text-gray-500 text-xs">{brandingText}</div>
-      </div>
-    </div>
+        <div className="text-center text-gray-600 dark:text-gray-500 text-xs">
+          {brandingText}
+        </div>
+      </GlassWidgetFooter>
+    </>
   );
 }
 
@@ -583,45 +629,77 @@ export function NYTChatWidget({
   onSubmit,
   onCategoryClick,
   onCitationClick,
+  // Legacy appearance props (deprecated)
   primaryColor = "#9333ea",
   useGradient = false,
   gradientStart = "#3b82f6",
   gradientEnd = "#8b5cf6",
+  colorMode = "border",
+  // New appearance props
+  borderType,
+  borderSolidColor,
+  borderGradientStart,
+  borderGradientEnd,
+  backgroundType,
+  backgroundSolidColor,
+  backgroundGradientStart,
+  backgroundGradientEnd,
+  textType,
+  textSolidColor,
+  textGradientStart,
+  textGradientEnd,
+  // AI Stars appearance props
+  aiStarsType,
+  aiStarsSolidColor,
+  aiStarsGradientStart,
+  aiStarsGradientEnd,
+  positioning = "relative",
+  customIconStorageId,
+  customIconUrl,
+  customIconPath,
+  customIconSvg,
   className,
 }: NYTChatWidgetProps) {
-  // Controlled vs Uncontrolled pattern
-  const isControlled = controlledExpanded !== undefined;
-  const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
-  const isExpanded = isControlled ? controlledExpanded : internalExpanded;
-
   // State machine
   const [widgetState, setWidgetState] = useState<NYTWidgetState>("search");
   const [currentQuery, setCurrentQuery] = useState<string | null>(null);
   const [answer, setAnswer] = useState<string | null>(null);
   const [citations, setCitations] = useState<string[]>([]);
 
-  // Color styling helpers
-  const accentColor = primaryColor;
-  const gradientStyle = useGradient
-    ? { backgroundImage: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})` }
-    : { backgroundColor: accentColor };
+  // Compute appearance styles (new system with fallback to legacy)
+  const hasNewAppearance = borderType || backgroundType || textType;
 
-  const getBorderStyle = () => {
-    if (useGradient) {
-      return {
-        borderWidth: '2px',
-        borderStyle: 'solid',
-        borderImage: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd}) 1`,
-      };
-    }
-    return { borderColor: accentColor };
-  };
+  // Border styling
+  const effectiveBorderType = hasNewAppearance ? (borderType || "solid") : (useGradient ? "gradient" : "solid");
+  const effectiveBorderColor = borderSolidColor || primaryColor;
+  const effectiveBorderGradient = (borderGradientStart && borderGradientEnd)
+    ? `linear-gradient(90deg, ${borderGradientStart} 0%, ${borderGradientEnd} 100%)`
+    : useGradient ? `linear-gradient(90deg, ${gradientStart} 0%, ${gradientEnd} 100%)` : undefined;
+
+  // Background styling
+  const effectiveBackgroundType = hasNewAppearance ? (backgroundType || "none") : "none";
+  const effectiveBackgroundColor = backgroundSolidColor;
+  const effectiveBackgroundGradient = (backgroundGradientStart && backgroundGradientEnd)
+    ? `linear-gradient(90deg, ${backgroundGradientStart} 0%, ${backgroundGradientEnd} 100%)`
+    : undefined;
+
+  // Text styling
+  const effectiveTextType = hasNewAppearance ? (textType || "solid") : "solid";
+  const effectiveTextColor = textSolidColor || "#000000";
+  const effectiveTextGradient = (textGradientStart && textGradientEnd)
+    ? `linear-gradient(90deg, ${textGradientStart} 0%, ${textGradientEnd} 100%)`
+    : undefined;
+
+  // Legacy accent color for internal components
+  const accentColor = effectiveBorderColor;
+
+  // Construct custom gradient border for GlassWidgetContainer
+  const customGradientBorder = effectiveBorderType === "gradient"
+    ? effectiveBorderGradient
+    : undefined;
 
   const handleExpandChange = useCallback(
     (expanded: boolean) => {
-      if (!isControlled) {
-        setInternalExpanded(expanded);
-      }
       onExpandChange?.(expanded);
 
       // Reset state when collapsing
@@ -632,7 +710,7 @@ export function NYTChatWidget({
         setCitations([]);
       }
     },
-    [isControlled, onExpandChange]
+    [onExpandChange]
   );
 
   const handleSubmit = useCallback(
@@ -680,34 +758,58 @@ export function NYTChatWidget({
   );
 
   return (
-    <div className={cn("inline-block", className)}>
-      {!isExpanded ? (
-        <NYTWidgetCollapsed
+    <GlassWidgetContainer
+      collapsedContent={
+        <NYTCollapsedButton
           collapsedText={collapsedText}
-          onExpand={() => handleExpandChange(true)}
+          textType={effectiveTextType}
+          textColor={effectiveTextColor}
+          textGradient={effectiveTextGradient}
         />
-      ) : (
-        <NYTWidgetExpanded
-          title={title}
-          suggestionCategories={suggestionCategories}
-          placeholder={placeholder}
-          followUpPlaceholder={followUpPlaceholder}
-          brandingText={brandingText}
-          currentState={widgetState}
-          query={currentQuery}
-          answer={answer}
-          citations={citations}
-          isLoading={widgetState === "loading"}
-          onClose={() => handleExpandChange(false)}
-          onSubmit={handleSubmit}
-          onCategoryClick={handleCategoryClick}
-          onCitationClick={handleCitationClick}
-          accentColor={accentColor}
-          useGradient={useGradient}
-          gradientStart={gradientStart}
-          gradientEnd={gradientEnd}
-        />
-      )}
-    </div>
+      }
+      collapsedText={collapsedText}
+      isExpanded={controlledExpanded}
+      defaultExpanded={defaultExpanded}
+      onExpandChange={handleExpandChange}
+      collapsedHeight={48}
+      expandedWidth={400}
+      positioning={positioning}
+      customGradientBorder={customGradientBorder}
+      colorMode={colorMode}
+      borderType={effectiveBorderType}
+      borderColor={effectiveBorderType === "solid" ? effectiveBorderColor : undefined}
+      backgroundType={effectiveBackgroundType}
+      backgroundColor={effectiveBackgroundType === "solid" ? effectiveBackgroundColor : undefined}
+      backgroundGradient={effectiveBackgroundType === "gradient" ? effectiveBackgroundGradient : undefined}
+      aiStarsType={aiStarsType}
+      aiStarsSolidColor={aiStarsSolidColor}
+      aiStarsGradientStart={aiStarsGradientStart}
+      aiStarsGradientEnd={aiStarsGradientEnd}
+      customIconUrl={customIconUrl}
+      customIconPath={customIconPath}
+      customIconSvg={customIconSvg}
+      className={className}
+    >
+      <NYTWidgetExpanded
+        title={title}
+        suggestionCategories={suggestionCategories}
+        placeholder={placeholder}
+        followUpPlaceholder={followUpPlaceholder}
+        brandingText={brandingText}
+        currentState={widgetState}
+        query={currentQuery}
+        answer={answer}
+        citations={citations}
+        isLoading={widgetState === "loading"}
+        onClose={() => handleExpandChange(false)}
+        onSubmit={handleSubmit}
+        onCategoryClick={handleCategoryClick}
+        onCitationClick={handleCitationClick}
+        accentColor={accentColor}
+        useGradient={useGradient}
+        gradientStart={gradientStart}
+        gradientEnd={gradientEnd}
+      />
+    </GlassWidgetContainer>
   );
 }

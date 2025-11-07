@@ -171,10 +171,10 @@ export function WomensWorldWidget({
   const widgetContent = (
     <GlassWidgetContainer
       collapsedContent={<WomensWorldCollapsedButton collapsedText={collapsedText} />}
+      collapsedText={collapsedText}
       isExpanded={controlledIsExpanded}
       defaultExpanded={defaultExpanded}
       onExpandChange={onExpandChange}
-      collapsedWidth={140}
       collapsedHeight={48}
       expandedWidth={width}
       expandedHeight={containerHeight}

@@ -11,15 +11,42 @@ import {
   WomensWorldWidget,
   WomensWorldInlineWidget,
 } from "@/components/widget_components";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 
 interface WidgetConfiguration {
+  // Deprecated color fields (kept for backward compatibility)
+  /** @deprecated Use borderType, backgroundType, textType instead */
   primaryColor?: string;
   secondaryColor?: string;
   backgroundColor?: string;
   textColor?: string;
+  /** @deprecated Use borderType, backgroundType, textType instead */
   useGradient?: boolean;
   gradientStart?: string;
   gradientEnd?: string;
+  /** @deprecated Use borderType, backgroundType, textType instead */
+  colorMode?: "border" | "fill";
+
+  // New appearance fields (Button Border, Background, Text)
+  borderType?: "solid" | "gradient" | "none";
+  borderSolidColor?: string;
+  borderGradientStart?: string;
+  borderGradientEnd?: string;
+  backgroundType?: "solid" | "gradient" | "none";
+  backgroundSolidColor?: string;
+  backgroundGradientStart?: string;
+  backgroundGradientEnd?: string;
+  textType?: "solid" | "gradient" | "none";
+  textSolidColor?: string;
+  textGradientStart?: string;
+  textGradientEnd?: string;
+  aiStarsType?: "solid" | "gradient" | "none";
+  aiStarsSolidColor?: string;
+  aiStarsGradientStart?: string;
+  aiStarsGradientEnd?: string;
+
   width?: number;
   height?: number;
   placement?: "bottom-right" | "bottom-left" | "bottom-center" | "top-right" | "top-left";
@@ -32,6 +59,11 @@ interface WidgetConfiguration {
   followUpPlaceholder?: string;
   suggestionCategories?: string[];
   brandingText?: string;
+  customIconStorageId?: string;
+  customIconUrl?: string;
+  customIconPath?: string;
+  /** @deprecated Use customIconStorageId instead. Kept for backward compatibility. */
+  customIconSvg?: string;
 
   // Women's World Widget Configuration
   seedQuestions?: string[]; // Backward compatibility - old format
@@ -60,7 +92,65 @@ export function PreviewWidgetRenderer({
     configuration.openByDefault ?? false
   );
 
+  // Fetch custom icon URL from storage ID
+  const customIconUrl = useQuery(
+    api.files.getUrl,
+    configuration.customIconStorageId
+      ? { storageId: configuration.customIconStorageId as Id<"_storage"> }
+      : "skip"
+  );
+
+  // Helper: Compute appearance styles from new or legacy config
+  const getAppearanceStyles = () => {
+    // New appearance config takes precedence
+    if (configuration.borderType || configuration.backgroundType || configuration.textType) {
+      return {
+        border: {
+          type: configuration.borderType || "solid",
+          solidColor: configuration.borderSolidColor || "#3b82f6",
+          gradientStart: configuration.borderGradientStart,
+          gradientEnd: configuration.borderGradientEnd,
+        },
+        background: {
+          type: configuration.backgroundType || "none",
+          solidColor: configuration.backgroundSolidColor,
+          gradientStart: configuration.backgroundGradientStart,
+          gradientEnd: configuration.backgroundGradientEnd,
+        },
+        text: {
+          type: configuration.textType || "solid",
+          solidColor: configuration.textSolidColor || "#000000",
+          gradientStart: configuration.textGradientStart,
+          gradientEnd: configuration.textGradientEnd,
+        },
+      };
+    }
+
+    // Fallback to legacy config for backward compatibility
+    return {
+      border: {
+        type: "solid" as const,
+        solidColor: configuration.primaryColor || "#3b82f6",
+        gradientStart: configuration.gradientStart,
+        gradientEnd: configuration.gradientEnd,
+      },
+      background: {
+        type: configuration.useGradient ? "gradient" : "none" as const,
+        solidColor: configuration.backgroundColor,
+        gradientStart: configuration.gradientStart,
+        gradientEnd: configuration.gradientEnd,
+      },
+      text: {
+        type: "solid" as const,
+        solidColor: configuration.textColor || "#000000",
+        gradientStart: undefined,
+        gradientEnd: undefined,
+      },
+    };
+  };
+
   const getBackgroundStyle = () => {
+    // Legacy function - kept for backward compatibility
     if (configuration.useGradient) {
       return {
         background: `linear-gradient(135deg, ${
@@ -115,10 +205,31 @@ export function PreviewWidgetRenderer({
             ]
           }
           brandingText={configuration.brandingText || "Powered by Gist Answers"}
+          customIconStorageId={configuration.customIconStorageId}
+          customIconUrl={customIconUrl || undefined}
+          customIconPath={configuration.customIconPath}
+          customIconSvg={configuration.customIconSvg}
           primaryColor={configuration.primaryColor}
           useGradient={configuration.useGradient}
           gradientStart={configuration.gradientStart}
           gradientEnd={configuration.gradientEnd}
+          colorMode={configuration.colorMode}
+          borderType={configuration.borderType}
+          borderSolidColor={configuration.borderSolidColor}
+          borderGradientStart={configuration.borderGradientStart}
+          borderGradientEnd={configuration.borderGradientEnd}
+          backgroundType={configuration.backgroundType}
+          backgroundSolidColor={configuration.backgroundSolidColor}
+          backgroundGradientStart={configuration.backgroundGradientStart}
+          backgroundGradientEnd={configuration.backgroundGradientEnd}
+          textType={configuration.textType}
+          textSolidColor={configuration.textSolidColor}
+          textGradientStart={configuration.textGradientStart}
+          textGradientEnd={configuration.textGradientEnd}
+          aiStarsType={configuration.aiStarsType}
+          aiStarsSolidColor={configuration.aiStarsSolidColor}
+          aiStarsGradientStart={configuration.aiStarsGradientStart}
+          aiStarsGradientEnd={configuration.aiStarsGradientEnd}
           onSubmit={(query) =>
             console.log("Preview: Question submitted:", query)
           }

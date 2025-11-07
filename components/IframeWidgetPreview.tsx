@@ -3,9 +3,20 @@
 import { useEffect, useRef } from "react";
 
 /**
- * IframeWidgetPreview - Loads deployed widget in iframe sandbox
+ * IframeWidgetPreview - Production Widget Loader (Phase 2)
  *
- * Architecture:
+ * Status: NOT USED - Pending Phase 2 (Embeddable Widget Library)
+ *
+ * This component loads production widget bundles from CDN/dist folder.
+ * Currently not used because widget bundles don't exist yet.
+ * Preview flow uses PreviewWidgetRenderer instead (local React components).
+ *
+ * Required for Phase 2:
+ * - Build widget bundles: womens-world-floating.js, nyt-chat.js, rufus.js
+ * - Deploy bundles to CDN or /public/dist/widgets/
+ * - Implement postMessage configuration API in bundles
+ *
+ * Original Architecture:
  * - Iframe loads HTML document that includes widget script from CDN
  * - Configuration passed via postMessage API
  * - Isolated from parent page (security & styling)

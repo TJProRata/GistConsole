@@ -1,0 +1,58 @@
+[
+  {
+    "session_id": "ae31b3c9-b54e-437f-901f-1b3c31ab9bdd",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ae31b3c9-b54e-437f-901f-1b3c31ab9bdd.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  },
+  {
+    "session_id": "ae31b3c9-b54e-437f-901f-1b3c31ab9bdd",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/ae31b3c9-b54e-437f-901f-1b3c31ab9bdd.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  },
+  {
+    "session_id": "4f264c36-156d-4b3c-a138-89bcf63eefa5",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/4f264c36-156d-4b3c-a138-89bcf63eefa5.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  },
+  {
+    "session_id": "4f264c36-156d-4b3c-a138-89bcf63eefa5",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/4f264c36-156d-4b3c-a138-89bcf63eefa5.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  },
+  {
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  },
+  {
+    "session_id": "4f264c36-156d-4b3c-a138-89bcf63eefa5",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/4f264c36-156d-4b3c-a138-89bcf63eefa5.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  },
+  {
+    "session_id": "0f7247f2-177e-4474-a80f-76db30204795",
+    "transcript_path": "/Users/tjmcgovern/.claude/projects/-Users-tjmcgovern-gist-console/0f7247f2-177e-4474-a80f-76db30204795.jsonl",
+    "cwd": "/Users/tjmcgovern/gist-console",
+    "hook_event_name": "PreCompact",
+    "trigger": "auto",
+    "custom_instructions": null
+  }
+]
